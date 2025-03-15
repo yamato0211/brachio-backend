@@ -55,7 +55,7 @@ func main() {
 		var results []User
 		err := db.Table("Users").Scan().All(c.Request().Context(), &results)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, err)
+			return c.JSON(http.StatusInternalServerError, err)
 		}
 		return c.JSON(http.StatusOK, results)
 	})
