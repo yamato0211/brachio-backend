@@ -47,7 +47,7 @@ jobs:
 
       - name: Run terraform plan
         id: plan
-        run: terraform plan -no-color -var="github-repo"
+        run: terraform plan -no-color
 
       - name: Reformat Plan
         run: |
