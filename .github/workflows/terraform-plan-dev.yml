@@ -16,7 +16,7 @@ env:
   TF_VAR_github_actions: '{"account_name": "yamato0211", "repository": "brachio-backend"}'
 
 permissions:
-  issues: write
+  pull-requests: write
   id-token: write
   contents: read
 
