@@ -13,6 +13,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  TF_VAR_github_actions: '{"account_name": "yamato0211", "repository": "brachio-backend"}'
 
 permissions:
   id-token: write
@@ -46,7 +47,7 @@ jobs:
 
       - name: Run terraform plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var="github-repo"
 
       - name: Reformat Plan
         run: |
