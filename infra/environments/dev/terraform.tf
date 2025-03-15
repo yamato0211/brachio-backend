@@ -10,7 +10,7 @@ terraform {
 
   backend "s3" {
     bucket = "brachio-terraform-state"
-    key    = "terraform.tfstate"
+    key    = "terraform-dev.tfstate"
     region = "ap-northeast-1"
   }
 }
