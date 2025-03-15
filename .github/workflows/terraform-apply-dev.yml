@@ -1,0 +1,49 @@
+name: "Terraform Actions"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/environments/dev/*"
+      - "infra/modules/*"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform_plan:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/environments/dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github-actions-for-terraform
+          aws-region: ap-northeast-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.2
+
+      - name: Run terraform Init
+        run: terraform init
+
+      - name: Run terraform plan
+        id: plan
+        run: terraform plan
+
+      - name: Run terraform apply
+        id: apply
+        run: terraform apply -auto-approve
