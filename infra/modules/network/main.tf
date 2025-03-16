@@ -86,6 +86,14 @@ resource "aws_vpc_security_group_ingress_rule" "ingress_alb" {
   cidr_ipv4 = "0.0.0.0/0"
 } 
 
+resource "aws_vpc_security_group_ingress_rule" "ingress_alb_test" {
+  security_group_id = aws_security_group.ingress_alb.id
+  ip_protocol       = "tcp"
+  from_port         = 10080
+  to_port           = 10080
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
 resource "aws_vpc_security_group_egress_rule" "ingress_alb" {
   security_group_id = aws_security_group.ingress_alb.id
   ip_protocol = "-1"
@@ -104,8 +112,8 @@ resource "aws_security_group" "backend" {
 resource "aws_vpc_security_group_ingress_rule" "backend" {
   security_group_id = aws_security_group.backend.id
   ip_protocol = "tcp"
-  from_port = 80
-  to_port = 80
+  from_port = 8080
+  to_port = 8080
   referenced_security_group_id = aws_security_group.ingress_alb.id
 } 
 
