@@ -30,7 +30,7 @@ jobs:
         id: build
         with:
           ecr-repository-uri: ${{ secrets.ECR_REPOSITORY_URI }}
-          dockerfile-path: server/Dockerfile
+          dockerfile-path: server/
       - uses: ./.github/actions/container-deploy/ # コンテナのデプロイ
         with:
           ecs-cluster: ${{ vars.ECS_CLUSTER_NAME }}
