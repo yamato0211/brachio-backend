@@ -13,8 +13,7 @@ resource "aws_ecs_task_definition" "backend" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      # image     = "${var.common.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/<container-name>:<tag>"
-      image     = "nginx:latest"
+      image     = "${var.common.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/server-app:latest"
       cpu       = 256
       memory    = 512
       essential = true
@@ -70,7 +69,7 @@ resource "aws_ecs_service" "backend" {
   launch_type                        = "FARGATE"
   platform_version                   = "1.4.0"
   scheduling_strategy                = "REPLICA"
-  desired_count                      = 2
+  desired_count                      = 1
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
   deployment_controller {
@@ -82,7 +81,7 @@ resource "aws_ecs_service" "backend" {
     security_groups = [
       var.network.security_group_for_backend_container_id
     ]
-    assign_public_ip = false
+    assign_public_ip = true
   }
   health_check_grace_period_seconds = 120
   load_balancer {
@@ -212,14 +211,14 @@ resource "aws_iam_role_policy_attachment" "codedeploy" {
 }
 
 # Define service
-resource "aws_service_discovery_service" "backend" {
-  name = "${local.prefix}-ecs-backend-service"
+# resource "aws_service_discovery_service" "backend" {
+#   name = "${local.prefix}-ecs-backend-service"
 
-  # TODO: Uncomment the following block to enable health check
-  # health_check_custom_config {
-  #   failure_threshold = 1
-  # }
-}
+#   # TODO: Uncomment the following block to enable health check
+#   # health_check_custom_config {
+#   #   failure_threshold = 1
+#   # }
+# }
 
 # Define CloudWatch log group
 resource "aws_cloudwatch_log_group" "backend" {

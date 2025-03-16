@@ -35,16 +35,16 @@ resource "aws_lb_target_group" "ingress_blue" {
 
   # TODO: Uncomment the following block to enable health check
   
-  # health_check {
-  #   protocol            = "HTTP"
-  #   path                = "/healthcheck"
-  #   port                = "traffic-port"
-  #   healthy_threshold   = 3
-  #   unhealthy_threshold = 2
-  #   timeout             = 5
-  #   interval            = 15
-  #   matcher             = 200
-  # }
+  health_check {
+    protocol            = "HTTP"
+    path                = "/"
+    port                = "traffic-port"
+    healthy_threshold   = 3
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 15
+    matcher             = 200
+  }
 }
 
 # Define the test listner for ingress ALB
@@ -67,14 +67,14 @@ resource "aws_lb_target_group" "ingress_green" {
   vpc_id      = var.network.vpc_id
 
   # TODO: Uncomment the following block to enable health check
-  # health_check {
-  #   protocol            = "HTTP"
-  #   path                = "/healthcheck"
-  #   port                = "traffic-port"
-  #   healthy_threshold   = 3
-  #   unhealthy_threshold = 2
-  #   timeout             = 5
-  #   interval            = 15
-  #   matcher             = 200
-  # }
+  health_check {
+    protocol            = "HTTP"
+    path                = "/"
+    port                = "traffic-port"
+    healthy_threshold   = 3
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 15
+    matcher             = 200
+  }
 }
