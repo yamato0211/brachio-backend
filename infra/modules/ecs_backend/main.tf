@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "backend" {
       #   }
       # ]
 
-      portMappings = [{ containerPort = 80 }]
+      portMappings = [{ containerPort = 8080 }]
       "readonlyRootFilesystem" : true
       logConfiguration = {
         logDriver = "awslogs"
@@ -86,8 +86,8 @@ resource "aws_ecs_service" "backend" {
   health_check_grace_period_seconds = 120
   load_balancer {
     target_group_arn = var.alb_ingress.alb_target_group_ingress_blue_arn
-    container_name   = "app"
-    container_port   = 80
+    container_name   = "server-app"
+    container_port   = 8080
   }
   lifecycle {
     ignore_changes = [

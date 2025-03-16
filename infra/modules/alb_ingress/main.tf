@@ -28,7 +28,7 @@ resource "aws_lb_listener" "ingress_prd" {
 # Define target group for ingress ALB
 resource "aws_lb_target_group" "ingress_blue" {
   name        = "${local.prefix}-tg-backend-blue"
-  port        = 80
+  port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.network.vpc_id
@@ -61,7 +61,7 @@ resource "aws_lb_listener" "ingress_test" {
 # Define target group Green for ingress ALB
 resource "aws_lb_target_group" "ingress_green" {
   name        = "${local.prefix}-tg-backend-green"
-  port        = 80
+  port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.network.vpc_id
