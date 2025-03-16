@@ -1,0 +1,513 @@
+components:
+  schemas:
+    CardBase:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 全ユーザーで一意に定まるID
+          readOnly: true
+        name:
+          type: string
+          description: カード名
+        rarity:
+          type: integer
+          description: レアリティ
+        cardNumber:
+          type: integer
+          description: カードナンバー
+        expansion:
+          type: string
+          description: 拡張パック名
+        cardType:
+          type: string
+          description: カードタイプ
+          enum:
+            - Monster
+            - Supporter
+            - Goods
+        imageUrl:
+          type: string
+          description: カード画像URL
+          format: uri
+    Deck:
+      type: object
+      properties:
+        id:
+          type: string
+          description: デッキID
+          readOnly: true
+        name:
+          type: string
+          description: デッキ名
+        elements:
+          type: array
+          description: エネルギーの属性
+          items:
+            $ref: '#/components/schemas/Element'
+        cards:
+          type: array
+          description: カードリスト
+          items:
+            $ref: '#/components/schemas/Card'
+    CreateDeckRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: デッキ名
+        elements:
+          type: array
+          description: エネルギーの属性
+          items:
+            $ref: '#/components/schemas/Element'
+        cardIds:
+          type: array
+          description: カードIDリスト
+          items:
+            type: string
+    Element:
+      type: string
+      description: 属性
+      enum:
+        - Grass
+        - Fire
+        - Water
+        - Lightning
+        - Psychic
+        - Fighting
+        - Darkness
+        - Metal
+        - Dragon
+        - Normal
+    Gacha:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ガチャID
+          readOnly: true
+        name:
+          type: string
+          description: ガチャ名
+        imageUrl:
+          type: string
+          description: ガチャ画像URL
+          format: uri
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          description: アイテムID（アイテムごとに一意）
+        name:
+          type: string
+          description: アイテム名
+        count:
+          type: integer
+          description: 所持数
+    Pack:
+      type: object
+      description: カード5枚セット
+      properties:
+        cards:
+          type: array
+          description: 中身
+          items:
+            $ref: '#/components/schemas/Card'
+    GachaDrawRequest:
+      type: object
+      properties:
+        isTenDraw:
+          type: boolean
+          description: 10連ガチャかどうか
+    GachaDrawResponse:
+      type: object
+      properties:
+        packs:
+          type: array
+          description: ガチャで引いたカード
+          items:
+            $ref: '#/components/schemas/Pack'
+    PackPower:
+      type: object
+      properties:
+        next:
+          type: integer
+          description: 次のパックが貯まるまでの秒数
+        charged:
+          type: integer
+          description: 現在溜まっているパックの数
+    Skill:
+      type: object
+      description: ワザ
+      properties:
+        name:
+          type: string
+          description: ワザ名
+        text:
+          type: string
+          description: ワザの説明
+        damage:
+          type: integer
+          description: ダメージ
+        cost:
+          type: array
+          description: コスト
+          items:
+            $ref: '#/components/schemas/Element'
+    Ability:
+      type: object
+      description: 特性
+      properties:
+        name:
+          type: string
+          description: 特性名
+        description:
+          type: string
+          description: 特性の説明
+    MonsterCard:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 全ユーザーで一意に定まるID
+          readOnly: true
+        name:
+          type: string
+          description: カード名
+        rarity:
+          type: integer
+          description: レアリティ
+        cardNumber:
+          type: integer
+          description: カードナンバー
+        expansion:
+          type: string
+          description: 拡張パック名
+        cardType:
+          type: string
+          description: カードタイプ
+          enum:
+            - Monster
+            - Supporter
+            - Goods
+        imageUrl:
+          type: string
+          description: カード画像URL
+          format: uri
+        subType:
+          type: string
+          description: 進化段階 (たね, 1進化, 2進化)
+          enum:
+            - Basic
+            - Stage1
+            - Stage2
+        type:
+          $ref: '#/components/schemas/Element'
+        hp:
+          type: integer
+          description: HP
+        skills:
+          type: array
+          description: ワザ
+          items:
+            $ref: '#/components/schemas/Skill'
+        weekness:
+          $ref: '#/components/schemas/Element'
+        retreatCost:
+          type: integer
+          description: にげるコスト
+    SupporterCard:
+      type: object
+      properties:
+        effect:
+          type: string
+          description: 効果
+        id:
+          type: string
+          description: 全ユーザーで一意に定まるID
+          readOnly: true
+        name:
+          type: string
+          description: カード名
+        rarity:
+          type: integer
+          description: レアリティ
+        cardNumber:
+          type: integer
+          description: カードナンバー
+        expansion:
+          type: string
+          description: 拡張パック名
+        cardType:
+          type: string
+          description: カードタイプ
+          enum:
+            - Monster
+            - Supporter
+            - Goods
+        imageUrl:
+          type: string
+          description: カード画像URL
+          format: uri
+    GoodsCard:
+      type: object
+      properties:
+        effect:
+          type: string
+          description: 効果
+        id:
+          type: string
+          description: 全ユーザーで一意に定まるID
+          readOnly: true
+        name:
+          type: string
+          description: カード名
+        rarity:
+          type: integer
+          description: レアリティ
+        cardNumber:
+          type: integer
+          description: カードナンバー
+        expansion:
+          type: string
+          description: 拡張パック名
+        cardType:
+          type: string
+          description: カードタイプ
+          enum:
+            - Monster
+            - Supporter
+            - Goods
+        imageUrl:
+          type: string
+          description: カード画像URL
+          format: uri
+    Card:
+      oneOf:
+        - $ref: '#/components/schemas/MonsterCard'
+        - $ref: '#/components/schemas/SupporterCard'
+        - $ref: '#/components/schemas/GoodsCard'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ユーザーID
+          readOnly: true
+        name:
+          type: string
+          description: ユーザー名
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+openapi: 3.0.3
+info:
+  title: The PokePoke API
+  version: 0.0.1
+servers:
+  - url: http://localhost:3000
+    description: local server
+paths:
+  '/cards:':
+    get:
+      tags:
+        - card
+      summary: 所持カード一覧取得
+      description: 所持カード一覧を取得します。
+      operationId: getMyCardList
+      responses:
+        "200":
+          description: カード一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+      security:
+        - bearerAuth: []
+  '/cards/{cardNumber}:':
+    get:
+      tags:
+        - card
+      summary: カード取得
+      description: カードを取得します。
+      operationId: getMyCard
+      parameters:
+        - name: cardNumber
+          in: path
+          description: カード番号
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: カード
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+      security:
+        - bearerAuth: []
+  '/decks:':
+    get:
+      tags:
+        - deck
+      summary: デッキ一覧取得
+      description: デッキ一覧を取得します。
+      operationId: getMyDeckList
+      responses:
+        "200":
+          description: デッキ一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deck'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - deck
+      summary: デッキ作成
+      description: デッキを作成します。
+      operationId: postMyDeck
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deck'
+        required: true
+      responses:
+        "201":
+          description: デッキ作成成功
+          content: {}
+      security:
+        - bearerAuth: []
+  '/decks/{deckId}:':
+    get:
+      tags:
+        - deck
+      summary: デッキ取得
+      description: デッキを取得します。
+      operationId: getMyDeck
+      parameters:
+        - name: deckId
+          in: path
+          description: デッキID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: デッキ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deck'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - deck
+      summary: デッキ編集
+      description: デッキを編集します。
+      operationId: putMyDeck
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deck'
+        required: true
+      responses:
+        "200":
+          description: デッキ作成成功
+          content: {}
+      security:
+        - bearerAuth: []
+  '/gachas:':
+    get:
+      tags:
+        - gacha
+      summary: ガチャ一覧取得
+      description: ガチャ一覧を取得します。
+      operationId: getGachaList
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Gacha'
+      security:
+        - bearerAuth: []
+  /gachas/{gachaId}:draw:
+    post:
+      tags:
+        - gacha
+      summary: ガチャを引く
+      description: ガチャを引いてカードを取得します。
+      operationId: postGachaDraw
+      parameters:
+        - name: gachaId
+          in: path
+          description: ガチャID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GachaDrawRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GachaDrawResponse'
+      security:
+        - bearerAuth: []
+  '/items:':
+    get:
+      tags:
+        - item
+      summary: 所持アイテム一覧取得
+      description: 所持アイテム一覧を取得します。
+      operationId: getMyItemList
+      responses:
+        "200":
+          description: アイテム一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+      security:
+        - bearerAuth: []
+  '/pack-power:':
+    get:
+      tags:
+        - gacha
+      summary: パックパワーの溜まり状況取得
+      description: パックパワーの溜まり状況を取得します。
+      operationId: getPackPower
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackPower'
+      security:
+        - bearerAuth: []
