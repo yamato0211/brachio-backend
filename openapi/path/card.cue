@@ -2,7 +2,7 @@ package path
 
 import "github.com/yamato0211/brachio-backend/openapi/definition"
 
-"/cards:": definition.#path & {
+"/cards": definition.#path & {
   get: {
     tags: ["card"]
     summary:     "所持カード一覧取得"
@@ -27,7 +27,7 @@ import "github.com/yamato0211/brachio-backend/openapi/definition"
   }
 }
 
-"/cards/{cardNumber}:": definition.#path & {
+"/cards/{cardNumber}": definition.#path & {
   get: {
     tags: ["card"]
     summary:     "カード取得"

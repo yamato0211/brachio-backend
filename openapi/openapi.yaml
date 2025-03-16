@@ -312,7 +312,7 @@ servers:
   - url: http://localhost:3000
     description: local server
 paths:
-  '/cards:':
+  /cards:
     get:
       tags:
         - card
@@ -330,7 +330,7 @@ paths:
                   $ref: '#/components/schemas/Card'
       security:
         - bearerAuth: []
-  '/cards/{cardNumber}:':
+  /cards/{cardNumber}:
     get:
       tags:
         - card
@@ -353,7 +353,7 @@ paths:
                 $ref: '#/components/schemas/Card'
       security:
         - bearerAuth: []
-  '/decks:':
+  /decks:
     get:
       tags:
         - deck
@@ -389,7 +389,7 @@ paths:
           content: {}
       security:
         - bearerAuth: []
-  '/decks/{deckId}:':
+  /decks/{deckId}:
     get:
       tags:
         - deck
@@ -418,6 +418,13 @@ paths:
       summary: デッキ編集
       description: デッキを編集します。
       operationId: putMyDeck
+      parameters:
+        - name: deckId
+          in: path
+          description: デッキID
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -430,7 +437,7 @@ paths:
           content: {}
       security:
         - bearerAuth: []
-  '/gachas:':
+  /gachas:
     get:
       tags:
         - gacha
@@ -448,7 +455,7 @@ paths:
                   $ref: '#/components/schemas/Gacha'
       security:
         - bearerAuth: []
-  /gachas/{gachaId}:draw:
+  /gachas/{gachaId}:
     post:
       tags:
         - gacha
@@ -477,7 +484,7 @@ paths:
                 $ref: '#/components/schemas/GachaDrawResponse'
       security:
         - bearerAuth: []
-  '/items:':
+  /items:
     get:
       tags:
         - item
@@ -495,7 +502,7 @@ paths:
                   $ref: '#/components/schemas/Item'
       security:
         - bearerAuth: []
-  '/pack-power:':
+  /pack-power:
     get:
       tags:
         - gacha

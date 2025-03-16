@@ -2,7 +2,7 @@ package path
 
 import "github.com/yamato0211/brachio-backend/openapi/definition"
 
-"/items:": definition.#path & {
+"/items": definition.#path & {
   get: {
     tags: ["item"]
     summary:     "所持アイテム一覧取得"
