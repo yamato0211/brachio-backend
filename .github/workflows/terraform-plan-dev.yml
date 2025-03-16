@@ -13,8 +13,10 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  TF_VAR_github_actions: '{"account_name": "yamato0211", "repository": "brachio-backend"}'
 
 permissions:
+  pull-requests: write
   id-token: write
   contents: read
 
