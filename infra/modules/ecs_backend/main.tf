@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "backend" {
   execution_role_arn       = aws_iam_role.task_execution_role.arn
   container_definitions = jsonencode([
     {
-      name      = "app"
+      name      = "server-app"
       image     = "${var.common.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/server-app:latest"
       cpu       = 256
       memory    = 512
