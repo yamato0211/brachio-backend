@@ -2,7 +2,7 @@ package path
 
 import "github.com/yamato0211/brachio-backend/openapi/definition"
 
-"/decks:": definition.#path & {
+"/decks": definition.#path & {
   get: {
     tags: ["deck"]
     summary:     "デッキ一覧取得"
@@ -50,7 +50,7 @@ import "github.com/yamato0211/brachio-backend/openapi/definition"
   }
 }
 
-"/decks/{deckId}:": definition.#path & {
+"/decks/{deckId}": definition.#path & {
   get: {
     tags: ["deck"]
     summary:     "デッキ取得"
@@ -87,6 +87,17 @@ import "github.com/yamato0211/brachio-backend/openapi/definition"
     description: "デッキを編集します。"
     operationId: "putMyDeck"
     security: [#bearer]
+    parameters: [
+      {
+        name:        "deckId"
+        in:          "path"
+        description: "デッキID"
+        required:    true
+        schema: {
+          type: "string"
+        }
+      },
+    ]
     requestBody: {
       content: {
         "application/json": {

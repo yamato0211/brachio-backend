@@ -2,7 +2,7 @@ package path
 
 import "github.com/yamato0211/brachio-backend/openapi/definition"
 
-"/gachas:": definition.#path & {
+"/gachas": definition.#path & {
 	get: {
 		tags: ["gacha"]
 		summary:     "ガチャ一覧取得"
@@ -27,7 +27,7 @@ import "github.com/yamato0211/brachio-backend/openapi/definition"
 	}
 }
 
-"/gachas/{gachaId}:draw": definition.#path & {
+"/gachas/{gachaId}": definition.#path & {
 	post: {
 		tags: ["gacha"]
 		summary:     "ガチャを引く"
@@ -70,7 +70,7 @@ import "github.com/yamato0211/brachio-backend/openapi/definition"
 	}
 }
 
-"/pack-power:": definition.#path & {
+"/pack-power": definition.#path & {
 	get: {
 		tags: ["gacha"]
 		summary:     "パックパワーの溜まり状況取得"

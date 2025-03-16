@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/yamato0211/brachio-backend/pkg/config"
+	"github.com/yamato0211/brachio-backend/internal/config"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/credentials"
@@ -24,10 +24,13 @@ var db *dynamo.DB
 
 func init() {
 	ctx := context.Background()
-	cfg := config.NewDynamoConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	db = dynamo.New(aws.Config{
-		Region:       cfg.Region,
-		BaseEndpoint: aws.String(cfg.Endpoint),
+		Region:       cfg.Dynamo.Region,
+		BaseEndpoint: aws.String(cfg.Dynamo.Endpoint),
 		Credentials:  credentials.NewStaticCredentialsProvider("dummy", "dummy", "dummy"),
 	})
 
