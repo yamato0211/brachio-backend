@@ -6,5 +6,5 @@ Resources:
         TaskDefinition: "Github actions will fill this in"
         LoadBalancerInfo:
           ContainerName: "server-app"
-          ContainerPort: "80"
+          ContainerPort: "8080"
         PlatformVersion: "1.4.0"
