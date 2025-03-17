@@ -18,17 +18,6 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 
 FROM amazonlinux:latest AS final
 
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
-USER appuser
-
 COPY --from=build /bin/server /bin/
 
 EXPOSE 8080
