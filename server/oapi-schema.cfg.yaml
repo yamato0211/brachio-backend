@@ -1,0 +1,4 @@
+package: schema
+output: internal/handler/schema/model.gen.go
+generate:
+  models: true
