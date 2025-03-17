@@ -414,16 +414,9 @@ resource "aws_iam_policy" "dynamodb_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid    = "DynamoDBAccess",
+        Sid    = "DynamoDBFullAccess",
         Effect = "Allow",
-        Action = [
-          "dynamodb:PutItem",
-          "dynamodb:GetItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:Query",
-          "dynamodb:Scan"
-        ],
+        Action = "dynamodb:*",
         Resource = [
           aws_dynamodb_table.card_table.arn,
           aws_dynamodb_table.user_table.arn
