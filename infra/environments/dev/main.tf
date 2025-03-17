@@ -13,6 +13,7 @@ module "alb_ingress" {
   source  = "../../modules/alb_ingress"
   common  = local.common
   network = module.network
+  domain  = local.domain
 }
 
 module "ecs_backend" {
@@ -22,4 +23,10 @@ module "ecs_backend" {
   network        = module.network
   alb_ingress    = module.alb_ingress
   repository     = module.ecr.backend_repository_arn
+}
+
+module "frontend" {
+  source = "../../modules/frontend"
+  common = local.common
+  github_actions = local.github_actions_for_front
 }

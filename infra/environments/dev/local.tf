@@ -22,4 +22,11 @@ locals {
       }
     ]
   }
+
+  domain = "kurichi.dev"
+
+  github_actions_for_front = {
+    account_name = "tosaken1116"
+    repository   = "BrachioFront"
+  }
 }

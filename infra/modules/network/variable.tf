@@ -1,7 +1,7 @@
 variable "common" {
   type = object({
     prefix = string
-    env = string
+    env    = string
     region = string
   })
 }
@@ -11,7 +11,7 @@ variable "network" {
     cidr = string
     public_subnets = list(object({
       cidr = string
-      az = string
+      az   = string
     }))
   })
 }

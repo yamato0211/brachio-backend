@@ -17,14 +17,14 @@ variable "github_actions" {
 variable "network" {
   type = object({
     vpc_id                                  = string
-    public_subnet_ids        = list(string)
+    public_subnet_ids                       = list(string)
     security_group_for_backend_container_id = string
   })
 }
 
 variable "alb_ingress" {
   type = object({
-    alb_listener_ingress_prd_arn       = string
+    alb_listener_ingress_prd_arn        = string
     alb_target_group_ingress_blue_name  = string
     alb_target_group_ingress_blue_arn   = string
     alb_listener_ingress_test_arn       = string

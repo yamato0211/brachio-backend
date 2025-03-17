@@ -2,6 +2,56 @@ locals {
   prefix = "${var.common.prefix}-${var.common.env}"
 }
 
+resource "aws_s3_bucket" "backend" {
+  bucket = "${local.prefix}-backend-bucket"
+}
+
+resource "aws_iam_role" "task_role" {
+  name = "${local.prefix}-task-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "task_policy" {
+  name   = "${local.prefix}-task-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "S3ObjectAccess",
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ],
+        Resource = "arn:aws:s3:::${aws_s3_bucket.backend.arn}/*"
+      },
+      {
+        Sid    = "LambdaFullAccess",
+        Effect = "Allow",
+        Action = "lambda:*",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "task_role_attachment" {
+  role       = aws_iam_role.task_role.name
+  policy_arn = aws_iam_policy.task_policy.arn
+}
+
 # Define ECS task definition
 resource "aws_ecs_task_definition" "backend" {
   family                   = "${local.prefix}-backend-def"
@@ -10,10 +60,11 @@ resource "aws_ecs_task_definition" "backend" {
   memory                   = 1024
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.task_execution_role.arn
+  task_role_arn            = aws_iam_role.task_role.arn
   container_definitions = jsonencode([
     {
       name      = "server-app"
-      image     = "${var.common.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/server-app:latest"
+      image     = "${var.common.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/brachio-dev-backend:sha-788ef28"
       cpu       = 256
       memory    = 512
       essential = true
@@ -91,7 +142,9 @@ resource "aws_ecs_service" "backend" {
   }
   lifecycle {
     ignore_changes = [
-      task_definition
+      task_definition,
+      load_balancer,
+      network_configuration
     ]
   }
 }
@@ -331,7 +384,7 @@ data "aws_iam_policy_document" "policy_for_github_actions" {
 
 resource "aws_iam_role_policy_attachment" "github_actions" {
   for_each = {
-    iam = "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    iam    = "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
     github = aws_iam_policy.policy_for_github_actions.arn
   }
   role       = aws_iam_role.github_actions.name

@@ -80,11 +80,19 @@ resource "aws_security_group" "ingress_alb" {
 
 resource "aws_vpc_security_group_ingress_rule" "ingress_alb" {
   security_group_id = aws_security_group.ingress_alb.id
-  ip_protocol = "tcp"
-  from_port = 80
-  to_port = 80
-  cidr_ipv4 = "0.0.0.0/0"
-} 
+  ip_protocol       = "tcp"
+  from_port         = 80
+  to_port           = 80
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingress_alb_https" {
+  security_group_id = aws_security_group.ingress_alb.id
+  ip_protocol       = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_ipv4         = "0.0.0.0/0"
+}
 
 resource "aws_vpc_security_group_ingress_rule" "ingress_alb_test" {
   security_group_id = aws_security_group.ingress_alb.id
@@ -94,15 +102,23 @@ resource "aws_vpc_security_group_ingress_rule" "ingress_alb_test" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
+resource "aws_vpc_security_group_ingress_rule" "ingress_alb_test_https" {
+  security_group_id = aws_security_group.ingress_alb.id
+  ip_protocol       = "tcp"
+  from_port         = 4403
+  to_port           = 4403
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
 resource "aws_vpc_security_group_egress_rule" "ingress_alb" {
   security_group_id = aws_security_group.ingress_alb.id
-  ip_protocol = "-1"
-  cidr_ipv4 = "0.0.0.0/0"
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
 }
 
 # Define security group for backend application
 resource "aws_security_group" "backend" {
-  name = "${local.prefix}-sg-backend"
+  name   = "${local.prefix}-sg-backend"
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "${local.prefix}-sg-backend"
@@ -110,15 +126,15 @@ resource "aws_security_group" "backend" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "backend" {
-  security_group_id = aws_security_group.backend.id
-  ip_protocol = "tcp"
-  from_port = 8080
-  to_port = 8080
+  security_group_id            = aws_security_group.backend.id
+  ip_protocol                  = "tcp"
+  from_port                    = 8080
+  to_port                      = 8080
   referenced_security_group_id = aws_security_group.ingress_alb.id
-} 
+}
 
 resource "aws_vpc_security_group_egress_rule" "backend" {
   security_group_id = aws_security_group.backend.id
-  ip_protocol = "-1"
-  cidr_ipv4 = "0.0.0.0/0"
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
 }
