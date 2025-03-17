@@ -1,7 +1,24 @@
 package model
 
+import "github.com/google/uuid"
+
+type MasterItemID string
+
+func NewMasterItemID() MasterItemID {
+	return MasterItemID(uuid.New().String())
+}
+
+func ParseMasterItemID(s string) (MasterItemID, error) {
+	return MasterItemID(s), nil
+}
+
+func (id MasterItemID) String() string {
+	return string(id)
+}
+
 type MasterItem struct {
-	ItemID   string `dynamo:"ItemId,hash"`
-	Name     string `dynamo:"Name"`
-	ImageURL string `dynamo:"ImageUrl"`
+	ItemID      MasterItemID `dynamo:"ItemId,hash"`
+	Name        string       `dynamo:"Name"`
+	Description string       `dynamo:"Description"`
+	ImageURL    string       `dynamo:"ImageUrl"`
 }

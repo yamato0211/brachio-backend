@@ -36,7 +36,7 @@ const (
 )
 
 type MasterCard struct {
-	MasterCardID MasterCardID `dynamo:"CardId,hash"`
+	MasterCardID MasterCardID `dynamo:"MasterCardId,hash"`
 	Name         string       `dynamo:"Name"`
 	Description  string       `dynamo:"Description"`
 	CardType     CardType     `dynamo:"CardType"` // モンスター,サポート　,グッズ

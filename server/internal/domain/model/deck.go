@@ -1,9 +1,19 @@
 package model
 
+import "github.com/google/uuid"
+
 type DeckID string
 
 func ParseDeckID(id string) (DeckID, error) {
 	return DeckID(id), nil
+}
+
+func NewDeckID() DeckID {
+	return DeckID(uuid.New().String())
+}
+
+func (id DeckID) String() string {
+	return string(id)
 }
 
 type Deck struct {
