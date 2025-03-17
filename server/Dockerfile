@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,target=. \
     CGO_ENABLED=0 GOARCH=$TARGETARCH go build -o /bin/server cmd/api/main.go
 
-FROM debian:bookworm-slim AS final
+FROM amazonlinux:latest AS final
 
 ARG UID=10001
 RUN adduser \
