@@ -6,7 +6,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 	echomiddleware "github.com/labstack/echo/v4/middleware"
-	oapimiddleware "github.com/oapi-codegen/echo-middleware"
 	"github.com/yamato0211/brachio-backend/internal/config"
 	"github.com/yamato0211/brachio-backend/internal/handler"
 )
@@ -31,7 +30,7 @@ func New() (*Server, error) {
 	e := echo.New()
 
 	e.Use(echomiddleware.Logger())
-	e.Use(oapimiddleware.OapiRequestValidator(swagger))
+	// e.Use(oapimiddleware.OapiRequestValidator(swagger))
 
 	e.GET("/", HealthCheck)
 
