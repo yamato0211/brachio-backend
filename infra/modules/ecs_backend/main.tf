@@ -23,7 +23,7 @@ resource "aws_iam_role" "task_role" {
 }
 
 resource "aws_iam_policy" "task_policy" {
-  name   = "${local.prefix}-task-policy"
+  name = "${local.prefix}-task-policy"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -38,9 +38,9 @@ resource "aws_iam_policy" "task_policy" {
         Resource = "arn:aws:s3:::${aws_s3_bucket.backend.arn}/*"
       },
       {
-        Sid    = "LambdaFullAccess",
-        Effect = "Allow",
-        Action = "lambda:*",
+        Sid      = "LambdaFullAccess",
+        Effect   = "Allow",
+        Action   = "lambda:*",
         Resource = "*"
       }
     ]
@@ -69,25 +69,12 @@ resource "aws_ecs_task_definition" "backend" {
       memory    = 512
       essential = true
 
-      # TODO: Uncomment the following block to enable secrets
-      # secrets = [
-      #   {
-      #     name      = "DB_HOST"
-      #     valueFrom = "${var.secrets_manager.secret_for_db_arn}:host::"
-      #   },
-      #   {
-      #     name      = "DB_NAME"
-      #     valueFrom = "${var.secrets_manager.secret_for_db_arn}:dbname::"
-      #   },
-      #   {
-      #     name      = "DB_USERNAME"
-      #     valueFrom = "${var.secrets_manager.secret_for_db_arn}:username::"
-      #   },
-      #   {
-      #     name      = "DB_PASSWORD"
-      #     valueFrom = "${var.secrets_manager.secret_for_db_arn}:password::"
-      #   }
-      # ]
+      secrets = [
+        {
+          name      = "IS_LOCAL"
+          valueFrom = "${var.secrets_manager.secret_for_backend_arn}:islocal::"
+        }
+      ]
 
       portMappings = [{ containerPort = 8080 }]
       "readonlyRootFilesystem" : true
@@ -263,16 +250,6 @@ resource "aws_iam_role_policy_attachment" "codedeploy" {
   policy_arn = each.value
 }
 
-# Define service
-# resource "aws_service_discovery_service" "backend" {
-#   name = "${local.prefix}-ecs-backend-service"
-
-#   # TODO: Uncomment the following block to enable health check
-#   # health_check_custom_config {
-#   #   failure_threshold = 1
-#   # }
-# }
-
 # Define CloudWatch log group
 resource "aws_cloudwatch_log_group" "backend" {
   name              = "/ecs/${local.prefix}-backend"
@@ -392,8 +369,8 @@ resource "aws_iam_role_policy_attachment" "github_actions" {
 }
 
 resource "aws_dynamodb_table" "card_table" {
-  name         = "Cards"
-  hash_key     = "CardId"
+  name     = "Cards"
+  hash_key = "CardId"
 
   billing_mode = "PAY_PER_REQUEST"
 
@@ -402,13 +379,13 @@ resource "aws_dynamodb_table" "card_table" {
     type = "S"
   }
   tags = {
-    Name = "${local.prefix}-dynamodb-card-table"
+    Name        = "${local.prefix}-dynamodb-card-table"
     Environment = var.common.env
   }
 }
 
 resource "aws_dynamodb_table" "user_table" {
-  name = "Users"
+  name     = "Users"
   hash_key = "UserId"
 
   billing_mode = "PAY_PER_REQUEST"
@@ -419,20 +396,20 @@ resource "aws_dynamodb_table" "user_table" {
   }
 
   tags = {
-    Name = "${local.prefix}-dynamodb-user-table"
+    Name        = "${local.prefix}-dynamodb-user-table"
     Environment = var.common.env
   }
 }
 
 resource "aws_iam_policy" "dynamodb_policy" {
-  name   = "${local.prefix}-dynamodb-policy"
+  name = "${local.prefix}-dynamodb-policy"
   policy = jsonencode({
-    Version   = "2012-10-17",
+    Version = "2012-10-17",
     Statement = [
       {
-        Sid      = "DynamoDBAccess",
-        Effect   = "Allow",
-        Action   = [
+        Sid    = "DynamoDBAccess",
+        Effect = "Allow",
+        Action = [
           "dynamodb:PutItem",
           "dynamodb:GetItem",
           "dynamodb:UpdateItem",

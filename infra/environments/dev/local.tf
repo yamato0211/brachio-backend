@@ -23,12 +23,12 @@ locals {
     ]
     private_subnets = [
       {
-          az = "a"
-          cidr = "172.16.10.0/24"
+        az   = "a"
+        cidr = "172.16.10.0/24"
       },
       {
-          az = "c"
-          cidr = "172.16.11.0/24"
+        az   = "c"
+        cidr = "172.16.11.0/24"
       }
     ]
   }
@@ -38,5 +38,9 @@ locals {
   github_actions_for_front = {
     account_name = "tosaken1116"
     repository   = "BrachioFront"
+  }
+
+  backend_secrets = {
+    islocal = false
   }
 }

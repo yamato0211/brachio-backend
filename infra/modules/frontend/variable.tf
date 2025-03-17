@@ -11,15 +11,15 @@ variable "own_domain_name" {
 
 variable "common" {
   type = object({
-    env    = string
-    prefix = string
+    env        = string
+    prefix     = string
     account_id = string
   })
 }
 
 variable "github_actions" {
   type = object({
-    repository = string
+    repository   = string
     account_name = string
   })
 }

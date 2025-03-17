@@ -14,6 +14,7 @@ var (
 type Config struct {
 	Server ServerConfig
 	Dynamo DynamoConfig
+	Common CommonConfig
 }
 
 type ServerConfig struct {
@@ -23,6 +24,10 @@ type ServerConfig struct {
 type DynamoConfig struct {
 	Region   string `envconfig:"REGION" default:"ap-northeast-1"`
 	Endpoint string `envconfig:"DYNAMO_ENDPOINT" default:"http://localhost:8000"`
+}
+
+type CommonConfig struct {
+	IsLocal bool `envconfig:"IS_LOCAL" default:"false"`
 }
 
 func GetConfig() (*Config, error) {
@@ -38,6 +43,10 @@ func GetConfig() (*Config, error) {
 			return
 		}
 
+		if _err := envconfig.Process("", &cfg.Common); _err != nil {
+			err = _err
+			return
+		}
 	})
 
 	return &cfg, err

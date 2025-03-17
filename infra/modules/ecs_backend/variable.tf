@@ -42,3 +42,9 @@ variable "alb_ingress" {
 variable "repository" {
   type = string
 }
+
+variable "secrets_manager" {
+  type = object({
+    secret_for_backend_arn = string
+  })
+}
