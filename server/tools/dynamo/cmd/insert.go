@@ -40,7 +40,7 @@ var insertCmd = &cobra.Command{
 				Name:         "Kizuku",
 				CardType:     model.CardTypeMonster,
 				Rarity:       8,
-				HP:           110,
+				HP:           130,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
@@ -69,7 +69,7 @@ var insertCmd = &cobra.Command{
 				Name:         "くりち",
 				CardType:     model.CardTypeMonster,
 				Rarity:       8,
-				HP:           140,
+				HP:           160,
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypePopularity,
 				IsEx:         false,
@@ -185,7 +185,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeMonster,
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
-				RetreatCost:  1,
+				RetreatCost:  3,
 				Ability: &model.Ability{
 					Name: "さめはだ",
 					Text: "このラムモンが、バトル場で相手のラムモンからワザのダメージを受けたとき、ワザを使ったラムモンに40ダメージ",
@@ -226,10 +226,10 @@ var insertCmd = &cobra.Command{
 				Description:  "滅多に現れない\n",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
-				HP:           100,
+				HP:           90,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypePopularity,
-				RetreatCost:  1,
+				RetreatCost:  0,
 				Skills: []model.Skill{
 					{
 						Name:   "リバースエンジニアリング",
@@ -409,6 +409,7 @@ var insertCmd = &cobra.Command{
 				HP:           50,
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypePopularity,
+				RetreatCost:  3,
 				Skills: []model.Skill{
 					{
 						Name:   "クソツイ",
@@ -427,7 +428,7 @@ var insertCmd = &cobra.Command{
 				HP:           30,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				RetreatCost:  0,
 
 				Skills: []model.Skill{
 					{
@@ -446,10 +447,10 @@ var insertCmd = &cobra.Command{
 				Name:         "ヤニカス",
 				CardType:     model.CardTypeMonster,
 				Rarity:       3,
-				HP:           70,
+				HP:           60,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				RetreatCost:  0,
 				Ability: &model.Ability{
 					Name: "タバコ休憩",
 					Text: "自分の番に1回使える。[金]エネルギーを1つトラッシュする代わりにこのラムモンのHPを20回復する",
@@ -472,7 +473,7 @@ var insertCmd = &cobra.Command{
 				Name:         "酒カスエンジニア",
 				CardType:     model.CardTypeMonster,
 				Rarity:       4,
-				HP:           120,
+				HP:           110,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
@@ -502,6 +503,7 @@ var insertCmd = &cobra.Command{
 				HP:           50,
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  1,
 				Skills: []model.Skill{
 					{
 						Name:   "勉強する",
@@ -520,6 +522,7 @@ var insertCmd = &cobra.Command{
 				HP:           80,
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  1,
 				Skills: []model.Skill{
 					{
 						Name:   "まじめに働く",
@@ -540,10 +543,11 @@ var insertCmd = &cobra.Command{
 				HP:           130,
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  1,
 				Skills: []model.Skill{
 					{
 						Name:   "大盤振る舞い",
-						Text:   "相手のベンチラムモン全員にも10ダメージ。",
+						Text:   "相手のベンチラムモン全員にも20ダメージ。",
 						Damage: 120,
 						Cost: []model.MonsterType{
 							model.MonsterTypeKnowledge,
@@ -563,6 +567,7 @@ var insertCmd = &cobra.Command{
 				HP:           50,
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
+				RetreatCost:  1,
 				Skills: []model.Skill{
 					{
 						Name:   "筋トレ",
@@ -581,6 +586,7 @@ var insertCmd = &cobra.Command{
 				HP:           90,
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
+				RetreatCost:  2,
 				Skills: []model.Skill{
 					{
 						Name:   "筋トレ",
@@ -600,8 +606,9 @@ var insertCmd = &cobra.Command{
 				HP:           170,
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
+				RetreatCost:  3,
 				Ability: &model.Ability{
-					Name: "コーチング",
+					Name: "パワーーー！！！",
 					Text: "このラムモンがいるかぎり、自分の[筋肉]ラムモンが使うワザのダメージを+30する",
 				},
 				Skills: []model.Skill{
@@ -624,6 +631,7 @@ var insertCmd = &cobra.Command{
 				HP:           50,
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypePopularity,
+				RetreatCost:  0,
 
 				Skills: []model.Skill{
 					{
@@ -644,6 +652,7 @@ var insertCmd = &cobra.Command{
 				HP:           80,
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypePopularity,
+				RetreatCost:  0,
 				Ability: &model.Ability{
 					Name: "荒稼ぎ",
 					Text: "自分の番に1回使える。自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
@@ -667,6 +676,7 @@ var insertCmd = &cobra.Command{
 				HP:           160,
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypePopularity,
+				RetreatCost:  3,
 				Skills: []model.Skill{
 					{
 						Name:   "納税",
@@ -697,6 +707,7 @@ var insertCmd = &cobra.Command{
 				HP:           60,
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
+				RetreatCost:  1,
 				Skills: []model.Skill{
 					{
 						Name:   "がむしゃらに働く",
@@ -716,6 +727,7 @@ var insertCmd = &cobra.Command{
 				HP:           120,
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
+				RetreatCost:  2,
 				Ability: &model.Ability{
 					Name: "まだ諦めない",
 					Text: "このラムモンのワザの効果により、このラムモンがダメージを受けHPが0以下にならなかった場合、このラムモンのHPを50回復する。",
@@ -740,6 +752,7 @@ var insertCmd = &cobra.Command{
 				HP:           180,
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
+				RetreatCost:  3,
 				Ability: &model.Ability{
 					Name: "組織の奴隷",
 					Text: "自分の番に1回使える。このラムモンに50ダメージを与える代わりに、自分のエネルギーゾーンから[人気]エネルギーを2個出し、このラムモンにつける。",
@@ -766,6 +779,7 @@ var insertCmd = &cobra.Command{
 				HP:           100,
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMoney,
+				RetreatCost:  2,
 				Skills: []model.Skill{
 					{
 						Name:   "業務委託",
@@ -786,6 +800,7 @@ var insertCmd = &cobra.Command{
 				HP:           80,
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  1,
 				Skills: []model.Skill{
 					{
 						Name:   "コーディング",
@@ -807,10 +822,11 @@ var insertCmd = &cobra.Command{
 				HP:           60,
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  3,
 				Skills: []model.Skill{
 					{
 						Name:   "秘密の業務",
-						Text:   "",
+						Text:   "自分の山札を1枚引く。",
 						Damage: 30,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
@@ -826,16 +842,142 @@ var insertCmd = &cobra.Command{
 				HP:           120,
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  2,
 				Skills: []model.Skill{
 					{
 						Name:   "人事面接",
-						Text:   "",
-						Damage: 100,
+						Text:   "自分の山札からラムモンをランダムに1枚、手札に加える。",
+						Damage: 80,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
 							model.MonsterTypeNull,
 							model.MonsterTypeNull,
 							model.MonsterTypeNull,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "Gopher",
+				Rarity:       5,
+				CardType:     model.CardTypeMonster,
+				HP:           100,
+				Type:         model.MonsterTypeAlchohol,
+				Weakness:     model.MonsterTypeKnowledge,
+				RetreatCost:  2,
+				Ability: &model.Ability{
+					Name: "Goroutineの追撃",
+					Text: "このラムモンが、相手のバトルラムモンにワザを使ったとき、ウラが出るまでコインを投げ、オモテの数x10ダメージ追加",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "ビンタ",
+						Text:   "",
+						Damage: 50,
+						Cost: []model.MonsterType{
+							model.MonsterTypeAlchohol,
+							model.MonsterTypeAlchohol,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "Rustacean",
+				Rarity:       5,
+				CardType:     model.CardTypeMonster,
+				HP:           100,
+				Type:         model.MonsterTypeMuscle,
+				Weakness:     model.MonsterTypeAlchohol,
+				RetreatCost:  2,
+				Ability: &model.Ability{
+					Name: "所有権の濫用",
+					Text: "このラムモンがバトル場にいる限り、相手は手札からグッズを使えない。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "はさむ",
+						Text:   "",
+						Damage: 50,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMuscle,
+							model.MonsterTypeMuscle,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "TypeScripter",
+				Rarity:       5,
+				CardType:     model.CardTypeMonster,
+				HP:           100,
+				Type:         model.MonsterTypeMoney,
+				Weakness:     model.MonsterTypeMuscle,
+				RetreatCost:  2,
+				Ability: &model.Ability{
+					Name: "as unknown as",
+					Text: "このラムモンがいる限り、相手のラムモンのワザのタイプをNULLにし、追加効果を無効化する。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "as any",
+						Text:   "",
+						Damage: 40,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "Swifter",
+				Rarity:       5,
+				CardType:     model.CardTypeMonster,
+				HP:           100,
+				Type:         model.MonsterTypePopularity,
+				Weakness:     model.MonsterTypeMoney,
+				RetreatCost:  2,
+				Ability: &model.Ability{
+					Name: "Apple Developer Program",
+					Text: "このラムモンがいる限り、相手は手札からラムモンを出せない。また、このラムモンは自分の番の終了時に、40ダメージを受ける。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "つばめがえし",
+						Text:   "",
+						Damage: 50,
+						Cost: []model.MonsterType{
+							model.MonsterTypePopularity,
+							model.MonsterTypePopularity,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "Pythonista",
+				Rarity:       5,
+				CardType:     model.CardTypeMonster,
+				HP:           100,
+				Type:         model.MonsterTypeKnowledge,
+				Weakness:     model.MonsterTypePopularity,
+				RetreatCost:  2,
+				Ability: &model.Ability{
+					Name: "破壊的変更",
+					Text: "このラムモンがいる限り、相手がラムモンを進化させた時にそのラムモンに40ダメージを与える。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "まきつく",
+						Text:   "",
+						Damage: 40,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeKnowledge,
 						},
 					},
 				},
@@ -863,7 +1005,7 @@ var insertCmd = &cobra.Command{
 				MasterCardID: model.NewMasterCardID(),
 				CardType:     model.CardTypeGoods,
 				Name:         "ハックツパーカー",
-				Text:         "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果によるダメージを受けない。",
+				Text:         "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果や特性によるダメージを受けない。",
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
