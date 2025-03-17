@@ -27,9 +27,9 @@ type GameState struct {
 type Player struct {
 	UserID   UserID
 	BaseDeck *Deck
-	Deck     []*Card
-	Hands    []*Card
-	Trash    []*Card
+	Deck     []*MasterCard
+	Hands    []*MasterCard
+	Trash    []*MasterCard
 	Energies []Element
 
 	Point         int
