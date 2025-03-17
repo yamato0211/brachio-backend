@@ -18,7 +18,7 @@ type Config struct {
 func New(ctx context.Context, cfg *Config) (*dynamo.DB, error) {
 	conf, err := config.LoadDefaultConfig(
 		ctx,
-		config.WithBaseEndpoint(cfg.Endpoint),
+		// config.WithBaseEndpoint(cfg.Endpoint),
 		config.WithRegion(cfg.Region),
 	)
 	if err != nil {
