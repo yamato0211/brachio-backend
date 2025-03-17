@@ -5,278 +5,324 @@ package schema
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/oapi-codegen/runtime"
 )
 
-const (
-	BearerAuthScopes = "bearerAuth.Scopes"
-)
-
 // Defines values for Element.
 const (
-	Darkness  Element = "Darkness"
-	Dragon    Element = "Dragon"
-	Fighting  Element = "Fighting"
-	Fire      Element = "Fire"
-	Grass     Element = "Grass"
-	Lightning Element = "Lightning"
-	Metal     Element = "Metal"
-	Normal    Element = "Normal"
-	Psychic   Element = "Psychic"
-	Water     Element = "Water"
+	Darkness  Element = "darkness"
+	Dragon    Element = "dragon"
+	Fighting  Element = "fighting"
+	Fire      Element = "fire"
+	Grass     Element = "grass"
+	Lightning Element = "lightning"
+	Metal     Element = "metal"
+	Normal    Element = "normal"
+	Psychic   Element = "psychic"
+	Water     Element = "water"
 )
 
-// Defines values for GoodsCardCardType.
+// Defines values for MasterCardType.
 const (
-	GoodsCardCardTypeGoods     GoodsCardCardType = "Goods"
-	GoodsCardCardTypeMonster   GoodsCardCardType = "Monster"
-	GoodsCardCardTypeSupporter GoodsCardCardType = "Supporter"
+	Goods     MasterCardType = "goods"
+	Monster   MasterCardType = "monster"
+	Supporter MasterCardType = "supporter"
 )
 
-// Defines values for MonsterCardCardType.
+// Defines values for SkillDamageOption.
 const (
-	MonsterCardCardTypeGoods     MonsterCardCardType = "Goods"
-	MonsterCardCardTypeMonster   MonsterCardCardType = "Monster"
-	MonsterCardCardTypeSupporter MonsterCardCardType = "Supporter"
+	Plus SkillDamageOption = "+"
+	X    SkillDamageOption = "x"
 )
 
-// Defines values for MonsterCardSubType.
-const (
-	Basic  MonsterCardSubType = "Basic"
-	Stage1 MonsterCardSubType = "Stage1"
-	Stage2 MonsterCardSubType = "Stage2"
-)
+// Ability 特性
+type Ability struct {
+	// Name 特性名
+	Name string `json:"name"`
 
-// Defines values for SupporterCardCardType.
-const (
-	Goods     SupporterCardCardType = "Goods"
-	Monster   SupporterCardCardType = "Monster"
-	Supporter SupporterCardCardType = "Supporter"
-)
+	// Text 説明文
+	Text string `json:"text"`
+}
 
-// Card defines model for Card.
+// Card defines model for card.
 type Card struct {
+	// Id カードID
+	Id    *string `json:"id,omitempty"`
 	union json.RawMessage
 }
 
-// Deck defines model for Deck.
-type Deck struct {
-	// Cards カードリスト
-	Cards *[]Card `json:"cards,omitempty"`
+// CreateNewDeck201Response defines model for createNewDeck_201_response.
+type CreateNewDeck201Response struct {
+	// Id デッキID
+	Id string `json:"id"`
+}
 
-	// Elements エネルギーの属性
-	Elements *[]Element `json:"elements,omitempty"`
+// Deck defines model for deck.
+type Deck struct {
+	Cards    []Card    `json:"cards"`
+	Color    Element   `json:"color"`
+	Energies []Element `json:"energies"`
 
 	// Id デッキID
 	Id *string `json:"id,omitempty"`
 
 	// Name デッキ名
-	Name *string `json:"name,omitempty"`
+	Name          string `json:"name"`
+	ThumbnailCard Card   `json:"thumbnailCard"`
 }
 
-// Element 属性
+// DeckBase デッキ
+type DeckBase struct {
+	Color Element `json:"color"`
+
+	// Id デッキID
+	Id *string `json:"id,omitempty"`
+
+	// Name デッキ名
+	Name          string `json:"name"`
+	ThumbnailCard Card   `json:"thumbnailCard"`
+}
+
+// DeckBaseWithId defines model for deckBaseWithId.
+type DeckBaseWithId struct {
+	Color Element `json:"color"`
+
+	// Id デッキID
+	Id *string `json:"id,omitempty"`
+
+	// Name デッキ名
+	Name          string `json:"name"`
+	ThumbnailCard Card   `json:"thumbnailCard"`
+}
+
+// DeckWithId defines model for deckWithId.
+type DeckWithId struct {
+	Cards    []Card    `json:"cards"`
+	Color    Element   `json:"color"`
+	Energies []Element `json:"energies"`
+
+	// Id デッキID
+	Id *string `json:"id,omitempty"`
+
+	// Name デッキ名
+	Name          string `json:"name"`
+	ThumbnailCard Card   `json:"thumbnailCard"`
+}
+
+// DrawGachaRequest defines model for drawGachaRequest.
+type DrawGachaRequest struct {
+	// IsTenDraw 10連ガチャかどうか
+	IsTenDraw bool `json:"isTenDraw"`
+}
+
+// Element defines model for element.
 type Element string
 
-// Gacha defines model for Gacha.
+// Gacha defines model for gacha.
 type Gacha struct {
 	// Id ガチャID
 	Id *string `json:"id,omitempty"`
 
 	// ImageUrl ガチャ画像URL
-	ImageUrl *string `json:"imageUrl,omitempty"`
+	ImageUrl string `json:"imageUrl"`
 
 	// Name ガチャ名
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 }
 
-// GachaDrawRequest defines model for GachaDrawRequest.
-type GachaDrawRequest struct {
-	// IsTenDraw 10連ガチャかどうか
-	IsTenDraw *bool `json:"isTenDraw,omitempty"`
+// GachaPower defines model for gachaPower.
+type GachaPower struct {
+	// Charged 現在のガチャパワー
+	Charged int `json:"charged"`
+
+	// Next 次のガチャパワーが貯まるまでの秒数
+	Next int `json:"next"`
 }
 
-// GachaDrawResponse defines model for GachaDrawResponse.
-type GachaDrawResponse struct {
-	// Packs ガチャで引いたカード
-	Packs *[]Pack `json:"packs,omitempty"`
+// Item defines model for item.
+type Item struct {
+	// Count 所持数
+	Count int `json:"count"`
+
+	// Id アイテムID（アイテムごとに一意）
+	Id string `json:"id"`
+
+	// Name アイテム名
+	Name string `json:"name"`
 }
 
-// GoodsCard defines model for GoodsCard.
-type GoodsCard struct {
-	// CardNumber カードナンバー
-	CardNumber *int `json:"cardNumber,omitempty"`
+// MasterCard defines model for masterCard.
+type MasterCard struct {
+	union json.RawMessage
+}
 
-	// CardType カードタイプ
-	CardType *GoodsCardCardType `json:"cardType,omitempty"`
+// MasterCardBase 全カード共通のプロパティ
+type MasterCardBase struct {
+	CardType MasterCardType `json:"cardType"`
 
-	// Effect 効果
-	Effect *string `json:"effect,omitempty"`
-
-	// Expansion 拡張パック名
+	// Expansion カードセット名
 	Expansion *string `json:"expansion,omitempty"`
 
-	// Id 全ユーザーで一意に定まるID
-	Id *string `json:"id,omitempty"`
-
 	// ImageUrl カード画像URL
-	ImageUrl *string `json:"imageUrl,omitempty"`
+	ImageUrl string `json:"imageUrl"`
+
+	// MasterCardId カードID
+	MasterCardId *string `json:"masterCardId,omitempty"`
 
 	// Name カード名
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// Rarity レアリティ
 	Rarity *int `json:"rarity,omitempty"`
 }
 
-// GoodsCardCardType カードタイプ
-type GoodsCardCardType string
+// MasterCardType defines model for masterCardType.
+type MasterCardType string
 
-// Item defines model for Item.
-type Item struct {
-	// Count 所持数
-	Count *int `json:"count,omitempty"`
-
-	// Id アイテムID（アイテムごとに一意）
-	Id *string `json:"id,omitempty"`
-
-	// Name アイテム名
-	Name *string `json:"name,omitempty"`
+// MasterCardWithCount defines model for masterCardWithCount.
+type MasterCardWithCount struct {
+	// Count カード枚数
+	Count      int        `json:"count"`
+	MasterCard MasterCard `json:"masterCard"`
 }
 
-// MonsterCard defines model for MonsterCard.
-type MonsterCard struct {
-	// CardNumber カードナンバー
-	CardNumber *int `json:"cardNumber,omitempty"`
+// MasterGoodsCard defines model for masterGoodsCard.
+type MasterGoodsCard struct {
+	CardType MasterCardType `json:"cardType"`
 
-	// CardType カードタイプ
-	CardType *MonsterCardCardType `json:"cardType,omitempty"`
+	// Expansion カードセット名
+	Expansion *string `json:"expansion,omitempty"`
 
-	// Expansion 拡張パック名
+	// ImageUrl カード画像URL
+	ImageUrl string `json:"imageUrl"`
+
+	// MasterCardId カードID
+	MasterCardId *string `json:"masterCardId,omitempty"`
+
+	// Name カード名
+	Name string `json:"name"`
+
+	// Rarity レアリティ
+	Rarity *int `json:"rarity,omitempty"`
+
+	// Text 説明文
+	Text string `json:"text"`
+}
+
+// MasterMonsterCard defines model for masterMonsterCard.
+type MasterMonsterCard struct {
+	// Ability 特性
+	Ability  *Ability       `json:"ability,omitempty"`
+	CardType MasterCardType `json:"cardType"`
+
+	// EvolvesFrom 進化元
+	EvolvesFrom *string `json:"evolvesFrom,omitempty"`
+
+	// EvolvesTo 進化先
+	EvolvesTo *string `json:"evolvesTo,omitempty"`
+
+	// Expansion カードセット名
 	Expansion *string `json:"expansion,omitempty"`
 
 	// Hp HP
-	Hp *int `json:"hp,omitempty"`
-
-	// Id 全ユーザーで一意に定まるID
-	Id *string `json:"id,omitempty"`
+	Hp int `json:"hp"`
 
 	// ImageUrl カード画像URL
-	ImageUrl *string `json:"imageUrl,omitempty"`
+	ImageUrl string `json:"imageUrl"`
+
+	// MasterCardId カードID
+	MasterCardId *string `json:"masterCardId,omitempty"`
 
 	// Name カード名
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
+
+	// Rarity レアリティ
+	Rarity int `json:"rarity"`
+
+	// RetreatCost 逃げるコスト
+	RetreatCost *int `json:"retreatCost,omitempty"`
+
+	// Skills ワザ
+	Skills   []Skill `json:"skills"`
+	Weakness Element `json:"weakness"`
+}
+
+// MasterSupporterCard defines model for masterSupporterCard.
+type MasterSupporterCard struct {
+	CardType MasterCardType `json:"cardType"`
+
+	// Expansion カードセット名
+	Expansion *string `json:"expansion,omitempty"`
+
+	// ImageUrl カード画像URL
+	ImageUrl string `json:"imageUrl"`
+
+	// MasterCardId カードID
+	MasterCardId *string `json:"masterCardId,omitempty"`
+
+	// Name カード名
+	Name string `json:"name"`
 
 	// Rarity レアリティ
 	Rarity *int `json:"rarity,omitempty"`
 
-	// RetreatCost にげるコスト
-	RetreatCost *int `json:"retreatCost,omitempty"`
-
-	// Skills ワザ
-	Skills *[]Skill `json:"skills,omitempty"`
-
-	// SubType 進化段階 (たね, 1進化, 2進化)
-	SubType *MonsterCardSubType `json:"subType,omitempty"`
-
-	// Type 属性
-	Type *Element `json:"type,omitempty"`
-
-	// Weekness 属性
-	Weekness *Element `json:"weekness,omitempty"`
+	// Text 説明文
+	Text string `json:"text"`
 }
 
-// MonsterCardCardType カードタイプ
-type MonsterCardCardType string
+// MyCardList defines model for myCardList.
+type MyCardList = []MasterCardWithCount
 
-// MonsterCardSubType 進化段階 (たね, 1進化, 2進化)
-type MonsterCardSubType string
-
-// Pack カード5枚セット
+// Pack defines model for pack.
 type Pack struct {
-	// Cards 中身
-	Cards *[]Card `json:"cards,omitempty"`
-}
-
-// PackPower defines model for PackPower.
-type PackPower struct {
-	// Charged 現在溜まっているパックの数
-	Charged *int `json:"charged,omitempty"`
-
-	// Next 次のパックが貯まるまでの秒数
-	Next *int `json:"next,omitempty"`
+	Cards *[]MasterCard `json:"cards,omitempty"`
 }
 
 // Skill ワザ
 type Skill struct {
 	// Cost コスト
-	Cost *[]Element `json:"cost,omitempty"`
+	Cost []Element `json:"cost"`
 
 	// Damage ダメージ
-	Damage *int `json:"damage,omitempty"`
+	Damage int `json:"damage"`
+
+	// DamageOption x or +
+	DamageOption *SkillDamageOption `json:"damageOption,omitempty"`
 
 	// Name ワザ名
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 
-	// Text ワザの説明
-	Text *string `json:"text,omitempty"`
+	// Text 説明文
+	Text string `json:"text"`
 }
 
-// SupporterCard defines model for SupporterCard.
-type SupporterCard struct {
-	// CardNumber カードナンバー
-	CardNumber *int `json:"cardNumber,omitempty"`
+// SkillDamageOption x or +
+type SkillDamageOption string
 
-	// CardType カードタイプ
-	CardType *SupporterCardCardType `json:"cardType,omitempty"`
+// UpdateDeckJSONRequestBody defines body for UpdateDeck for application/json ContentType.
+type UpdateDeckJSONRequestBody = Deck
 
-	// Effect 効果
-	Effect *string `json:"effect,omitempty"`
+// DrawGachaJSONRequestBody defines body for DrawGacha for application/json ContentType.
+type DrawGachaJSONRequestBody = DrawGachaRequest
 
-	// Expansion 拡張パック名
-	Expansion *string `json:"expansion,omitempty"`
-
-	// Id 全ユーザーで一意に定まるID
-	Id *string `json:"id,omitempty"`
-
-	// ImageUrl カード画像URL
-	ImageUrl *string `json:"imageUrl,omitempty"`
-
-	// Name カード名
-	Name *string `json:"name,omitempty"`
-
-	// Rarity レアリティ
-	Rarity *int `json:"rarity,omitempty"`
-}
-
-// SupporterCardCardType カードタイプ
-type SupporterCardCardType string
-
-// PostMyDeckJSONRequestBody defines body for PostMyDeck for application/json ContentType.
-type PostMyDeckJSONRequestBody = Deck
-
-// PutMyDeckJSONRequestBody defines body for PutMyDeck for application/json ContentType.
-type PutMyDeckJSONRequestBody = Deck
-
-// PostGachaDrawJSONRequestBody defines body for PostGachaDraw for application/json ContentType.
-type PostGachaDrawJSONRequestBody = GachaDrawRequest
-
-// AsMonsterCard returns the union data inside the Card as a MonsterCard
-func (t Card) AsMonsterCard() (MonsterCard, error) {
-	var body MonsterCard
+// AsMasterMonsterCard returns the union data inside the Card as a MasterMonsterCard
+func (t Card) AsMasterMonsterCard() (MasterMonsterCard, error) {
+	var body MasterMonsterCard
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromMonsterCard overwrites any union data inside the Card as the provided MonsterCard
-func (t *Card) FromMonsterCard(v MonsterCard) error {
+// FromMasterMonsterCard overwrites any union data inside the Card as the provided MasterMonsterCard
+func (t *Card) FromMasterMonsterCard(v MasterMonsterCard) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeMonsterCard performs a merge with any union data inside the Card, using the provided MonsterCard
-func (t *Card) MergeMonsterCard(v MonsterCard) error {
+// MergeMasterMonsterCard performs a merge with any union data inside the Card, using the provided MasterMonsterCard
+func (t *Card) MergeMasterMonsterCard(v MasterMonsterCard) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -287,22 +333,22 @@ func (t *Card) MergeMonsterCard(v MonsterCard) error {
 	return err
 }
 
-// AsSupporterCard returns the union data inside the Card as a SupporterCard
-func (t Card) AsSupporterCard() (SupporterCard, error) {
-	var body SupporterCard
+// AsMasterSupporterCard returns the union data inside the Card as a MasterSupporterCard
+func (t Card) AsMasterSupporterCard() (MasterSupporterCard, error) {
+	var body MasterSupporterCard
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromSupporterCard overwrites any union data inside the Card as the provided SupporterCard
-func (t *Card) FromSupporterCard(v SupporterCard) error {
+// FromMasterSupporterCard overwrites any union data inside the Card as the provided MasterSupporterCard
+func (t *Card) FromMasterSupporterCard(v MasterSupporterCard) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeSupporterCard performs a merge with any union data inside the Card, using the provided SupporterCard
-func (t *Card) MergeSupporterCard(v SupporterCard) error {
+// MergeMasterSupporterCard performs a merge with any union data inside the Card, using the provided MasterSupporterCard
+func (t *Card) MergeMasterSupporterCard(v MasterSupporterCard) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -313,22 +359,22 @@ func (t *Card) MergeSupporterCard(v SupporterCard) error {
 	return err
 }
 
-// AsGoodsCard returns the union data inside the Card as a GoodsCard
-func (t Card) AsGoodsCard() (GoodsCard, error) {
-	var body GoodsCard
+// AsMasterGoodsCard returns the union data inside the Card as a MasterGoodsCard
+func (t Card) AsMasterGoodsCard() (MasterGoodsCard, error) {
+	var body MasterGoodsCard
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromGoodsCard overwrites any union data inside the Card as the provided GoodsCard
-func (t *Card) FromGoodsCard(v GoodsCard) error {
+// FromMasterGoodsCard overwrites any union data inside the Card as the provided MasterGoodsCard
+func (t *Card) FromMasterGoodsCard(v MasterGoodsCard) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeGoodsCard performs a merge with any union data inside the Card, using the provided GoodsCard
-func (t *Card) MergeGoodsCard(v GoodsCard) error {
+// MergeMasterGoodsCard performs a merge with any union data inside the Card, using the provided MasterGoodsCard
+func (t *Card) MergeMasterGoodsCard(v MasterGoodsCard) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -341,10 +387,131 @@ func (t *Card) MergeGoodsCard(v GoodsCard) error {
 
 func (t Card) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	object := make(map[string]json.RawMessage)
+	if t.union != nil {
+		err = json.Unmarshal(b, &object)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	object["id"], err = json.Marshal(t.Id)
+	if err != nil {
+		return nil, fmt.Errorf("error marshaling 'id': %w", err)
+	}
+
+	b, err = json.Marshal(object)
 	return b, err
 }
 
 func (t *Card) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	if err != nil {
+		return err
+	}
+	object := make(map[string]json.RawMessage)
+	err = json.Unmarshal(b, &object)
+	if err != nil {
+		return err
+	}
+
+	if raw, found := object["id"]; found {
+		err = json.Unmarshal(raw, &t.Id)
+		if err != nil {
+			return fmt.Errorf("error reading 'id': %w", err)
+		}
+	}
+
+	return err
+}
+
+// AsMasterMonsterCard returns the union data inside the MasterCard as a MasterMonsterCard
+func (t MasterCard) AsMasterMonsterCard() (MasterMonsterCard, error) {
+	var body MasterMonsterCard
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMasterMonsterCard overwrites any union data inside the MasterCard as the provided MasterMonsterCard
+func (t *MasterCard) FromMasterMonsterCard(v MasterMonsterCard) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMasterMonsterCard performs a merge with any union data inside the MasterCard, using the provided MasterMonsterCard
+func (t *MasterCard) MergeMasterMonsterCard(v MasterMonsterCard) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsMasterSupporterCard returns the union data inside the MasterCard as a MasterSupporterCard
+func (t MasterCard) AsMasterSupporterCard() (MasterSupporterCard, error) {
+	var body MasterSupporterCard
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMasterSupporterCard overwrites any union data inside the MasterCard as the provided MasterSupporterCard
+func (t *MasterCard) FromMasterSupporterCard(v MasterSupporterCard) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMasterSupporterCard performs a merge with any union data inside the MasterCard, using the provided MasterSupporterCard
+func (t *MasterCard) MergeMasterSupporterCard(v MasterSupporterCard) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsMasterGoodsCard returns the union data inside the MasterCard as a MasterGoodsCard
+func (t MasterCard) AsMasterGoodsCard() (MasterGoodsCard, error) {
+	var body MasterGoodsCard
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMasterGoodsCard overwrites any union data inside the MasterCard as the provided MasterGoodsCard
+func (t *MasterCard) FromMasterGoodsCard(v MasterGoodsCard) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMasterGoodsCard performs a merge with any union data inside the MasterCard, using the provided MasterGoodsCard
+func (t *MasterCard) MergeMasterGoodsCard(v MasterGoodsCard) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t MasterCard) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *MasterCard) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }

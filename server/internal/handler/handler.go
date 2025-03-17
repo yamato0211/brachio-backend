@@ -3,34 +3,42 @@ package handler
 type Handler struct {
 	// Card
 	GetMyCardListHandler
-	GetMyCardHandler
 
 	// Deck
-	GetMyDeckListHandler
-	PostMyDeckHandler
-	GetMyDeckHandler
-	PutMyDeckHandler
+	GetDeckListHandler
+	PostDeckHandler
+	GetDeckHandler
+	PutDeckHandler
+	DeleteDeckHandler
 
 	// Item
 	GetMyItemListHandler
 
 	// Gacha
-	GetPackPowerHandler
+	GetGachaPowerHandler
 	GetGachaListHandler
 	PostGachaDrawHandler
+
+	// Game
+	GetWebSocketHandler
+
+	// HealthCheck
+	GetHealthCheckHandler
 }
 
 func New() *Handler {
 	return &Handler{
-		GetMyCardListHandler: GetMyCardListHandler{},
-		GetMyCardHandler:     GetMyCardHandler{},
-		GetMyDeckListHandler: GetMyDeckListHandler{},
-		PostMyDeckHandler:    PostMyDeckHandler{},
-		GetMyDeckHandler:     GetMyDeckHandler{},
-		PutMyDeckHandler:     PutMyDeckHandler{},
-		GetMyItemListHandler: GetMyItemListHandler{},
-		GetPackPowerHandler:  GetPackPowerHandler{},
-		GetGachaListHandler:  GetGachaListHandler{},
-		PostGachaDrawHandler: PostGachaDrawHandler{},
+		GetMyCardListHandler:  GetMyCardListHandler{},
+		GetDeckListHandler:    GetDeckListHandler{},
+		PostDeckHandler:       PostDeckHandler{},
+		GetDeckHandler:        GetDeckHandler{},
+		PutDeckHandler:        PutDeckHandler{},
+		DeleteDeckHandler:     DeleteDeckHandler{},
+		GetMyItemListHandler:  GetMyItemListHandler{},
+		GetGachaPowerHandler:  GetGachaPowerHandler{},
+		GetGachaListHandler:   GetGachaListHandler{},
+		PostGachaDrawHandler:  PostGachaDrawHandler{},
+		GetWebSocketHandler:   GetWebSocketHandler{},
+		GetHealthCheckHandler: GetHealthCheckHandler{},
 	}
 }

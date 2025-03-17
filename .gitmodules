@@ -1,0 +1,3 @@
+[submodule "brachio-api-spec"]
+	path = brachio-api-spec
+	url = git@github.com:K-Kizuku/brachio-api-spec.git

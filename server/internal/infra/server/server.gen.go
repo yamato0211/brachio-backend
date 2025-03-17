@@ -16,41 +16,46 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/labstack/echo/v4"
 	"github.com/oapi-codegen/runtime"
-	. "github.com/yamato0211/brachio-backend/internal/handler/schema"
 )
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-	// 所持カード一覧取得
+	// health check
+	// (GET /)
+	HealthCheck(ctx echo.Context) error
+	// 取得済みカード一覧の取得
 	// (GET /cards)
-	GetMyCardList(ctx echo.Context) error
-	// カード取得
-	// (GET /cards/{cardNumber})
-	GetMyCard(ctx echo.Context, cardNumber string) error
-	// デッキ一覧取得
+	GetCards(ctx echo.Context) error
+	// 自身のデッキリストを取得
 	// (GET /decks)
-	GetMyDeckList(ctx echo.Context) error
-	// デッキ作成
+	GetDeckList(ctx echo.Context) error
+	// 空のデッキを作成
 	// (POST /decks)
-	PostMyDeck(ctx echo.Context) error
-	// デッキ取得
+	CreateNewDeck(ctx echo.Context) error
+	// デッキを削除
+	// (DELETE /decks/{deckId})
+	DeleteDeck(ctx echo.Context, deckId string) error
+	// デッキを取得
 	// (GET /decks/{deckId})
-	GetMyDeck(ctx echo.Context, deckId string) error
-	// デッキ編集
+	GetDeck(ctx echo.Context, deckId string) error
+	// デッキを更新
 	// (PUT /decks/{deckId})
-	PutMyDeck(ctx echo.Context, deckId string) error
+	UpdateDeck(ctx echo.Context, deckId string) error
 	// ガチャ一覧取得
 	// (GET /gachas)
 	GetGachaList(ctx echo.Context) error
+	// ガチャの強さ取得
+	// (GET /gachas/power)
+	GetGachaPower(ctx echo.Context) error
 	// ガチャを引く
 	// (POST /gachas/{gachaId})
-	PostGachaDraw(ctx echo.Context, gachaId string) error
+	DrawGacha(ctx echo.Context, gachaId string) error
 	// 所持アイテム一覧取得
 	// (GET /items)
 	GetMyItemList(ctx echo.Context) error
-	// パックパワーの溜まり状況取得
-	// (GET /pack-power)
-	GetPackPower(ctx echo.Context) error
+	// Websocket接続
+	// (GET /ws)
+	Ws(ctx echo.Context) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -58,59 +63,44 @@ type ServerInterfaceWrapper struct {
 	Handler ServerInterface
 }
 
-// GetMyCardList converts echo context to params.
-func (w *ServerInterfaceWrapper) GetMyCardList(ctx echo.Context) error {
+// HealthCheck converts echo context to params.
+func (w *ServerInterfaceWrapper) HealthCheck(ctx echo.Context) error {
 	var err error
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetMyCardList(ctx)
+	err = w.Handler.HealthCheck(ctx)
 	return err
 }
 
-// GetMyCard converts echo context to params.
-func (w *ServerInterfaceWrapper) GetMyCard(ctx echo.Context) error {
+// GetCards converts echo context to params.
+func (w *ServerInterfaceWrapper) GetCards(ctx echo.Context) error {
 	var err error
-	// ------------- Path parameter "cardNumber" -------------
-	var cardNumber string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "cardNumber", ctx.Param("cardNumber"), &cardNumber, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter cardNumber: %s", err))
-	}
-
-	ctx.Set(BearerAuthScopes, []string{})
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetMyCard(ctx, cardNumber)
+	err = w.Handler.GetCards(ctx)
 	return err
 }
 
-// GetMyDeckList converts echo context to params.
-func (w *ServerInterfaceWrapper) GetMyDeckList(ctx echo.Context) error {
+// GetDeckList converts echo context to params.
+func (w *ServerInterfaceWrapper) GetDeckList(ctx echo.Context) error {
 	var err error
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetMyDeckList(ctx)
+	err = w.Handler.GetDeckList(ctx)
 	return err
 }
 
-// PostMyDeck converts echo context to params.
-func (w *ServerInterfaceWrapper) PostMyDeck(ctx echo.Context) error {
+// CreateNewDeck converts echo context to params.
+func (w *ServerInterfaceWrapper) CreateNewDeck(ctx echo.Context) error {
 	var err error
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.PostMyDeck(ctx)
+	err = w.Handler.CreateNewDeck(ctx)
 	return err
 }
 
-// GetMyDeck converts echo context to params.
-func (w *ServerInterfaceWrapper) GetMyDeck(ctx echo.Context) error {
+// DeleteDeck converts echo context to params.
+func (w *ServerInterfaceWrapper) DeleteDeck(ctx echo.Context) error {
 	var err error
 	// ------------- Path parameter "deckId" -------------
 	var deckId string
@@ -120,15 +110,13 @@ func (w *ServerInterfaceWrapper) GetMyDeck(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter deckId: %s", err))
 	}
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetMyDeck(ctx, deckId)
+	err = w.Handler.DeleteDeck(ctx, deckId)
 	return err
 }
 
-// PutMyDeck converts echo context to params.
-func (w *ServerInterfaceWrapper) PutMyDeck(ctx echo.Context) error {
+// GetDeck converts echo context to params.
+func (w *ServerInterfaceWrapper) GetDeck(ctx echo.Context) error {
 	var err error
 	// ------------- Path parameter "deckId" -------------
 	var deckId string
@@ -138,10 +126,24 @@ func (w *ServerInterfaceWrapper) PutMyDeck(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter deckId: %s", err))
 	}
 
-	ctx.Set(BearerAuthScopes, []string{})
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetDeck(ctx, deckId)
+	return err
+}
+
+// UpdateDeck converts echo context to params.
+func (w *ServerInterfaceWrapper) UpdateDeck(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "deckId" -------------
+	var deckId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "deckId", ctx.Param("deckId"), &deckId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter deckId: %s", err))
+	}
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.PutMyDeck(ctx, deckId)
+	err = w.Handler.UpdateDeck(ctx, deckId)
 	return err
 }
 
@@ -149,15 +151,22 @@ func (w *ServerInterfaceWrapper) PutMyDeck(ctx echo.Context) error {
 func (w *ServerInterfaceWrapper) GetGachaList(ctx echo.Context) error {
 	var err error
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.GetGachaList(ctx)
 	return err
 }
 
-// PostGachaDraw converts echo context to params.
-func (w *ServerInterfaceWrapper) PostGachaDraw(ctx echo.Context) error {
+// GetGachaPower converts echo context to params.
+func (w *ServerInterfaceWrapper) GetGachaPower(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetGachaPower(ctx)
+	return err
+}
+
+// DrawGacha converts echo context to params.
+func (w *ServerInterfaceWrapper) DrawGacha(ctx echo.Context) error {
 	var err error
 	// ------------- Path parameter "gachaId" -------------
 	var gachaId string
@@ -167,10 +176,8 @@ func (w *ServerInterfaceWrapper) PostGachaDraw(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter gachaId: %s", err))
 	}
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.PostGachaDraw(ctx, gachaId)
+	err = w.Handler.DrawGacha(ctx, gachaId)
 	return err
 }
 
@@ -178,21 +185,17 @@ func (w *ServerInterfaceWrapper) PostGachaDraw(ctx echo.Context) error {
 func (w *ServerInterfaceWrapper) GetMyItemList(ctx echo.Context) error {
 	var err error
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.GetMyItemList(ctx)
 	return err
 }
 
-// GetPackPower converts echo context to params.
-func (w *ServerInterfaceWrapper) GetPackPower(ctx echo.Context) error {
+// Ws converts echo context to params.
+func (w *ServerInterfaceWrapper) Ws(ctx echo.Context) error {
 	var err error
 
-	ctx.Set(BearerAuthScopes, []string{})
-
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetPackPower(ctx)
+	err = w.Handler.Ws(ctx)
 	return err
 }
 
@@ -224,51 +227,62 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 		Handler: si,
 	}
 
-	router.GET(baseURL+"/cards", wrapper.GetMyCardList)
-	router.GET(baseURL+"/cards/:cardNumber", wrapper.GetMyCard)
-	router.GET(baseURL+"/decks", wrapper.GetMyDeckList)
-	router.POST(baseURL+"/decks", wrapper.PostMyDeck)
-	router.GET(baseURL+"/decks/:deckId", wrapper.GetMyDeck)
-	router.PUT(baseURL+"/decks/:deckId", wrapper.PutMyDeck)
+	router.GET(baseURL+"/", wrapper.HealthCheck)
+	router.GET(baseURL+"/cards", wrapper.GetCards)
+	router.GET(baseURL+"/decks", wrapper.GetDeckList)
+	router.POST(baseURL+"/decks", wrapper.CreateNewDeck)
+	router.DELETE(baseURL+"/decks/:deckId", wrapper.DeleteDeck)
+	router.GET(baseURL+"/decks/:deckId", wrapper.GetDeck)
+	router.PUT(baseURL+"/decks/:deckId", wrapper.UpdateDeck)
 	router.GET(baseURL+"/gachas", wrapper.GetGachaList)
-	router.POST(baseURL+"/gachas/:gachaId", wrapper.PostGachaDraw)
+	router.GET(baseURL+"/gachas/power", wrapper.GetGachaPower)
+	router.POST(baseURL+"/gachas/:gachaId", wrapper.DrawGacha)
 	router.GET(baseURL+"/items", wrapper.GetMyItemList)
-	router.GET(baseURL+"/pack-power", wrapper.GetPackPower)
+	router.GET(baseURL+"/ws", wrapper.Ws)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

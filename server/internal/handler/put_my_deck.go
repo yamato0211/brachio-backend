@@ -2,8 +2,8 @@ package handler
 
 import "github.com/labstack/echo/v4"
 
-type PutMyDeckHandler struct{}
+type PutDeckHandler struct{}
 
-func (h *PutMyDeckHandler) PutMyDeck(c echo.Context, deckId string) error {
+func (h *PutDeckHandler) UpdateDeck(c echo.Context, deckId string) error {
 	return nil
 }

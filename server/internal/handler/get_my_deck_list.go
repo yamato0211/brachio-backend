@@ -2,8 +2,8 @@ package handler
 
 import "github.com/labstack/echo/v4"
 
-type GetMyDeckListHandler struct{}
+type GetDeckListHandler struct{}
 
-func (h *GetMyDeckListHandler) GetMyDeckList(c echo.Context) error {
+func (h *GetDeckListHandler) GetDeckList(c echo.Context) error {
 	return nil
 }

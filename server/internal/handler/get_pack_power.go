@@ -2,8 +2,8 @@ package handler
 
 import "github.com/labstack/echo/v4"
 
-type GetPackPowerHandler struct{}
+type GetGachaPowerHandler struct{}
 
-func (h *GetPackPowerHandler) GetPackPower(c echo.Context) error {
+func (h *GetGachaPowerHandler) GetGachaPower(c echo.Context) error {
 	return nil
 }

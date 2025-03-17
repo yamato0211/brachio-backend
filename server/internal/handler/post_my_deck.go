@@ -2,8 +2,8 @@ package handler
 
 import "github.com/labstack/echo/v4"
 
-type PostMyDeckHandler struct{}
+type PostDeckHandler struct{}
 
-func (h *PostMyDeckHandler) PostMyDeck(c echo.Context) error {
+func (h *PostDeckHandler) CreateNewDeck(c echo.Context) error {
 	return nil
 }

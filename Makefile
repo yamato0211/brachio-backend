@@ -8,11 +8,11 @@ lint-fix:
 
 .PHONY: docker_up
 docker_up:
-	docker-compose up -d --build
+	docker compose up -d --build
 
 .PHONY: docker_down
 docker_down:
-	docker-compose down
+	docker compose down
 
 gen:
 	cd server && go generate ./...
