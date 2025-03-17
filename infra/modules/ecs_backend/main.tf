@@ -376,17 +376,18 @@ resource "aws_iam_role_policy_attachment" "github_actions" {
 }
 
 resource "aws_dynamodb_table" "card_table" {
-  name     = "Cards"
-  hash_key = "CardId"
+  name = "MasterCards"
+  hash_key = "MasterCardId"
 
   billing_mode = "PAY_PER_REQUEST"
 
   attribute {
-    name = "CardId"
+    name = "MasterCardId"
     type = "S"
   }
+
   tags = {
-    Name        = "${local.prefix}-dynamodb-card-table"
+    Name        = "${local.prefix}-dynamodb-master-card-table"
     Environment = var.common.env
   }
 }
@@ -408,6 +409,51 @@ resource "aws_dynamodb_table" "user_table" {
   }
 }
 
+resource "aws_dynamodb_table" "item_table" {
+  name = "MasterItems"
+  hash_key = "MasterItemId"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "MasterItemId"
+    type = "S"
+  }
+
+  tags = {
+    Name        = "${local.prefix}-dynamodb-master-item-table"
+    Environment = var.common.env
+  }
+}
+
+resource "aws_dynamodb_table" "deck_table" {
+  name = "Decks"
+  hash_key = "DeckId"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "DeckId"
+    type = "S"
+  }
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name = "UserIdIndex"
+    hash_key = "UserId"
+    projection_type = "ALL"
+  }
+
+  tags = {
+    Name        = "${local.prefix}-dynamodb-deck-table"
+    Environment = var.common.env
+  }
+}
+
 resource "aws_iam_policy" "dynamodb_policy" {
   name = "${local.prefix}-dynamodb-policy"
   policy = jsonencode({
@@ -419,7 +465,9 @@ resource "aws_iam_policy" "dynamodb_policy" {
         Action = "dynamodb:*",
         Resource = [
           aws_dynamodb_table.card_table.arn,
-          aws_dynamodb_table.user_table.arn
+          aws_dynamodb_table.user_table.arn,
+          aws_dynamodb_table.item_table.arn,
+          aws_dynamodb_table.deck_table.arn
         ]
       }
     ]

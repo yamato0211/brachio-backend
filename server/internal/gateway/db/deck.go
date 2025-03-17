@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	deckTableName = "Decks"
-	deckHashKey   = "DeckId"
-	deckIndexKey  = "UserId"
+	deckTableName   = "Decks"
+	deckHashKey     = "DeckId"
+	deckIndexKey    = "UserId"
+	deckUserIdIndex = "UserIdIndex"
 )
 
 type deckRepository struct {
@@ -28,7 +29,7 @@ func (d *deckRepository) Find(ctx context.Context, deckID model.DeckID) (*model.
 
 func (d *deckRepository) FindAll(ctx context.Context, userID model.UserID) ([]*model.Deck, error) {
 	var data []*model.Deck
-	if err := d.db.Table(deckTableName).Get(deckIndexKey, userID).All(ctx, &data); err != nil {
+	if err := d.db.Table(deckTableName).Get(deckIndexKey, userID).Index(deckUserIdIndex).All(ctx, &data); err != nil {
 		return nil, err
 	}
 	return data, nil

@@ -1,9 +1,10 @@
 {
-  "Users": [
+  "Cards": [
     {
       "PutRequest": {
         "Item": {
           "CardId": { "S": "hogehoge1" },
+          "Rearity": { "N": "1" },
           "Name": { "S": "hoge" },
           "Age": { "N": "20" },
           "Address": {
@@ -20,6 +21,7 @@
         "Item": {
           "CardId": { "S": "hogehoge2" },
           "Name": { "S": "hoge" },
+          "Rearity": { "N": "1" },
           "Age": { "N": "20" },
           "Address": {
             "M": {

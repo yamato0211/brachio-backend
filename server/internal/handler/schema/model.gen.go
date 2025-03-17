@@ -12,16 +12,12 @@ import (
 
 // Defines values for Element.
 const (
-	Darkness  Element = "darkness"
-	Dragon    Element = "dragon"
-	Fighting  Element = "fighting"
-	Fire      Element = "fire"
-	Grass     Element = "grass"
-	Lightning Element = "lightning"
-	Metal     Element = "metal"
-	Normal    Element = "normal"
-	Psychic   Element = "psychic"
-	Water     Element = "water"
+	Alchohol   Element = "alchohol"
+	Knowledge  Element = "knowledge"
+	Money      Element = "money"
+	Muscle     Element = "muscle"
+	Null       Element = "null"
+	Popularity Element = "popularity"
 )
 
 // Defines values for MasterCardType.
@@ -302,8 +298,23 @@ type Skill struct {
 // SkillDamageOption x or +
 type SkillDamageOption string
 
+// UpdateDeck デッキ更新リクエスト
+type UpdateDeck struct {
+	Color    Element   `json:"color"`
+	Energies []Element `json:"energies"`
+
+	// MasterCardIds マスターカードID
+	MasterCardIds []string `json:"masterCardIds"`
+
+	// Name デッキ名
+	Name string `json:"name"`
+
+	// ThumbnailCardId サムネイルカードID
+	ThumbnailCardId string `json:"thumbnailCardId"`
+}
+
 // UpdateDeckJSONRequestBody defines body for UpdateDeck for application/json ContentType.
-type UpdateDeckJSONRequestBody = Deck
+type UpdateDeckJSONRequestBody = UpdateDeck
 
 // DrawGachaJSONRequestBody defines body for DrawGacha for application/json ContentType.
 type DrawGachaJSONRequestBody = DrawGachaRequest

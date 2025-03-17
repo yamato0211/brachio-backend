@@ -10,7 +10,7 @@ import (
 
 const (
 	masterCardsTableName = "MasterCards"
-	masterCardsHashKey   = "MasterCardID"
+	masterCardsHashKey   = "MasterCardId"
 )
 
 type masterCardRepository struct {
