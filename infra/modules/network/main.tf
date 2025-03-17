@@ -24,6 +24,38 @@ resource "aws_subnet" "public_ingress" {
   }
 }
 
+resource "aws_subnet" "private" {
+  for_each          = { for i, s in var.network.private_subnets : i => s }
+  vpc_id            = aws_vpc.main.id
+  availability_zone = "${var.common.region}${each.value.az}"
+  cidr_block        = each.value.cidr
+  tags = {
+    Name = "${local.prefix}-subnet-private-1${each.value.az}"
+  }
+}
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name = "${local.prefix}-rtb-private"
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  for_each      = aws_subnet.private
+  subnet_id     = each.value.id
+  route_table_id = aws_route_table.private.id
+}
+
+
+# VPC Endpoint for DynamoDB
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.common.region}.dynamodb"
+  route_table_ids   = [aws_route_table.private.id]
+  vpc_endpoint_type = "Gateway"
+}
+
+
 # Internet Gateway
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id

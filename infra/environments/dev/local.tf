@@ -21,6 +21,16 @@ locals {
         cidr = "172.16.1.0/24"
       }
     ]
+    private_subnets = [
+      {
+          az = "a"
+          cidr = "172.16.10.0/24"
+      },
+      {
+          az = "c"
+          cidr = "172.16.11.0/24"
+      }
+    ]
   }
 
   domain = "kurichi.dev"

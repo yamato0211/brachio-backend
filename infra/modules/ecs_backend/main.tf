@@ -390,3 +390,66 @@ resource "aws_iam_role_policy_attachment" "github_actions" {
   role       = aws_iam_role.github_actions.name
   policy_arn = each.value
 }
+
+resource "aws_dynamodb_table" "card_table" {
+  name         = "Cards"
+  hash_key     = "CardId"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "CardId"
+    type = "S"
+  }
+  tags = {
+    Name = "${local.prefix}-dynamodb-card-table"
+    Environment = var.common.env
+  }
+}
+
+resource "aws_dynamodb_table" "user_table" {
+  name = "Users"
+  hash_key = "UserId"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  tags = {
+    Name = "${local.prefix}-dynamodb-user-table"
+    Environment = var.common.env
+  }
+}
+
+resource "aws_iam_policy" "dynamodb_policy" {
+  name   = "${local.prefix}-dynamodb-policy"
+  policy = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [
+      {
+        Sid      = "DynamoDBAccess",
+        Effect   = "Allow",
+        Action   = [
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
+        ],
+        Resource = [
+          aws_dynamodb_table.card_table.arn,
+          aws_dynamodb_table.user_table.arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "dynamodb_policy_attachment" {
+  role       = aws_iam_role.task_role.name
+  policy_arn = aws_iam_policy.dynamodb_policy.arn
+}
