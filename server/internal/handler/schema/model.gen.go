@@ -216,6 +216,7 @@ type MasterMonsterCard struct {
 	// Ability 特性
 	Ability  *Ability       `json:"ability,omitempty"`
 	CardType MasterCardType `json:"cardType"`
+	Element  Element        `json:"element"`
 
 	// EvolvesFrom 進化元
 	EvolvesFrom *string `json:"evolvesFrom,omitempty"`
