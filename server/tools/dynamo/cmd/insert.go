@@ -990,7 +990,7 @@ var insertCmd = &cobra.Command{
 			},
 
 			{
-				MasterCardID: model.NewMasterCardID("protain"),
+				MasterCardID: model.NewMasterCardID("protein"),
 				CardType:     model.CardTypeGoods,
 				Name:         "プロテイン",
 				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ラムモン1匹につける",
