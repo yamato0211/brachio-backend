@@ -1,0 +1,34 @@
+{
+  "Users": [
+    {
+      "PutRequest": {
+        "Item": {
+          "CardId": { "S": "hogehoge1" },
+          "Name": { "S": "hoge" },
+          "Age": { "N": "20" },
+          "Address": {
+            "M": {
+              "Country": { "S": "Japan" },
+              "City": { "S": "Tokyo" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "CardId": { "S": "hogehoge2" },
+          "Name": { "S": "hoge" },
+          "Age": { "N": "20" },
+          "Address": {
+            "M": {
+              "Country": { "S": "Japan" },
+              "City": { "S": "Tokyo" }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
