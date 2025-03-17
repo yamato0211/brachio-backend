@@ -14,5 +14,5 @@ docker_up:
 docker_down:
 	docker-compose down
 
-gen/openapi:
-	cd server && go tool oapi-codegen --o internal/handler/openapi/openapi.gen.go ../openapi/openapi.yaml
+gen:
+	cd server && go generate ./...

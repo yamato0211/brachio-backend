@@ -12,11 +12,16 @@ var (
 )
 
 type Config struct {
+	Server *ServerConfig
 	Dynamo *DynamoConfig
 }
 
+type ServerConfig struct {
+	Port int `envconfig:"PORT" default:"8080"`
+}
+
 type DynamoConfig struct {
-	Region   string `envconfig:"REGION" default:"us-east-1"`
+	Region   string `envconfig:"REGION" default:"ap-northeast-1"`
 	Endpoint string `envconfig:"DYNAMO_ENDPOINT" default:"http://localhost:8000"`
 }
 

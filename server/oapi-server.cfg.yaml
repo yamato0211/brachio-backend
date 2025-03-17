@@ -1,0 +1,8 @@
+package: server
+output: internal/infra/server/server.gen.go
+generate:
+  echo-server: true
+  embedded-spec: true
+additional-imports:
+  - package: github.com/yamato0211/brachio-backend/internal/handler/schema
+    alias: .
