@@ -53,7 +53,7 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input MatchingInput) e
 	}
 
 	// ユーザーのデッキを取得する
-	deck, err := i.DeckRepository.Find(ctx, userID, deckID)
+	deck, err := i.DeckRepository.Find(ctx, deckID)
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input MatchingInput) e
 				BaseDeck: deck,
 			}
 
-			if err := i.GameStateRepository.Save(ctx, state); err != nil {
+			if err := i.GameStateRepository.Store(ctx, state); err != nil {
 				return err
 			}
 

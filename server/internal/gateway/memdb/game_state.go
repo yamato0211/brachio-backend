@@ -40,7 +40,7 @@ func (r *GameStateRepository) Find(ctx context.Context, id model.RoomID) (*model
 	return state, nil
 }
 
-func (r *GameStateRepository) Save(ctx context.Context, state *model.GameState) error {
+func (r *GameStateRepository) Store(ctx context.Context, state *model.GameState) error {
 	if !r.isLocked(ctx) {
 		r.lock(state.RoomID)
 		defer r.unlock(state.RoomID)

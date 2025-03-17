@@ -7,5 +7,13 @@ func ParseDeckID(id string) (DeckID, error) {
 }
 
 type Deck struct {
-	ID DeckID
+	DeckID          DeckID         `dynamo:"DeckId,hash"`
+	UserID          UserID         `dynamo:"UserId,index"`
+	Name            string         `dynamo:"Name"`
+	ThumbnailCardID MasterCardID   `dynamo:"ThumbnailCardId"`
+	ThumbnailCard   *MasterCard    `dynamo:"-"`
+	Color           MonsterType    `dynamo:"Color"`
+	Energies        []MonsterType  `dynamo:"Energies"`
+	MasterCardIDs   []MasterCardID `dynamo:"MasterCardIDs"`
+	MasterCards     []*MasterCard  `dynamo:"-"`
 }

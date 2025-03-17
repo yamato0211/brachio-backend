@@ -1,7 +1,7 @@
 {
   "UserId": { "S": "hogehoge" },
-  "Name": { "S": "hoge" },
-  "Age": { "N": "20" },
+  "Name": { "S": "hogefuga" },
+  "Age": { "N": "21" },
   "Address": {
     "M": {
       "Country": { "S": "Japan" },
