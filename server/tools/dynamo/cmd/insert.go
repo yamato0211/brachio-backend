@@ -36,7 +36,7 @@ var insertCmd = &cobra.Command{
 
 		var users []model.MasterCard = []model.MasterCard{
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("kizuku"),
 				Name:         "Kizuku",
 				CardType:     model.CardTypeMonster,
 				Rarity:       8,
@@ -65,7 +65,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("kurichi"),
 				Name:         "くりち",
 				CardType:     model.CardTypeMonster,
 				Rarity:       8,
@@ -98,7 +98,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("yamato"),
 				Name:         "ヤマト",
 				Description: `
 					筋肉.
@@ -128,7 +128,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("tosaken-ex"),
 				Name:         "土佐犬",
 				Rarity:       1,
 				CardType:     model.CardTypeMonster,
@@ -158,7 +158,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("tosaken"),
 				Name:         "土佐犬",
 				Rarity:       1,
 				CardType:     model.CardTypeMonster,
@@ -178,7 +178,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("dolly"),
 				Name:         "ドリー",
 				Rarity:       7,
 				HP:           160,
@@ -204,7 +204,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("newbie-engineer"),
 				Name:         "駆け出しエンジニア",
 				Description:  "駆け出しのエンジニア.\n何者にでもなれる.",
 				Rarity:       1,
@@ -221,7 +221,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("security-engineer"),
 				Name:         "セキュリティエンジニア",
 				Description:  "滅多に現れない\n",
 				Rarity:       3,
@@ -252,7 +252,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("frontend-engineer"),
 				Name:         "フロントエンドエンジニア",
 				Description:  "Safariが嫌い\n",
 				Rarity:       3,
@@ -283,7 +283,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("designer"),
 				Name:         "デザイナー",
 				Description:  "CSSはフロントエンドの仕事\n",
 				Rarity:       3,
@@ -314,7 +314,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("backend-engineer"),
 				Name:         "バックエンドエンジニア",
 				Description:  "動的型付け言語が嫌い\n",
 				Rarity:       3,
@@ -346,7 +346,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("sre"),
 				Name:         "SRE",
 				Description:  "チームメンバーの開発体験向上\nのことだけを考えている。",
 				Rarity:       3,
@@ -376,7 +376,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("full-stack-engineer"),
 				Name:         "フルスタックエンジニア",
 				Description:  "全ての領域を知る天才。",
 				Rarity:       3,
@@ -401,7 +401,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("neet"),
 				Name:         "ニート",
 				Description:  "全てを諦めたひと。",
 				Rarity:       2,
@@ -421,7 +421,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("pachikasu"),
 				Name:         "パチカス",
 				CardType:     model.CardTypeMonster,
 				Rarity:       2,
@@ -443,7 +443,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("yanikasu"),
 				Name:         "ヤニカス",
 				CardType:     model.CardTypeMonster,
 				Rarity:       3,
@@ -469,7 +469,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("sakekasu"),
 				Name:         "酒カスエンジニア",
 				CardType:     model.CardTypeMonster,
 				Rarity:       4,
@@ -496,7 +496,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("student"),
 				Name:         "勤勉学生",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -515,7 +515,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("jtc"),
 				Name:         "JTC中堅社員",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
@@ -535,7 +535,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("venture-president"),
 				Name:         "ベンチャー社長",
 				Description:  "これまで真面目に働いてきたが、後悔したくないという思いから大きく挑戦した。",
 				Rarity:       4,
@@ -560,7 +560,7 @@ var insertCmd = &cobra.Command{
 			},
 
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("garigari"),
 				Name:         "ガリガリエンジニア",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -579,7 +579,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("muchimuchi"),
 				Name:         "ムチムチエンジニア",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
@@ -599,7 +599,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("mukimuki"),
 				Name:         "ムキムキエンジニア",
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
@@ -624,7 +624,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("multi-business"),
 				Name:         "マルチ商法",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -645,7 +645,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("info-product"),
 				Name:         "情報商材屋",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
@@ -669,7 +669,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("high-tax-payer"),
 				Name:         "高額納税者",
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
@@ -700,7 +700,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("startup-cto"),
 				Name:         "スタートアップCTO",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -720,7 +720,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("venture-cto"),
 				Name:         "ベンチャーCTO",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
@@ -745,7 +745,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("big-company-cto"),
 				Name:         "大企業CTO",
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
@@ -772,7 +772,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("freelance-engineer"),
 				Name:         "フリーランスエンジニア",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -793,7 +793,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("liberal-arts-engineer"),
 				Name:         "文系エンジニア",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
@@ -815,7 +815,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("ses-engineer"),
 				Name:         "SESエンジニア",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -835,7 +835,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("zinzinia"),
 				Name:         "ジンジニア",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
@@ -858,7 +858,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("gopher"),
 				Name:         "Gopher",
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
@@ -883,7 +883,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("rustacean"),
 				Name:         "Rustacean",
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
@@ -908,7 +908,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("typescripter"),
 				Name:         "TypeScripter",
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
@@ -933,7 +933,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("swifter"),
 				Name:         "Swifter",
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
@@ -958,7 +958,7 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("pythonista"),
 				Name:         "Pythonista",
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
@@ -983,123 +983,123 @@ var insertCmd = &cobra.Command{
 				},
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("oreilly"),
 				CardType:     model.CardTypeGoods,
 				Name:         "オライリー本",
 				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
 			},
 
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("protain"),
 				CardType:     model.CardTypeGoods,
 				Name:         "プロテイン",
 				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ラムモン1匹につける",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("credit-card"),
 				CardType:     model.CardTypeGoods,
 				Name:         "クレカ",
 				Text:         "自分の[金]ラムモン1匹のHPを50回復",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("hackz-parker"),
 				CardType:     model.CardTypeGoods,
 				Name:         "ハックツパーカー",
 				Text:         "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果や特性によるダメージを受けない。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("sake-bottle"),
 				CardType:     model.CardTypeGoods,
 				Name:         "一升瓶",
 				Text:         "自分の[酒]ラムモンを1匹選ぶ。ウラが出るまでコインを投げ、オモテの数ぶんの[酒]エネルギーを自分のエネルギーゾーンから出し、そのラムモンにつける。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("energy-drink"),
 				CardType:     model.CardTypeGoods,
 				Name:         "エナジードリンク",
 				Text:         "自分のラムモン1匹のHPをすべて回復し、この番、そのラムモンが使うワザの、相手のバトルポケモンへのダメージを+30する。次の自分の番の開始時、そのラムモンのHPは0になる。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("starbucks"),
 				CardType:     model.CardTypeGoods,
 				Name:         "スタバ",
 				Text:         "自分のラムモン1匹のHPを20回復",
 			},
 			{
 
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("gopher-doll"),
 				CardType:     model.CardTypeGoods,
 				Name:         "Gopherくん人形",
 				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、1個少なくする。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("hot-reload"),
 				CardType:     model.CardTypeGoods,
 				Name:         "ホットリロード",
 				Text:         "自分の手札をすべて山札に戻し、山札から同じ枚数のカードを引く。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("recruitment-agency"),
 				CardType:     model.CardTypeGoods,
 				Name:         "転職エージェント",
 				Text:         "自分の山札からたねラムモン以外のラムモンをランダムに1枚、手札に加える。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("programming-school"),
 				CardType:     model.CardTypeGoods,
 				Name:         "プログラミングスクール",
 				Text:         "自分の山札からたねラムモンをランダムに1枚、手札に加える。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("lan-cable"),
 				CardType:     model.CardTypeGoods,
 				Name:         "LANケーブル",
 				Text:         "自分のラムモン2匹を選び、そのラムモンについているエネルギーをすべて入れ替える。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("hhkb"),
 				CardType:     model.CardTypeGoods,
 				Name:         "HHKB",
 				Text:         "自分の山札から「駆け出しエンジニア」の進化先のラムモンをランダムに1枚、手札に加える。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("macbook"),
 				CardType:     model.CardTypeGoods,
 				Name:         "MacBook",
 				Text:         "「駆け出しエンジニア」とその進化先のラムモンが使うワザの、相手のバトルポケモンへのダメージを+20する",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("chat-gpt"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "ChatGPT",
 				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、2個少なくする。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("spaghetti-code"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "スパゲッティコード",
 				Text:         "相手のバトルラムモンのランダムなエネルギー1個を、ランダムなエネルギーに変える。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("flaming-project"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "炎上プロジェクト",
 				Text:         "お互いのバトルラムモンについているエネルギーをすべてトラッシュする。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("security-soft"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "セキュリティソフト",
 				Text:         "相手の手札からランダムに1枚トラッシュ",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("strict-mode"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "React.StrictMode",
 				Text:         "自分の山札を2枚引く。",
 			},
 			{
-				MasterCardID: model.NewMasterCardID(),
+				MasterCardID: model.NewMasterCardID("firewall"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "ファイヤーウォール",
 				Text:         "次の相手の番、自分のラムモン全員が、相手のラムモンから受けるダメージを-20する。",

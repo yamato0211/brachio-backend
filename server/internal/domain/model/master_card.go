@@ -1,11 +1,9 @@
 package model
 
-import "github.com/google/uuid"
-
 type MasterCardID string
 
-func NewMasterCardID() MasterCardID {
-	return MasterCardID(uuid.New().String())
+func NewMasterCardID(s string) MasterCardID {
+	return MasterCardID(s)
 }
 
 func ParseMasterCardID(s string) (MasterCardID, error) {
