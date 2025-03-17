@@ -17,7 +17,7 @@ func (h *GetHealthCheckHandler) HealthCheck(c echo.Context) error {
 	  <title>Health Check</title>
 	  <style>
 	    body {
-	      background-color: blue;
+	      background-color: green;
 	      margin: 0;
 	      height: 100vh;
 	      display: flex;
@@ -25,7 +25,7 @@ func (h *GetHealthCheckHandler) HealthCheck(c echo.Context) error {
 	      justify-content: center;
 	    }
 	    h1 {
-	      color: green;
+	      color: black;
 	      font-size: 4rem;
 	    }
 	  </style>
