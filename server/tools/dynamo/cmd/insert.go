@@ -114,7 +114,7 @@ var insertCmd = &cobra.Command{
 				Skills: []model.Skill{
 					{
 						Name:   "ベンチプレス",
-						Text:   "自分にも20ダメージを与える",
+						Text:   "このラムモンにも20ダメージ",
 						Damage: 999,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
@@ -139,6 +139,23 @@ var insertCmd = &cobra.Command{
 				Weakness:    model.MonsterTypeMoney,
 				IsEx:        true,
 				RetreatCost: 0,
+				HP:          80,
+				Ability: &model.Ability{
+					Name: "金がすべて",
+					Text: "このラムモンがワザを使うとき、このラムモンについている[金]エネルギーの数x10ダメージ追加。また、このラムモンがワザを受けるとき、このラムモンについている[金]エネルギーの数x10ぶんだけダメージを軽減する。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "バイクで突っ込む",
+						Text:   "相手のベンチラムモン全員にも50ダメージ。このラムモンについているエネルギーをすべてトラッシュ。このラムモンにも70ダメージ",
+						Damage: 200,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMoney,
+							model.MonsterTypeMoney,
+							model.MonsterTypeMoney,
+						},
+					},
+				},
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
@@ -149,12 +166,22 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  0,
-				HP:           50,
+				HP:           30,
+				Skills: []model.Skill{
+					{
+						Name:   "かみつく",
+						Damage: 10,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+						},
+					},
+				},
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
 				Name:         "ドリー",
 				Rarity:       7,
+				HP:           160,
 				CardType:     model.CardTypeMonster,
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
@@ -165,11 +192,11 @@ var insertCmd = &cobra.Command{
 				},
 				Skills: []model.Skill{
 					{
-						Name:   "",
-						Text:   "",
-						Damage: 160,
+						Name:   "ひっかく",
+						Text:   "コインを2回投げ2回ともウラなら、このラムモンにも100ダメージ",
+						Damage: 200,
 						Cost: []model.MonsterType{
-							model.MonsterTypeAlchohol,
+							model.MonsterTypeNull,
 							model.MonsterTypePopularity,
 							model.MonsterTypePopularity,
 						},
@@ -199,11 +226,30 @@ var insertCmd = &cobra.Command{
 				Description:  "滅多に現れない\n",
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
-				HP:           90,
+				HP:           100,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  1,
-				Skills:       []model.Skill{},
+				Skills: []model.Skill{
+					{
+						Name:   "リバースエンジニアリング",
+						Text:   "自分のトラッシュのカードを1枚選び、手札に加える",
+						Damage: 0,
+						Cost: []model.MonsterType{
+							model.MonsterTypeAlchohol,
+							model.MonsterTypeAlchohol,
+						},
+					},
+					{
+						Name:   "脆弱性診断",
+						Damage: 70,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeAlchohol,
+							model.MonsterTypeAlchohol,
+						},
+					},
+				},
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
@@ -225,11 +271,76 @@ var insertCmd = &cobra.Command{
 						},
 					},
 					{
+						Name:         "デザイナーへの悪口",
+						Text:         "相手のバトルラムモンが「デザイナー」のとき、50ダメージ追加",
+						Damage:       50,
+						DamageOption: "+50",
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeMoney,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "デザイナー",
+				Description:  "CSSはフロントエンドの仕事\n",
+				Rarity:       3,
+				CardType:     model.CardTypeMonster,
+				HP:           90,
+				Type:         model.MonsterTypeMuscle,
+				Weakness:     model.MonsterTypeAlchohol,
+				RetreatCost:  2,
+				Skills: []model.Skill{
+					{
+						Name:   "あっそこのUI変えていいですか？",
+						Text:   "相手のベンチラムモン全員に10ダメージ",
+						Damage: 10,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMuscle,
+						},
+					},
+					{
+						Name:         "フロントエンドエンジニアへの悪口",
+						Text:         "相手のバトルラムモンが「フロントエンドエンジニア」のとき、50ダメージ追加",
+						Damage:       50,
+						DamageOption: "+50",
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeMuscle,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "バックエンドエンジニア",
+				Description:  "動的型付け言語が嫌い\n",
+				Rarity:       3,
+				CardType:     model.CardTypeMonster,
+				HP:           90,
+				Type:         model.MonsterTypePopularity,
+				Weakness:     model.MonsterTypeMoney,
+				RetreatCost:  2,
+				Skills: []model.Skill{
+					{
+						Name:         "DB設計",
+						Text:         "このラムモンがダメージを受けているなら、60ダメージ追加",
+						Damage:       40,
+						DamageOption: "+60",
+						Cost: []model.MonsterType{
+							model.MonsterTypePopularity,
+							model.MonsterTypePopularity,
+						},
+					},
+					{
 						Name:   "デザイナーへの悪口",
 						Text:   "",
 						Damage: 50,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
+							model.MonsterTypePopularity,
 						},
 					},
 				},
@@ -312,8 +423,8 @@ var insertCmd = &cobra.Command{
 				MasterCardID: model.NewMasterCardID(),
 				Name:         "パチカス",
 				CardType:     model.CardTypeMonster,
-				Rarity:       4,
-				HP:           40,
+				Rarity:       2,
+				HP:           30,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
@@ -334,8 +445,8 @@ var insertCmd = &cobra.Command{
 				MasterCardID: model.NewMasterCardID(),
 				Name:         "ヤニカス",
 				CardType:     model.CardTypeMonster,
-				Rarity:       4,
-				HP:           40,
+				Rarity:       3,
+				HP:           70,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
@@ -351,34 +462,35 @@ var insertCmd = &cobra.Command{
 							model.MonsterTypeAlchohol,
 							model.MonsterTypeMoney,
 						},
-						Damage:       50,
+						Damage:       40,
 						DamageOption: "x",
 					},
 				},
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
-				Name:         "酒カス",
+				Name:         "酒カスエンジニア",
 				CardType:     model.CardTypeMonster,
 				Rarity:       4,
-				HP:           40,
+				HP:           120,
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
 				Ability: &model.Ability{
-					Name: "酒カスエンジニア",
-					Text: "このラムモンに[酒]エネルギーがついている、かつ、HPが10より多い場合、HPが0以下になるダメージを受けてもHP10で耐える。",
+					Name: "酒の力",
+					Text: "自分のエネルギーゾーンからこのラムモンに[酒]エネルギーをつけるたび、このラムモンのHPを10回復する",
 				},
 				Skills: []model.Skill{
 					{
-						Name: "博打",
-						Text: "コインを1回投げ表なら相手のラムモン全体に50ダメージ、裏ならこのラムモンについているエネルギーをすべてトラッシュする",
+						Name: "飲酒駆動開発",
+						Text: "このラムモンについている[金]エネルギーの数x20ダメージ追加",
 						Cost: []model.MonsterType{
 							model.MonsterTypeAlchohol,
-							model.MonsterTypeMoney,
+							model.MonsterTypeAlchohol,
+							model.MonsterTypeAlchohol,
 						},
-						Damage:       50,
-						DamageOption: "x",
+						Damage:       100,
+						DamageOption: "+",
 					},
 				},
 			},
@@ -442,29 +554,413 @@ var insertCmd = &cobra.Command{
 					},
 				},
 			},
+
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "ガリガリエンジニア",
+				Rarity:       2,
+				CardType:     model.CardTypeMonster,
+				HP:           50,
+				Type:         model.MonsterTypeMuscle,
+				Weakness:     model.MonsterTypeAlchohol,
+				Skills: []model.Skill{
+					{
+						Name:   "筋トレ",
+						Damage: 10,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMuscle,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "ムチムチエンジニア",
+				Rarity:       3,
+				CardType:     model.CardTypeMonster,
+				HP:           90,
+				Type:         model.MonsterTypeMuscle,
+				Weakness:     model.MonsterTypeAlchohol,
+				Skills: []model.Skill{
+					{
+						Name:   "筋トレ",
+						Damage: 40,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMuscle,
+							model.MonsterTypeMuscle,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "ムキムキエンジニア",
+				Rarity:       4,
+				CardType:     model.CardTypeMonster,
+				HP:           170,
+				Type:         model.MonsterTypeMuscle,
+				Weakness:     model.MonsterTypeAlchohol,
+				Ability: &model.Ability{
+					Name: "コーチング",
+					Text: "このラムモンがいるかぎり、自分の[筋肉]ラムモンが使うワザのダメージを+30する",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "筋トレ",
+						Damage: 100,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMuscle,
+							model.MonsterTypeMuscle,
+							model.MonsterTypeMuscle,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "マルチ商法",
+				Rarity:       2,
+				CardType:     model.CardTypeMonster,
+				HP:           50,
+				Type:         model.MonsterTypeMoney,
+				Weakness:     model.MonsterTypePopularity,
+
+				Skills: []model.Skill{
+					{
+						Name:   "ともだちをさがす",
+						Text:   "自分の山札から[金]ラムモンをランダムに1枚、手札に加える",
+						Damage: 0,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMoney,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "情報商材屋",
+				Rarity:       3,
+				CardType:     model.CardTypeMonster,
+				HP:           80,
+				Type:         model.MonsterTypeMoney,
+				Weakness:     model.MonsterTypePopularity,
+				Ability: &model.Ability{
+					Name: "荒稼ぎ",
+					Text: "自分の番に1回使える。自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "有料note販売",
+						Text:   "自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
+						Damage: 20,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMoney,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "高額納税者",
+				Rarity:       4,
+				CardType:     model.CardTypeMonster,
+				HP:           160,
+				Type:         model.MonsterTypeMoney,
+				Weakness:     model.MonsterTypePopularity,
+				Skills: []model.Skill{
+					{
+						Name:   "納税",
+						Text:   "このラムモンから[金]エネルギーを3個トラッシュし、このラムモンのHPを100回復",
+						Damage: 0,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMoney,
+							model.MonsterTypeMoney,
+							model.MonsterTypeMoney,
+						},
+					},
+					{
+						Name:   "札束ビンタ",
+						Text:   "このラムモンから[金]エネルギーを2個トラッシュ",
+						Damage: 100,
+						Cost: []model.MonsterType{
+							model.MonsterTypeMoney,
+							model.MonsterTypeMoney,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "スタートアップCTO",
+				Rarity:       2,
+				CardType:     model.CardTypeMonster,
+				HP:           60,
+				Type:         model.MonsterTypePopularity,
+				Weakness:     model.MonsterTypeMoney,
+				Skills: []model.Skill{
+					{
+						Name:   "がむしゃらに働く",
+						Text:   "このラムモンにも50ダメージ",
+						Damage: 50,
+						Cost: []model.MonsterType{
+							model.MonsterTypePopularity,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "ベンチャーCTO",
+				Rarity:       3,
+				CardType:     model.CardTypeMonster,
+				HP:           120,
+				Type:         model.MonsterTypePopularity,
+				Weakness:     model.MonsterTypeMoney,
+				Ability: &model.Ability{
+					Name: "まだ諦めない",
+					Text: "このラムモンのワザの効果により、このラムモンがダメージを受けHPが0以下にならなかった場合、このラムモンのHPを50回復する。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:   "血反吐を吐く",
+						Text:   "このラムモンにも100ダメージ",
+						Damage: 100,
+						Cost: []model.MonsterType{
+							model.MonsterTypePopularity,
+							model.MonsterTypePopularity,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "大企業CTO",
+				Rarity:       4,
+				CardType:     model.CardTypeMonster,
+				HP:           180,
+				Type:         model.MonsterTypePopularity,
+				Weakness:     model.MonsterTypeMoney,
+				Ability: &model.Ability{
+					Name: "組織の奴隷",
+					Text: "自分の番に1回使える。このラムモンに50ダメージを与える代わりに、自分のエネルギーゾーンから[人気]エネルギーを2個出し、このラムモンにつける。",
+				},
+				Skills: []model.Skill{
+					{
+						Name:         "一斉攻撃",
+						Text:         "このラムモンについている[人気]エネルギーの数x20ダメージ追加",
+						Damage:       100,
+						DamageOption: "x20",
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypePopularity,
+							model.MonsterTypePopularity,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "フリーランスエンジニア",
+				Rarity:       2,
+				CardType:     model.CardTypeMonster,
+				HP:           100,
+				Type:         model.MonsterTypeNull,
+				Weakness:     model.MonsterTypeMoney,
+				Skills: []model.Skill{
+					{
+						Name:   "業務委託",
+						Text:   "",
+						Damage: 50,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "文系エンジニア",
+				Rarity:       3,
+				CardType:     model.CardTypeMonster,
+				HP:           80,
+				Type:         model.MonsterTypeNull,
+				Weakness:     model.MonsterTypeMuscle,
+				Skills: []model.Skill{
+					{
+						Name:   "コーディング",
+						Text:   "",
+						Damage: 80,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "SESエンジニア",
+				Rarity:       2,
+				CardType:     model.CardTypeMonster,
+				HP:           60,
+				Type:         model.MonsterTypeNull,
+				Weakness:     model.MonsterTypeMuscle,
+				Skills: []model.Skill{
+					{
+						Name:   "秘密の業務",
+						Text:   "",
+						Damage: 30,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+						},
+					},
+				},
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				Name:         "ジンジニア",
+				Rarity:       2,
+				CardType:     model.CardTypeMonster,
+				HP:           120,
+				Type:         model.MonsterTypeNull,
+				Weakness:     model.MonsterTypeMuscle,
+				Skills: []model.Skill{
+					{
+						Name:   "人事面接",
+						Text:   "",
+						Damage: 100,
+						Cost: []model.MonsterType{
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+							model.MonsterTypeNull,
+						},
+					},
+				},
+			},
 			{
 				MasterCardID: model.NewMasterCardID(),
 				CardType:     model.CardTypeGoods,
 				Name:         "オライリー本",
-				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手",
+				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
+			},
+
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "プロテイン",
+				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ラムモン1匹につける",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "クレカ",
+				Text:         "自分の[金]ラムモン1匹のHPを50回復",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "ハックツパーカー",
+				Text:         "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果によるダメージを受けない。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "一升瓶",
+				Text:         "自分の[酒]ラムモンを1匹選ぶ。ウラが出るまでコインを投げ、オモテの数ぶんの[酒]エネルギーを自分のエネルギーゾーンから出し、そのラムモンにつける。",
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
 				CardType:     model.CardTypeGoods,
 				Name:         "エナジードリンク",
-				Text:         "",
+				Text:         "自分のラムモン1匹のHPをすべて回復し、この番、そのラムモンが使うワザの、相手のバトルポケモンへのダメージを+30する。次の自分の番の開始時、そのラムモンのHPは0になる。",
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
 				CardType:     model.CardTypeGoods,
-				Name:         "プロテイン",
-				Text:         "",
+				Name:         "スタバ",
+				Text:         "自分のラムモン1匹のHPを20回復",
+			},
+			{
+
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "Gopherくん人形",
+				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、1個少なくする。",
 			},
 			{
 				MasterCardID: model.NewMasterCardID(),
 				CardType:     model.CardTypeGoods,
-				Name:         "プロテイン",
-				Text:         "",
+				Name:         "ホットリロード",
+				Text:         "自分の手札をすべて山札に戻し、山札から同じ枚数のカードを引く。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "転職エージェント",
+				Text:         "自分の山札からたねラムモン以外のラムモンをランダムに1枚、手札に加える。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "プログラミングスクール",
+				Text:         "自分の山札からたねラムモンをランダムに1枚、手札に加える。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "LANケーブル",
+				Text:         "自分のラムモン2匹を選び、そのラムモンについているエネルギーをすべて入れ替える。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "HHKB",
+				Text:         "自分の山札から「駆け出しエンジニア」の進化先のラムモンをランダムに1枚、手札に加える。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeGoods,
+				Name:         "MacBook",
+				Text:         "「駆け出しエンジニア」とその進化先のラムモンが使うワザの、相手のバトルポケモンへのダメージを+20する",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeSupporter,
+				Name:         "ChatGPT",
+				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、2個少なくする。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeSupporter,
+				Name:         "スパゲッティコード",
+				Text:         "相手のバトルラムモンのランダムなエネルギー1個を、ランダムなエネルギーに変える。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeSupporter,
+				Name:         "炎上プロジェクト",
+				Text:         "お互いのバトルラムモンについているエネルギーをすべてトラッシュする。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeSupporter,
+				Name:         "セキュリティソフト",
+				Text:         "相手の手札からランダムに1枚トラッシュ",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeSupporter,
+				Name:         "React.StrictMode",
+				Text:         "自分の山札を2枚引く。",
+			},
+			{
+				MasterCardID: model.NewMasterCardID(),
+				CardType:     model.CardTypeSupporter,
+				Name:         "ファイヤーウォール",
+				Text:         "次の相手の番、自分のラムモン全員が、相手のラムモンから受けるダメージを-20する。",
 			},
 		}
 
