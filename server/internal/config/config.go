@@ -12,8 +12,8 @@ var (
 )
 
 type Config struct {
-	Server *ServerConfig
-	Dynamo *DynamoConfig
+	Server ServerConfig
+	Dynamo DynamoConfig
 }
 
 type ServerConfig struct {
@@ -28,12 +28,12 @@ type DynamoConfig struct {
 func GetConfig() (*Config, error) {
 	var err error
 	once.Do(func() {
-		if _err := envconfig.Process("", cfg.Server); _err != nil {
+		if _err := envconfig.Process("", &cfg.Server); _err != nil {
 			err = _err
 			return
 		}
 
-		if _err := envconfig.Process("", cfg.Dynamo); _err != nil {
+		if _err := envconfig.Process("", &cfg.Dynamo); _err != nil {
 			err = _err
 			return
 		}
