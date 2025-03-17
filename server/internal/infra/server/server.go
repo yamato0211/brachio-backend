@@ -50,6 +50,7 @@ func New() (*Server, error) {
 		users := []User{}
 		err := dc.Table("Users").Scan().All(c.Request().Context(), &users)
 		if err != nil {
+			slog.Error("error!", slog.Attr{Key: "error", Value: slog.AnyValue(err)})
 			return c.JSON(http.StatusInternalServerError, err)
 		}
 		return c.JSON(http.StatusOK, users)

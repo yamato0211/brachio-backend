@@ -41,6 +41,7 @@ locals {
   }
 
   backend_secrets = {
-    islocal = false
+    islocal        = false
+    dynamoendpoint = "https://dynamodb.ap-northeast-1.amazonaws.com"
   }
 }

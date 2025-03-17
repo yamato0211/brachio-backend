@@ -73,6 +73,10 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name      = "IS_LOCAL"
           valueFrom = "${var.secrets_manager.secret_for_backend_arn}:islocal::"
+        },
+        {
+          name      = "DYNAMO_ENDPOINT"
+          valueFrom = "${var.secrets_manager.secret_for_backend_arn}:dynamoendpoint::"
         }
       ]
 
@@ -334,7 +338,10 @@ data "aws_iam_policy_document" "policy_for_github_actions" {
     actions = [
       "iam:PassRole"
     ]
-    resources = [aws_iam_role.task_execution_role.arn]
+    resources = [
+      aws_iam_role.task_execution_role.arn,
+      aws_iam_role.task_role.arn
+    ]
     condition {
       test     = "StringLike"
       variable = "iam:PassedToService"

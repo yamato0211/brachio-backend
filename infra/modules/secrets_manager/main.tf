@@ -1,7 +1,8 @@
 locals {
   prefix = "${var.common.prefix}-${var.common.env}"
   parameters = {
-    islocal = var.backend.islocal
+    islocal        = var.backend.islocal
+    dynamoendpoint = var.backend.dynamoendpoint
   }
 }
 

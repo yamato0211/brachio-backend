@@ -7,6 +7,7 @@ variable "common" {
 
 variable "backend" {
   type = object({
-    islocal = bool
+    islocal        = bool
+    dynamoendpoint = string
   })
 }

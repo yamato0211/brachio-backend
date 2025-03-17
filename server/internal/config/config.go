@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"sync"
 
 	"github.com/kelseyhightower/envconfig"
@@ -48,6 +49,8 @@ func GetConfig() (*Config, error) {
 			return
 		}
 	})
+
+	log.Println(cfg.Dynamo.Endpoint)
 
 	return &cfg, err
 }
