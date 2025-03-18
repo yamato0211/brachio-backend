@@ -23,6 +23,12 @@ func (c *CreateMyDeckInteractor) Execute(ctx context.Context, userID string) (*m
 	deck := &model.Deck{
 		DeckID: model.NewDeckID(),
 		UserID: uid,
+		Name:   "デッキ",
+		Energies: []model.MonsterType{
+			model.MonsterTypeNull,
+		},
+		MasterCardIDs: []model.MasterCardID{},
+		Color:         model.MonsterTypeNull,
 	}
 
 	err = c.DeckRepository.Store(ctx, deck)

@@ -3,7 +3,9 @@ package handler
 import (
 	"context"
 	"log"
+	"net/http"
 
+	gorillawebsocket "github.com/gorilla/websocket"
 	"github.com/yamato0211/brachio-backend/internal/config"
 	"github.com/yamato0211/brachio-backend/internal/domain/service"
 	"github.com/yamato0211/brachio-backend/internal/gateway/db"
@@ -154,6 +156,11 @@ func New() *Handler {
 			SupplyEnergyInputPort:             supplyEnergyUsecase,
 			UseGoodsInputPort:                 useGoodsUsecase,
 			UseSupporterInputPort:             useSupporterUsecase,
+			upgrader: gorillawebsocket.Upgrader{
+				CheckOrigin: func(r *http.Request) bool {
+					return true
+				},
+			},
 		},
 	}
 }

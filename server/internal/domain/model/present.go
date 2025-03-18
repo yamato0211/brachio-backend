@@ -1,6 +1,12 @@
 package model
 
-import "github.com/google/uuid"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
+
+var ErrAlreadyReceivedPresent = errors.New("already received present")
 
 type PresentID string
 

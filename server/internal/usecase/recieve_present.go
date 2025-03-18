@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"slices"
 
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
@@ -37,6 +38,11 @@ func (r *ReceivePresentInteractor) Execute(ctx context.Context, userID string, p
 	present, err := r.presentRepository.Find(ctx, pid)
 	if err != nil {
 		return err
+	}
+
+	// プレゼントの受け取り済みか確認
+	if slices.Contains(present.ReceivedUserIDs, uid) {
+		return model.ErrAlreadyReceivedPresent
 	}
 
 	user, err := r.userRepository.Find(ctx, uid)

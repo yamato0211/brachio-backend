@@ -2,6 +2,7 @@ package schema
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
@@ -125,6 +126,7 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 
 	sc, err := FactoryCard(*e.ThumbnailCard)
 	if err != nil {
+		log.Println("failed factory card in deck with id from entity")
 		return nil, err
 	}
 
@@ -132,6 +134,7 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 	for _, mc := range e.MasterCards {
 		fc, err := FactoryCard(*mc)
 		if err != nil {
+			log.Println("failed factory card in deck with id from entity")
 			return nil, err
 		}
 		myCards = append(myCards, *fc)
