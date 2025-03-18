@@ -27,7 +27,7 @@ resource "aws_s3_bucket_policy" "s3_policy" {
 }
 
 resource "aws_s3_bucket" "default" {
-  bucket        = "${local.prefix}-frontend-bucket"
+  bucket        = "${local.prefix}-frontend"
   force_destroy = true
 }
 
@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "cf" {
 
   default_root_object = "index.html"
 
-  aliases = var.own_domain_name.aliases != null ? var.own_domain_name.aliases : []
+  aliases = ["pokepoke.${var.domain}"]
   origin {
     domain_name              = aws_s3_bucket.default.bucket_regional_domain_name
     origin_id                = aws_s3_bucket.default.bucket
@@ -61,10 +61,13 @@ resource "aws_cloudfront_distribution" "cf" {
 
   viewer_certificate {
     # 独自ドメインのACMを使用しない場合、デフォルトの証明書を使用する
-    cloudfront_default_certificate = var.own_domain_name.acm_certificate_arn == null ? true : false
+    cloudfront_default_certificate = false
+    # cloudfront_default_certificate = aws_acm_certificate.main.arn
 
     # 独自ドメインのACMを使用する場合、証明書を指定する
-    acm_certificate_arn = var.own_domain_name.acm_certificate_arn == null ? null : var.own_domain_name.acm_certificate_arn
+    # acm_certificate_arn = var.own_domain_name.acm_certificate_arn == null ? null : var.own_domain_name.acm_certificate_arn
+
+    acm_certificate_arn = aws_acm_certificate.front.arn
 
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1"
@@ -79,7 +82,7 @@ resource "aws_cloudfront_distribution" "cf" {
     min_ttl                = "60"
     smooth_streaming       = "false"
     target_origin_id       = aws_s3_bucket.default.id
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
 
     forwarded_values {
       query_string = false
@@ -155,3 +158,49 @@ resource "aws_iam_role_policy_attachment" "github_actions" {
   role       = aws_iam_role.github_actions.name
   policy_arn = each.value
 }
+
+// Host Zone作成
+resource "aws_route53_zone" "front" {
+  name = "pokepoke.${var.domain}"
+}
+
+resource "aws_route53_record" "front" {
+  zone_id = aws_route53_zone.front.id
+  name    = "pokepoke.${var.domain}"
+  type    = "A"
+  alias {
+    name                   = aws_cloudfront_distribution.cf.domain_name
+    zone_id                = aws_cloudfront_distribution.cf.hosted_zone_id
+    evaluate_target_health = true
+  }
+}
+
+// ACM
+resource "aws_acm_certificate" "front" {
+  domain_name       = "pokepoke.${var.domain}"
+  validation_method = "DNS"
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_acm_certificate_validation" "front" {
+  certificate_arn         = aws_acm_certificate.front.arn
+  validation_record_fqdns = [for record in aws_route53_record.cert : record.fqdn]
+}
+
+resource "aws_route53_record" "cert" {
+  for_each = {
+    for dvo in aws_acm_certificate.front.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      type   = dvo.resource_record_type
+      record = dvo.resource_record_value
+    }
+  }
+  zone_id = aws_route53_zone.front.id
+  name    = each.value.name
+  type    = each.value.type
+  ttl     = 600
+  records = [each.value.record]
+}
+

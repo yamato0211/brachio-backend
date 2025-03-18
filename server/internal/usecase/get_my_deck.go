@@ -17,6 +17,13 @@ type GetMyDeckInteractor struct {
 	MasterCardRepository repository.MasterCardRepository
 }
 
+func NewGetMyDeckUsecase(dr repository.DeckRepository, mr repository.MasterCardRepository) GetMyDeckInputPort {
+	return &GetMyDeckInteractor{
+		DeckRepository:       dr,
+		MasterCardRepository: mr,
+	}
+}
+
 func (g *GetMyDeckInteractor) Execute(ctx context.Context, deckID model.DeckID) (*model.Deck, error) {
 	deck, err := g.DeckRepository.Find(ctx, deckID)
 	if err != nil {

@@ -17,8 +17,8 @@ type masterCardRepository struct {
 	db dynamo.DB
 }
 
-func NewMasterCardRepository(db dynamo.DB) repository.MasterCardRepository {
-	return &masterCardRepository{db: db}
+func NewMasterCardRepository(db *dynamo.DB) repository.MasterCardRepository {
+	return &masterCardRepository{db: *db}
 }
 
 func (r *masterCardRepository) FindAll(ctx context.Context) ([]*model.MasterCard, error) {

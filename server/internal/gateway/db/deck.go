@@ -39,6 +39,10 @@ func (d *deckRepository) Store(ctx context.Context, deck *model.Deck) error {
 	return d.db.Table(masterCardsTableName).Put(deck).Run(ctx)
 }
 
-func NewDeckRepository(db dynamo.DB) repository.DeckRepository {
-	return &deckRepository{db: db}
+func (d *deckRepository) Delete(ctx context.Context, deckID model.DeckID) error {
+	return d.db.Table(deckTableName).Delete(deckHashKey, deckID).Run(ctx)
+}
+
+func NewDeckRepository(db *dynamo.DB) repository.DeckRepository {
+	return &deckRepository{db: *db}
 }
