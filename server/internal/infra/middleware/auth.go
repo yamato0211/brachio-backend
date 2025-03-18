@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
 
@@ -31,6 +32,12 @@ type AuthMiddleware struct {
 	FindUserUsecase  usecase.FindUserInputPort
 	StoreUserUsecase usecase.StoreUserInputPort
 	cognitoClient    *cognitoidentityprovider.Client
+}
+
+func defaultSkipper(c echo.Context) bool {
+	skipPaths := []string{"/", "/ws"}
+	path := c.Request().URL.Path
+	return slices.Contains(skipPaths, path)
 }
 
 func NewAuthMiddleware(cfg *config.Config, fu usecase.FindUserInputPort, su usecase.StoreUserInputPort, cc *cognitoidentityprovider.Client) *AuthMiddleware {
@@ -62,6 +69,9 @@ func GetUserID(c echo.Context) string {
 
 func (m *AuthMiddleware) Verify(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		if defaultSkipper(c) {
+			return next(c)
+		}
 		authHeader := c.Request().Header.Get("Authorization")
 		if !strings.HasPrefix(authHeader, "Bearer ") {
 			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Authorization Header is required"})

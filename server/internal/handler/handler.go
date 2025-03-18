@@ -55,7 +55,7 @@ func New() *Handler {
 	userRepo := db.NewUserRepository(dc)
 
 	// usecase
-	drawGachaUsecase := usecase.NewDrawGachaUsecase(masterCardRepo)
+	drawGachaUsecase := usecase.NewDrawGachaUsecase(masterCardRepo, userRepo, masterItemRepo)
 	getMyDecksUsecase := usecase.NewGetMyDecksUsecase(deckRepo, masterCardRepo)
 	getMyItemsUsecase := usecase.NewGetMyItemsUsecase(masterItemRepo, userRepo)
 	createMyDeckUsecase := usecase.NewCreateMyDeckUsecase(deckRepo)

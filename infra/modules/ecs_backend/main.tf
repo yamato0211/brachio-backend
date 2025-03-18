@@ -47,11 +47,15 @@ resource "aws_iam_policy" "task_policy" {
         Sid    = "CognitoAccess",
         Effect = "Allow",
         Action = [
-          "cognito-idp:ListUsers",
-          "cognito-idp:AdminCreateUser",
-          "cognito-idp:AdminDeleteUser",
-          "cognito-idp:AdminUpdateUserAttributes",
-          "cognito-idp:DescribeUserPool"
+          "cognito-idp:*",
+        ],
+        Resource = "*"
+      },
+      {
+        Sid    = "DynamoDBAccess",
+        Effect = "Allow",
+        Action = [
+          "dynamodb:*"
         ],
         Resource = "*"
       }

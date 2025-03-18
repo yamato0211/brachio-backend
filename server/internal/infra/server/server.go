@@ -56,6 +56,7 @@ func New() (*Server, error) {
 
 	e.Use(authMiddleware.Verify)
 	e.Use(echomiddleware.CORS())
+	e.Use(echomiddleware.Recover())
 	e.Use(echomiddleware.Logger())
 	e.Use(oapimiddleware.OapiRequestValidator(swagger))
 

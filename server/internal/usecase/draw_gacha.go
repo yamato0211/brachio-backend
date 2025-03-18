@@ -66,11 +66,15 @@ type DrawGachaInput struct {
 
 type DrawGachaInteractor struct {
 	MasterCardRepository repository.MasterCardRepository
+	UserRepository       repository.UserRepository
+	MasterItemRepository repository.MasterItemRepository
 }
 
-func NewDrawGachaUsecase(mcr repository.MasterCardRepository) DrawGachaInputPort {
+func NewDrawGachaUsecase(mcr repository.MasterCardRepository, ur repository.UserRepository, mir repository.MasterItemRepository) DrawGachaInputPort {
 	return &DrawGachaInteractor{
 		MasterCardRepository: mcr,
+		UserRepository:       ur,
+		MasterItemRepository: mir,
 	}
 }
 
@@ -127,6 +131,7 @@ func selectRarity(dist rarityDistribution) int {
 }
 
 func (d *DrawGachaInteractor) Execute(ctx context.Context, input *DrawGachaInput) ([]*model.MasterCard, error) {
+	// 所持しているアイテム数を確認
 	count := lo.Ternary(input.IsTen, 10, 1)
 	masterCards, err := d.MasterCardRepository.FindAll(ctx)
 	if err != nil {

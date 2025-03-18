@@ -60,14 +60,14 @@ resource "aws_cloudfront_distribution" "cf" {
   }
 
   custom_error_response {
-    error_caching_min_ttl = 0
+    error_caching_min_ttl = 10
     error_code            = 403
     response_code         = 200
     response_page_path    = "/index.html"
   }
 
   custom_error_response {
-    error_caching_min_ttl = 0
+    error_caching_min_ttl = 10
     error_code            = 404
     response_code         = 200
     response_page_path    = "/index.html"
@@ -84,7 +84,7 @@ resource "aws_cloudfront_distribution" "cf" {
     acm_certificate_arn = aws_acm_certificate.front.arn
 
     ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   default_cache_behavior {

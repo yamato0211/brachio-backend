@@ -17,7 +17,7 @@ func (id MasterItemID) String() string {
 }
 
 type MasterItem struct {
-	ItemID      MasterItemID `dynamo:"ItemId,hash"`
+	ItemID      MasterItemID `dynamo:"MasterItemId,hash"`
 	Name        string       `dynamo:"Name"`
 	Description string       `dynamo:"Description"`
 	ImageURL    string       `dynamo:"ImageUrl"`
