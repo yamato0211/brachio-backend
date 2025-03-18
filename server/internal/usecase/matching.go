@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"sync"
 
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
@@ -58,12 +59,14 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 		return "", err
 	}
 
-	ch := make(chan string)
+	wg := sync.WaitGroup{}
+	wg.Add(1)
 
-	log.Println("matching", input.Password, userID)
+	var roomID model.RoomID
+	err = i.Matcher.Apply(ctx, input.Password, func(_roomID model.RoomID) {
+		defer wg.Done()
 
-	err = i.Matcher.Apply(ctx, input.Password, func(roomID model.RoomID) {
-		log.Println("matched", input.Password, userID)
+		roomID = _roomID
 
 		var both bool
 		err := i.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
@@ -109,11 +112,12 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 			}
 		}
 
-		ch <- roomID.String()
 	})
 	if err != nil {
 		return "", err
 	}
 
-	return <-ch, nil
+	wg.Wait()
+
+	return roomID.String(), nil
 }
