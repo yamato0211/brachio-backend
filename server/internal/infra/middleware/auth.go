@@ -40,6 +40,10 @@ func defaultSkipper(c echo.Context) bool {
 	return slices.Contains(skipPaths, path)
 }
 
+func methodSkipper(c echo.Context) bool {
+	return c.Request().Method == http.MethodOptions
+}
+
 func NewAuthMiddleware(cfg *config.Config, fu usecase.FindUserInputPort, su usecase.StoreUserInputPort, cc *cognitoidentityprovider.Client) *AuthMiddleware {
 	return &AuthMiddleware{
 		isLocal:          cfg.Common.IsLocal,
@@ -81,6 +85,9 @@ func (m *AuthMiddleware) extractToken(c echo.Context) (string, error) {
 func (m *AuthMiddleware) Verify(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		if defaultSkipper(c) {
+			return next(c)
+		}
+		if methodSkipper(c) {
 			return next(c)
 		}
 		token, err := m.extractToken(c)

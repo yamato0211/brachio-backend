@@ -54,7 +54,6 @@ func New() (*Server, error) {
 	storeUserUsecase := usecase.NewStoreUserUsecase(userRepo)
 	authMiddleware := middleware.NewAuthMiddleware(cfg, findUserUsecase, storeUserUsecase, cc)
 
-	e.Use(authMiddleware.Verify)
 	e.Use(echomiddleware.CORSWithConfig(echomiddleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{"Authorization", "Content-Type", "Accept", "Origin"},
@@ -63,6 +62,7 @@ func New() (*Server, error) {
 	e.Use(echomiddleware.Recover())
 	e.Use(echomiddleware.Logger())
 	e.Use(oapimiddleware.OapiRequestValidator(swagger))
+	e.Use(authMiddleware.Verify)
 
 	e.GET("/", HealthCheck)
 
