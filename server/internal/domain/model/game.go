@@ -8,7 +8,6 @@ import (
 )
 
 var ErrRoomNotFound = errors.New("room not found")
-var ErrUserNotFound = errors.New("user not found")
 
 type RoomID string
 
