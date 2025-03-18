@@ -8,7 +8,12 @@ import (
 )
 
 type GetMyCardsInputPort interface {
-	Execute(ctx context.Context, userID string) ([]*model.MasterCardWithCount, error)
+	Execute(ctx context.Context, param *GetMyCardsInput) ([]*model.MasterCardWithCount, error)
+}
+
+type GetMyCardsInput struct {
+	UserID string
+	IsAll  bool
 }
 
 type GetMyCardsInteractor struct {
@@ -16,8 +21,8 @@ type GetMyCardsInteractor struct {
 	userRepository       repository.UserRepository
 }
 
-func (g *GetMyCardsInteractor) Execute(ctx context.Context, userID string) ([]*model.MasterCardWithCount, error) {
-	uid, err := model.ParseUserID(userID)
+func (g *GetMyCardsInteractor) Execute(ctx context.Context, param *GetMyCardsInput) ([]*model.MasterCardWithCount, error) {
+	uid, err := model.ParseUserID(param.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -34,10 +39,19 @@ func (g *GetMyCardsInteractor) Execute(ctx context.Context, userID string) ([]*m
 
 	var myCards []*model.MasterCardWithCount
 	for _, card := range masterCards {
-		myCards = append(myCards, &model.MasterCardWithCount{
+		c := &model.MasterCardWithCount{
 			MasterCard: card,
 			Count:      user.CardIDsWithCount[card.MasterCardID.String()],
-		})
+		}
+
+		if param.IsAll {
+			myCards = append(myCards, c)
+			continue
+		}
+
+		if c.Count > 0 {
+			myCards = append(myCards, c)
+		}
 	}
 	return myCards, nil
 }

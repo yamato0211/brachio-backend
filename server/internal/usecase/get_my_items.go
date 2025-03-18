@@ -24,6 +24,7 @@ func (g *GetMyItemsInteractor) Execute(ctx context.Context, userID string) ([]*m
 	}
 	user, err := g.userRepo.Find(ctx, uid)
 	if err != nil {
+		fmt.Println("This error")
 		return nil, err
 	}
 

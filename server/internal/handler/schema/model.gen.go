@@ -40,6 +40,12 @@ const (
 	X    SkillDamageOption = "x"
 )
 
+// Defines values for GetCardsParamsIsAll.
+const (
+	N0 GetCardsParamsIsAll = 0
+	N1 GetCardsParamsIsAll = 1
+)
+
 // Ability 特性
 type Ability struct {
 	// Name 特性名
@@ -329,6 +335,15 @@ type UpdateDeck struct {
 	// ThumbnailCardId サムネイルカードID
 	ThumbnailCardId string `json:"thumbnailCardId"`
 }
+
+// GetCardsParams defines parameters for GetCards.
+type GetCardsParams struct {
+	// IsAll 全件取得フラグ（0: 非全件, 1: 全件)
+	IsAll *GetCardsParamsIsAll `form:"is_all,omitempty" json:"is_all,omitempty"`
+}
+
+// GetCardsParamsIsAll defines parameters for GetCards.
+type GetCardsParamsIsAll int
 
 // UpdateDeckJSONRequestBody defines body for UpdateDeck for application/json ContentType.
 type UpdateDeckJSONRequestBody = UpdateDeck
