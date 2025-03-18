@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/lo"
+	"golang.org/x/xerrors"
 )
 
 var ErrRoomNotFound = errors.New("room not found")
@@ -18,6 +19,10 @@ func NewRoomID() RoomID {
 
 func ParseRoomID(s string) (RoomID, error) {
 	return RoomID(s), nil
+}
+
+func (m RoomID) String() string {
+	return string(m)
 }
 
 type GameState struct {
@@ -59,4 +64,38 @@ type Effect struct {
 	Trigger string
 	Fn      func(any) (bool, error)
 	UserID  UserID
+}
+
+func (m *Player) GetMonsterByPosition(position int) (*Monster, error) {
+	if position == 0 {
+		if m.BattleMonster == nil {
+			return nil, xerrors.Errorf("position(%d) is invalid", position)
+		}
+		return m.BattleMonster, nil
+	}
+
+	if position < 0 || 3 < position {
+		return nil, xerrors.Errorf("position(%d) is invalid", position)
+	}
+
+	monster := m.BenchMonsters[position-1]
+	if monster == nil {
+		return nil, xerrors.Errorf("position(%d) is invalid", position)
+	}
+
+	return monster, nil
+}
+
+func (m *Player) SetMonsterByPosition(position int, monster *Monster) error {
+	if position == 0 {
+		m.BattleMonster = monster
+		return nil
+	}
+
+	if position < 0 || 3 < position {
+		return xerrors.Errorf("position(%d) is invalid", position)
+	}
+
+	m.BenchMonsters[position-1] = monster
+	return nil
 }

@@ -11,7 +11,7 @@ import (
 )
 
 type MatchingInputPort interface {
-	Execute(ctx context.Context, input MatchingInput) error
+	Execute(ctx context.Context, input *MatchingInput) (roomID string, err error)
 }
 
 type MatchingInput struct {
@@ -41,22 +41,24 @@ func NewMatchingUsecase(
 	}
 }
 
-func (i *MatchingInteractor) Execute(ctx context.Context, input MatchingInput) error {
+func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) (string, error) {
 	userID, err := model.ParseUserID(input.UserID)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	deckID, err := model.ParseDeckID(input.DeckID)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// ユーザーのデッキを取得する
 	deck, err := i.DeckRepository.Find(ctx, deckID)
 	if err != nil {
-		return err
+		return "", err
 	}
+
+	ch := make(chan string)
 
 	err = i.Matcher.Apply(ctx, input.Password, func(roomID model.RoomID) {
 		err := i.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
@@ -93,10 +95,12 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input MatchingInput) e
 		if err != nil {
 			log.Printf("transaction error: %v", err)
 		}
+
+		ch <- roomID.String()
 	})
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return <-ch, nil
 }

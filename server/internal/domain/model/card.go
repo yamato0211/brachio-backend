@@ -21,6 +21,10 @@ func ParseCardID(s string) (CardID, error) {
 	return NewCardID(id), nil
 }
 
+func (i CardID) String() string {
+	return strconv.Itoa(int(i))
+}
+
 type Card struct {
 	CardID            CardID
 	MasterCard        *MasterCard
