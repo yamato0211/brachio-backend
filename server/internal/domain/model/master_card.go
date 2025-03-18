@@ -75,11 +75,11 @@ func (m *MasterCard) EvolvesFromSlice() []string {
 }
 
 func (m *MasterCard) EvelvesToSlice() []string {
-	var evelvesToStrings = make([]string, 0, len(m.EvolvesTo))
+	var evolvesToStrings = make([]string, 0, len(m.EvolvesTo))
 	for _, e := range m.EvolvesTo {
-		evelvesToStrings = append(evelvesToStrings, string(e))
+		evolvesToStrings = append(evolvesToStrings, string(e))
 	}
-	return evelvesToStrings
+	return evolvesToStrings
 }
 
 type Skill struct {
