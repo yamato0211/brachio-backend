@@ -16,24 +16,6 @@ type rarityDistribution map[int]float64
 var (
 	// 1～3枚目はレアリティ1～4のみ出現
 	dist1To3 rarityDistribution = rarityDistribution{
-		1: 0.60, // レアリティ1: 60%
-		2: 0.30, // レアリティ2: 30%
-		3: 0.08, // レアリティ3: 8%
-		4: 0.02, // レアリティ4: 2%
-	}
-
-	// 4枚目はレアリティ1～8が対象（レアリティ5～8は非常に低い確率）
-	dist4 rarityDistribution = rarityDistribution{
-		1: 0.45,  // レアリティ1: 45%
-		2: 0.35,  // レアリティ2: 35%
-		3: 0.15,  // レアリティ3: 15%
-		4: 0.04,  // レアリティ4: 4%
-		5: 0.005, // レアリティ5: 0.5%
-		6: 0.005, // レアリティ6: 0.5%
-	}
-
-	// 5枚目は、4枚目に比べてレアリティ5～8の排出確率が若干アップ
-	dist5 rarityDistribution = rarityDistribution{
 		1: 0.38,  // レアリティ1: 38%
 		2: 0.28,  // レアリティ2: 28%
 		3: 0.15,  // レアリティ3: 15%
@@ -42,6 +24,30 @@ var (
 		6: 0.03,  // レアリティ6: 3%
 		7: 0.015, // レアリティ7: 1.5%
 		8: 0.005, // レアリティ8: 0.5%
+	}
+
+	// 4枚目はレアリティ1～8が対象（レアリティ5～8は非常に低い確率）
+	dist4 rarityDistribution = rarityDistribution{
+		1: 0.28,  // レアリティ1: 28%
+		2: 0.24,  // レアリティ2: 24%
+		3: 0.20,  // レアリティ3: 20%
+		4: 0.12,  // レアリティ4: 12%
+		5: 0.08,  // レアリティ5: 8%
+		6: 0.06,  // レアリティ6: 6%
+		7: 0.015, // レアリティ7: 1.5%
+		8: 0.005, // レアリティ8: 0.5%
+	}
+
+	// 5枚目は、4枚目に比べてレアリティ5～8の排出確率が若干アップ
+	dist5 rarityDistribution = rarityDistribution{
+		1: 0.24, // レアリティ1: 24%
+		2: 0.20, // レアリティ2: 20%
+		3: 0.2,  // レアリティ3: 20%
+		4: 0.2,  // レアリティ4: 20%
+		5: 0.07, // レアリティ5: 7%
+		6: 0.05, // レアリティ6: 5%
+		7: 0.03, // レアリティ7: 3%
+		8: 0.01, // レアリティ8: 1%
 	}
 )
 
@@ -89,11 +95,17 @@ func (d *DrawGachaInteractor) draw(cards []*model.MasterCard) ([]*model.MasterCa
 		available := lo.Filter(cards, func(card *model.MasterCard, _ int) bool {
 			return card.Rarity == rarity
 		})
+		var selected *model.MasterCard
 		if len(available) == 0 {
-			return nil, fmt.Errorf("no card available for rarity %d", rarity)
+			selected = &model.MasterCard{
+				MasterCardID: "dummy",
+				Name:         "ダミーカード",
+				Rarity:       rarity,
+			}
+		} else {
+			// available の中からランダムに1枚選択
+			selected = lo.Sample(available)
 		}
-		// available の中からランダムに1枚選択
-		selected := lo.Sample(available)
 		drawn = append(drawn, selected)
 	}
 	return drawn, nil
