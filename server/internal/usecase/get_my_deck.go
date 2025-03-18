@@ -44,15 +44,17 @@ func (g *GetMyDeckInteractor) Execute(ctx context.Context, deckID model.DeckID) 
 	}
 	deck.ThumbnailCard = tc
 
-	myMasterCards := lo.Filter(masterCards, func(card *model.MasterCard, _ int) bool {
-		for _, id := range deck.MasterCardIDs {
-			if card.MasterCardID == id {
-				return true
-			}
+	myCards := make([]*model.MasterCard, 0, len(deck.MasterCardIDs))
+	for _, cid := range deck.MasterCardIDs {
+		mc, ok := lo.Find(masterCards, func(item *model.MasterCard) bool {
+			return item.MasterCardID == cid
+		})
+		if !ok {
+			return nil, errors.New("master card not found")
 		}
-		return false
-	})
+		myCards = append(myCards, mc)
+	}
 
-	deck.MasterCards = myMasterCards
+	deck.MasterCards = myCards
 	return deck, nil
 }
