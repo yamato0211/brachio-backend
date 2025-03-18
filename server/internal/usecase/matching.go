@@ -68,10 +68,18 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input MatchingInput) e
 			if state == nil {
 				state = &model.GameState{
 					RoomID: roomID,
+					TurnPlayer: &model.Player{
+						UserID:   userID,
+						BaseDeck: deck,
+					},
+				}
+
+				if err := i.GameStateRepository.Store(ctx, state); err != nil {
+					return err
 				}
 			}
 
-			state.Player1 = &model.Player{
+			state.NonTurnPlayer = &model.Player{
 				UserID:   userID,
 				BaseDeck: deck,
 			}

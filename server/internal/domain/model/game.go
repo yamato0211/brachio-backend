@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
+	"github.com/samber/lo"
 )
 
 var ErrRoomNotFound = errors.New("room not found")
@@ -15,24 +16,47 @@ func NewRoomID() RoomID {
 	return RoomID(id.String())
 }
 
+func ParseRoomID(s string) (RoomID, error) {
+	return RoomID(s), nil
+}
+
 type GameState struct {
 	RoomID RoomID
 
-	Player1 *Player
-	Player2 *Player
+	TurnPlayer    *Player
+	NonTurnPlayer *Player
 
 	Turn int
 }
 
+func (m *GameState) FindPlayerByUserID(userID UserID) *Player {
+	return lo.Ternary(m.TurnPlayer.UserID == userID, m.TurnPlayer, m.NonTurnPlayer)
+}
+
+func (m *GameState) FindEnemyByUserID(userID UserID) *Player {
+	return lo.Ternary(m.TurnPlayer.UserID == userID, m.NonTurnPlayer, m.TurnPlayer)
+}
+
 type Player struct {
-	UserID   UserID
-	BaseDeck *Deck
-	Deck     []*MasterCard
-	Hands    []*MasterCard
-	Trash    []*MasterCard
-	Energies []Element
+	UserID        UserID
+	BaseDeck      *Deck
+	Deck          []*Card
+	Hands         []*Card
+	Fields        []*Card
+	Trash         []*Card
+	CurrentEnergy *MonsterType
+	NextEnergy    *MonsterType
+
+	Effect []*Effect
 
 	Point         int
 	BattleMonster *Monster
 	BenchMonsters []*Monster
+}
+
+type Effect struct {
+	ID      string
+	Trigger string
+	Fn      func(any) (bool, error)
+	UserID  UserID
 }

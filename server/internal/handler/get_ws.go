@@ -40,5 +40,9 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		return conn.SetWriteDeadline(time.Now().Add(60 * time.Second))
 	})
 
+	// TODO: マッチング開始
+
+	// TODO:
+
 	return nil
 }
