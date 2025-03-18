@@ -481,18 +481,12 @@ resource "aws_dynamodb_table" "deck_table" {
 resource "aws_dynamodb_table" "present_table" {
   name      = "Presents"
   hash_key  = "PresentId"
-  range_key = "Time"
 
   billing_mode = "PAY_PER_REQUEST"
 
   attribute {
     name = "PresentId"
     type = "S"
-  }
-
-  attribute {
-    name = "Time"
-    type = "N"
   }
 
   tags = {

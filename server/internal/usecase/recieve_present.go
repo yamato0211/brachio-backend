@@ -51,7 +51,7 @@ func (r *ReceivePresentInteractor) Execute(ctx context.Context, userID string, p
 	}
 
 	// ユーザーのアイテムを追加
-	user.ItemIDsWithCount[present.Item.ItemID.String()] += present.ItemCount
+	user.ItemIDsWithCount[present.ItemID.String()] += present.ItemCount
 	if err := r.userRepository.Store(ctx, user); err != nil {
 		return err
 	}
