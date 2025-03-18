@@ -124,7 +124,12 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 		return nil, fmt.Errorf("deck entity is nil")
 	}
 
-	sc, err := FactoryCard(*e.ThumbnailCard)
+	var thumbnailCard *Card
+	if e.ThumbnailCard == nil {
+		thumbnailCard = &Card{}
+	}
+
+	thumbnailCard, err := FactoryCard(*e.ThumbnailCard)
 	if err != nil {
 		log.Println("failed factory card in deck with id from entity")
 		return nil, err
@@ -148,7 +153,7 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 		Cards:         myCards,
 		Id:            lo.ToPtr(e.DeckID.String()),
 		Name:          e.Name,
-		ThumbnailCard: *sc,
+		ThumbnailCard: *thumbnailCard,
 	}, nil
 }
 
