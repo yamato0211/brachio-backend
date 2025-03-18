@@ -147,7 +147,7 @@ func MasterCardWithFromEntity(e *model.MasterCard) (*MasterCard, error) {
 		return nil, fmt.Errorf("master card entity is nil")
 	}
 
-	var mc *MasterCard
+	mc := &MasterCard{}
 	switch e.CardType {
 	case model.CardTypeMonster:
 		sc, err := MasterMonsterCardFromEntity(e)
