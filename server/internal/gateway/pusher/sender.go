@@ -15,10 +15,10 @@ import (
 )
 
 type gameEventSender struct {
-	pusher websocket.Pusher
+	pusher *websocket.Pusher
 }
 
-func NewGameEventSender(pusher websocket.Pusher) service.GameEventSender {
+func NewGameEventSender(pusher *websocket.Pusher) service.GameEventSender {
 	return &gameEventSender{
 		pusher: pusher,
 	}

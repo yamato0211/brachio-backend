@@ -27,7 +27,7 @@ type UseGoodsInteractor struct {
 	GoodsApplier        service.GoodsApplier
 }
 
-func NewUserGoodsUsecase(
+func NewUseGoodsUsecase(
 	gsr repository.GameStateRepository,
 	ga service.GoodsApplier,
 ) UseGoodsInputPort {

@@ -27,7 +27,7 @@ type UseSupporterInteractor struct {
 	SupporterApplier    service.SupporterApplier
 }
 
-func NewUserSupporterUsecase(
+func NewUseSupporterUsecase(
 	gsr repository.GameStateRepository,
 	sa service.SupporterApplier,
 ) UseSupporterInputPort {

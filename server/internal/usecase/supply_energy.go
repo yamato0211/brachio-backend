@@ -27,7 +27,7 @@ type SupplyEnergyInteractor struct {
 	GameEventSender     service.GameEventSender
 }
 
-func NewApplyEnergyUsecase(gameStateRepository repository.GameStateRepository) SupplyEnergyInputPort {
+func NewSupplyEnergyUsecase(gameStateRepository repository.GameStateRepository) SupplyEnergyInputPort {
 	return &SupplyEnergyInteractor{
 		GameStateRepository: gameStateRepository,
 	}

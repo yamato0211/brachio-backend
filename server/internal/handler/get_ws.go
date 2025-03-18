@@ -31,6 +31,7 @@ type GetWebSocketHandler struct {
 	UseGoodsInputPort                 usecase.UseGoodsInputPort
 	UseSupporterInputPort             usecase.UseSupporterInputPort
 	CompleteInitialPlacementInputPort usecase.CompleteInitialPlacementInputPort
+	FlipCoinInputPort                 usecase.FlipCoinInputPort
 }
 
 func (h *GetWebSocketHandler) Ws(c echo.Context) error {

@@ -13,7 +13,7 @@ type SkillApprier interface {
 
 type SkillApprierService struct{}
 
-func NewAttackApprierService() SkillApprier {
+func NewSkillApprier() SkillApprier {
 	return &SkillApprierService{}
 }
 

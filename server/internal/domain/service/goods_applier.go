@@ -17,7 +17,7 @@ type GoodsApplierService struct {
 	GameMaster GameMasterService
 }
 
-func NewGoodsApplierService(
+func NewGoodsApplier(
 	gameMaster GameMasterService,
 ) GoodsApplier {
 	return &GoodsApplierService{

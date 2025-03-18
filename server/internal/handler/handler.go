@@ -5,9 +5,13 @@ import (
 	"log"
 
 	"github.com/yamato0211/brachio-backend/internal/config"
+	"github.com/yamato0211/brachio-backend/internal/domain/service"
 	"github.com/yamato0211/brachio-backend/internal/gateway/db"
+	"github.com/yamato0211/brachio-backend/internal/gateway/memdb"
+	websocket "github.com/yamato0211/brachio-backend/internal/gateway/pusher"
 	"github.com/yamato0211/brachio-backend/internal/infra/dynamo"
 	"github.com/yamato0211/brachio-backend/internal/usecase"
+	pkgwebsocket "github.com/yamato0211/brachio-backend/pkg/websocket"
 )
 
 type Handler struct {
@@ -61,6 +65,17 @@ func New() *Handler {
 	masterItemRepo := db.NewMasterItemRepository(dc)
 	userRepo := db.NewUserRepository(dc)
 	presentRepo := db.NewPresentRepository(dc)
+	gameStateRepo := memdb.NewGameStateRepository()
+
+	// service
+	pusher := pkgwebsocket.NewPusher()
+	gameEventSender := websocket.NewGameEventSender(pusher)
+	gameMasterService := service.NewGameMasterService(gameStateRepo, gameEventSender)
+	abilityApplier := service.NewAbilityApplier()
+	// skillApplier := service.NewSkillApprier()
+	goodsApplier := service.NewGoodsApplier(gameMasterService)
+	supporterApplier := service.NewSupporterApplier(gameMasterService)
+	matcher := service.NewMatcherService()
 
 	// usecase
 	drawGachaUsecase := usecase.NewDrawGachaUsecase(masterCardRepo, userRepo, masterItemRepo)
@@ -74,6 +89,20 @@ func New() *Handler {
 	getMyPresentUsecase := usecase.NewGetMyPresentsUsecase(presentRepo, masterItemRepo)
 	receivePresentUsecase := usecase.NewReceivePresentUsecase(presentRepo, userRepo)
 	getUserUsecase := usecase.NewGetUserUsecase(userRepo)
+
+	// websocket usecases
+	applyAbilityUsecase := usecase.NewApplyAbilityUsecase(gameStateRepo, abilityApplier)
+	completeInitialPlacementUsecase := usecase.NewCompleteInitialPlacementUsecase(gameMasterService)
+	evoluteMonsterUsecase := usecase.NewEvoluteMonsterUsecase(gameStateRepo, gameEventSender)
+	flipCoinUsecase := usecase.NewFlipCoinUsecase(gameStateRepo, gameEventSender)
+	giveUpUsecase := usecase.NewGiveUpUsecase(gameStateRepo)
+	matchingUsecase := usecase.NewMatchingUsecase(gameStateRepo, deckRepo, matcher, gameMasterService)
+	putInitializeMonsterUsecase := usecase.NewPutInitializeMonsterUsecase(gameStateRepo, gameMasterService)
+	retreatUsecase := usecase.NewRetreatUsecase(gameStateRepo, gameEventSender)
+	summonUsecase := usecase.NewSummonUsecase(gameStateRepo, gameEventSender)
+	supplyEnergyUsecase := usecase.NewSupplyEnergyUsecase(gameStateRepo)
+	useGoodsUsecase := usecase.NewUseGoodsUsecase(gameStateRepo, goodsApplier)
+	useSupporterUsecase := usecase.NewUseSupporterUsecase(gameStateRepo, supporterApplier)
 
 	return &Handler{
 		GetMyCardListHandler: GetMyCardListHandler{
@@ -102,7 +131,6 @@ func New() *Handler {
 		PostGachaDrawHandler: PostGachaDrawHandler{
 			drawGachaUsecase: drawGachaUsecase,
 		},
-		GetWebSocketHandler:   GetWebSocketHandler{},
 		GetHealthCheckHandler: GetHealthCheckHandler{},
 		GetMyPresentsHandler: GetMyPresentsHandler{
 			getMyPresentsUsecase: getMyPresentUsecase,
@@ -112,6 +140,20 @@ func New() *Handler {
 		},
 		GetUserHandler: GetUserHandler{
 			getUserUsecase: getUserUsecase,
+		},
+		GetWebSocketHandler: GetWebSocketHandler{
+			ApplyAbilityInputPort:             applyAbilityUsecase,
+			CompleteInitialPlacementInputPort: completeInitialPlacementUsecase,
+			EvoluteMonsterInputPort:           evoluteMonsterUsecase,
+			FlipCoinInputPort:                 flipCoinUsecase,
+			GiveUpInputPort:                   giveUpUsecase,
+			MatchingInputPort:                 matchingUsecase,
+			PutInitializeMonsterInputPort:     putInitializeMonsterUsecase,
+			RetreatInputPort:                  retreatUsecase,
+			SummonInputPort:                   summonUsecase,
+			SupplyEnergyInputPort:             supplyEnergyUsecase,
+			UseGoodsInputPort:                 useGoodsUsecase,
+			UseSupporterInputPort:             useSupporterUsecase,
 		},
 	}
 }

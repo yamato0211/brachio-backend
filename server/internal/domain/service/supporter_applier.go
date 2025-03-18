@@ -13,7 +13,7 @@ type SupporterApplierService struct {
 	GameMaster GameMasterService
 }
 
-func NewSupporterApplierService(
+func NewSupporterApplier(
 	gameMaster GameMasterService,
 ) SupporterApplier {
 	return &SupporterApplierService{
