@@ -1343,6 +1343,16 @@ var insertCmd = &cobra.Command{
 		}
 
 		fmt.Println("inserted")
+
+		// byts, err := json.Marshal(users)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+
+		// // ファイルに書き込み
+		// if err := os.WriteFile("master_cards.json", byts, 0666); err != nil {
+		// 	log.Fatal(err)
+		// }
 	},
 }
 
