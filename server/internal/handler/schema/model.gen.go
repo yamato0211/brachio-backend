@@ -27,13 +27,6 @@ const (
 	Supporter MasterCardType = "supporter"
 )
 
-// Defines values for MasterMonsterCardSubType.
-const (
-	Basic  MasterMonsterCardSubType = "basic"
-	Stage1 MasterMonsterCardSubType = "stage1"
-	Stage2 MasterMonsterCardSubType = "stage2"
-)
-
 // Defines values for SkillDamageOption.
 const (
 	Plus SkillDamageOption = "+"
@@ -222,10 +215,10 @@ type MasterMonsterCard struct {
 	Element  Element        `json:"element"`
 
 	// EvolvesFrom 進化元
-	EvolvesFrom *[]string `json:"evolvesFrom,omitempty"`
+	EvolvesFrom *string `json:"evolvesFrom,omitempty"`
 
 	// EvolvesTo 進化先
-	EvolvesTo *[]string `json:"evolvesTo,omitempty"`
+	EvolvesTo *string `json:"evolvesTo,omitempty"`
 
 	// Expansion カードセット名
 	Expansion *string `json:"expansion,omitempty"`
@@ -235,9 +228,6 @@ type MasterMonsterCard struct {
 
 	// ImageUrl カード画像URL
 	ImageUrl string `json:"imageUrl"`
-
-	// IsEx EXカードかどうか
-	IsEx *bool `json:"isEx,omitempty"`
 
 	// MasterCardId カードID
 	MasterCardId *string `json:"masterCardId,omitempty"`
@@ -252,13 +242,9 @@ type MasterMonsterCard struct {
 	RetreatCost *int `json:"retreatCost,omitempty"`
 
 	// Skills ワザ
-	Skills   []Skill                   `json:"skills"`
-	SubType  *MasterMonsterCardSubType `json:"subType,omitempty"`
-	Weakness Element                   `json:"weakness"`
+	Skills   []Skill `json:"skills"`
+	Weakness Element `json:"weakness"`
 }
-
-// MasterMonsterCardSubType defines model for MasterMonsterCard.SubType.
-type MasterMonsterCardSubType string
 
 // MasterSupporterCard defines model for masterSupporterCard.
 type MasterSupporterCard struct {
