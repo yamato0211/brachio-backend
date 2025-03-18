@@ -28,7 +28,7 @@ func MasterMonsterCardFromEntity(e *model.MasterCard) (*MasterMonsterCard, error
 		Name:         e.Name,
 		Rarity:       e.Rarity,
 		RetreatCost:  &e.RetreatCost,
-		Skills: lo.Map(e.Skills, func(skill model.Skill, _ int) Skill {
+		Skills: lo.Map(e.Skills, func(skill *model.Skill, _ int) Skill {
 			return Skill{
 				Cost: lo.Map(skill.Cost, func(cost model.MonsterType, _ int) Element {
 					return Element(cost)
