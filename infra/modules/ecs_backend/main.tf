@@ -93,6 +93,10 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name      = "SIGNING_KEY_URL"
           valueFrom = "${var.secrets_manager.secret_for_backend_arn}:cognitosigningkeyurl::"
+        },
+        {
+          name      = "USER_POOL_NAME"
+          valueFrom = "${var.secrets_manager.secret_for_backend_arn}:poolname::"
         }
       ]
 

@@ -34,6 +34,7 @@ type CommonConfig struct {
 type CognitoConfig struct {
 	Region        string `envconfig:"REGION" default:"ap-northeast-1"`
 	SigningKeyURL string `envconfig:"SIGNING_KEY_URL"`
+	PoolName      string `envconfig:"USER_POOL_NAME"`
 }
 
 func GetConfig() (*Config, error) {

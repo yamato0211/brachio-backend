@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/guregu/dynamo/v2"
 	"github.com/labstack/echo/v4"
 	"github.com/lestrrat-go/jwx/jwk"
@@ -25,16 +27,20 @@ var (
 type AuthMiddleware struct {
 	isLocal          bool
 	signingKeyURL    string
+	poolName         string
 	FindUserUsecase  usecase.FindUserInputPort
 	StoreUserUsecase usecase.StoreUserInputPort
+	cognitoClient    *cognitoidentityprovider.Client
 }
 
-func NewAuthMiddleware(cfg *config.Config, fu usecase.FindUserInputPort, su usecase.StoreUserInputPort) *AuthMiddleware {
+func NewAuthMiddleware(cfg *config.Config, fu usecase.FindUserInputPort, su usecase.StoreUserInputPort, cc *cognitoidentityprovider.Client) *AuthMiddleware {
 	return &AuthMiddleware{
 		isLocal:          cfg.Common.IsLocal,
 		signingKeyURL:    cfg.Cognito.SigningKeyURL,
+		poolName:         cfg.Cognito.PoolName,
 		FindUserUsecase:  fu,
 		StoreUserUsecase: su,
+		cognitoClient:    cc,
 	}
 }
 
@@ -84,11 +90,39 @@ func (m *AuthMiddleware) Verify(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		id := uid.(string)
+
+		input := &cognitoidentityprovider.AdminGetUserInput{
+			UserPoolId: aws.String(m.poolName),
+			Username:   aws.String(id),
+		}
+
+		output, err := m.cognitoClient.AdminGetUser(c.Request().Context(), input)
+		if err != nil {
+			log.Fatalf("failed to get user: %v", err)
+			return c.JSON(http.StatusInternalServerError, map[string]string{"message": "failed to get user"})
+		}
+
+		userNickName := ""
+		picture := ""
+
+		for _, attr := range output.UserAttributes {
+			if *attr.Name == "nickname" {
+				userNickName = *attr.Value
+			}
+			if *attr.Name == "picture" {
+				picture = *attr.Value
+			}
+		}
+
+		fmt.Println(output)
+
 		// DynamoDBにユーザが存在するか確認
 		_, err = m.FindUserUsecase.Execute(c.Request().Context(), id)
 		if errors.Is(err, dynamo.ErrNotFound) {
 			user := &model.User{
-				ID: model.UserID(id),
+				ID:       model.UserID(id),
+				Name:     userNickName,
+				ImageURL: picture,
 			}
 			err = m.StoreUserUsecase.Execute(c.Request().Context(), user)
 			if err != nil {

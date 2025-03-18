@@ -16,10 +16,10 @@ type User struct {
 	ImageURL string `dynamo:"ImageUrl"`
 
 	// ユーザーが持っているカード
-	CardIDsWithCount map[string]int `dynamo:"cardWithCount,set"`
+	CardIDsWithCount map[string]int `dynamo:"cardWithCount"`
 
 	// ユーザーが持っているアイテム
-	ItemIDsWithCount map[string]int `dynamo:"itemWithCount,set"`
+	ItemIDsWithCount map[string]int `dynamo:"itemWithCount"`
 }
 
 type MasterCardWithCount struct {

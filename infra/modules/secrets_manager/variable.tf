@@ -10,5 +10,6 @@ variable "backend" {
     islocal              = bool
     dynamoendpoint       = string
     cognitosigningkeyurl = string
+    poolname             = string
   })
 }

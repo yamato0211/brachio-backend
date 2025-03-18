@@ -59,6 +59,20 @@ resource "aws_cloudfront_distribution" "cf" {
     connection_timeout       = "10"
   }
 
+  custom_error_response {
+    error_caching_min_ttl = 0
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+  }
+
+  custom_error_response {
+    error_caching_min_ttl = 0
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+  }
+
   viewer_certificate {
     # 独自ドメインのACMを使用しない場合、デフォルトの証明書を使用する
     cloudfront_default_certificate = false

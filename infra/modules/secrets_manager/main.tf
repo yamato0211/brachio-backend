@@ -4,6 +4,7 @@ locals {
     islocal              = var.backend.islocal
     dynamoendpoint       = var.backend.dynamoendpoint
     cognitosigningkeyurl = var.backend.cognitosigningkeyurl
+    poolname             = var.backend.poolname
   }
 }
 

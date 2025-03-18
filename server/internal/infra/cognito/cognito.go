@@ -15,6 +15,6 @@ func New(ctx context.Context, cfg config.CognitoConfig) (*cognitoidentityprovide
 	if err != nil {
 		return nil, err
 	}
-	client.VerifySoftwareToken(context.Background(), &cognitoidentityprovider.VerifySoftwareTokenInput{})
+
 	return client, nil
 }

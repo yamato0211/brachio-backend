@@ -17,10 +17,10 @@ type Config struct {
 
 func New(ctx context.Context, cfg *Config) (*dynamo.DB, error) {
 	opts := []func(*config.LoadOptions) error{}
-	// if cfg.IsLocal {
-	// 	opts = append(opts, config.WithBaseEndpoint(cfg.Endpoint))
-	// }
-	opts = append(opts, config.WithBaseEndpoint(cfg.Endpoint))
+	if cfg.IsLocal {
+		opts = append(opts, config.WithBaseEndpoint(cfg.Endpoint))
+	}
+	// opts = append(opts, config.WithBaseEndpoint(cfg.Endpoint))
 	opts = append(opts, config.WithRegion(cfg.Region))
 
 	conf, err := config.LoadDefaultConfig(

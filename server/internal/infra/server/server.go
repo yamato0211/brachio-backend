@@ -12,6 +12,7 @@ import (
 	"github.com/yamato0211/brachio-backend/internal/config"
 	"github.com/yamato0211/brachio-backend/internal/gateway/db"
 	"github.com/yamato0211/brachio-backend/internal/handler"
+	"github.com/yamato0211/brachio-backend/internal/infra/cognito"
 	"github.com/yamato0211/brachio-backend/internal/infra/dynamo"
 	"github.com/yamato0211/brachio-backend/internal/infra/middleware"
 	"github.com/yamato0211/brachio-backend/internal/usecase"
@@ -36,7 +37,14 @@ func New() (*Server, error) {
 
 	e := echo.New()
 
-	dc, err := dynamo.New(context.Background(), cfg.Dynamo)
+	ctx := context.Background()
+
+	dc, err := dynamo.New(ctx, cfg.Dynamo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cc, err := cognito.New(ctx, cfg.Cognito)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,7 +52,7 @@ func New() (*Server, error) {
 	userRepo := db.NewUserRepository(dc)
 	findUserUsecase := usecase.NewFindUserUsecase(userRepo)
 	storeUserUsecase := usecase.NewStoreUserUsecase(userRepo)
-	authMiddleware := middleware.NewAuthMiddleware(cfg, findUserUsecase, storeUserUsecase)
+	authMiddleware := middleware.NewAuthMiddleware(cfg, findUserUsecase, storeUserUsecase, cc)
 
 	e.Use(authMiddleware.Verify)
 	e.Use(echomiddleware.CORS())
