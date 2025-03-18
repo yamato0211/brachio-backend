@@ -35,6 +35,14 @@ const (
 	MonsterTypePopularity MonsterType = "popularity"
 )
 
+type SubType string
+
+const (
+	MonsterSubTypeBasic  SubType = "basic"  // たね
+	MonsterSubTypeStage1 SubType = "stage1" // 1進化
+	MonsterSubTypeStage2 SubType = "stage2" // 2進化
+)
+
 type MasterCard struct {
 	MasterCardID MasterCardID `dynamo:"CardId,hash"`
 	Name         string       `dynamo:"Name"`
@@ -46,13 +54,14 @@ type MasterCard struct {
 
 	// Monster
 	HP          int            `dynamo:"HP,omitempty"`
+	SubType     SubType        `dynamo:"SubType,omitempty"`     // 進化段階
 	Type        MonsterType    `dynamo:"Type,omitempty"`        // 属性 (e.g. fire)
 	Weakness    MonsterType    `dynamo:"Weakness,omitempty"`    // 弱点 (e.g. water)
-	Skills      []Skill        `dynamo:"Skills,omitempty"`      // ワザ
+	Skills      []*Skill       `dynamo:"Skills,omitempty"`      // ワザ
 	Ability     *Ability       `dynamo:"Ability,omitempty"`     // 特性
 	RetreatCost int            `dynamo:"RetreatCost,omitempty"` // 逃げるコスト
 	EvolvesFrom []MasterCardID `dynamo:"EvolvesFrom,omitempty"` // 進化元
-	EvelvesTo   []MasterCardID `dynamo:"EvolvesTo,omitempty"`   // 進化先
+	EvolvesTo   []MasterCardID `dynamo:"EvolvesTo,omitempty"`   // 進化先
 	IsEx        bool           `dynamo:"IsEx,omitempty"`        // EXカード
 
 	// Support & Goods
