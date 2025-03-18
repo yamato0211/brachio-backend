@@ -98,7 +98,7 @@ func New() *Handler {
 	evoluteMonsterUsecase := usecase.NewEvoluteMonsterUsecase(gameStateRepo, gameEventSender)
 	flipCoinUsecase := usecase.NewFlipCoinUsecase(gameStateRepo, gameEventSender)
 	giveUpUsecase := usecase.NewGiveUpUsecase(gameStateRepo)
-	matchingUsecase := usecase.NewMatchingUsecase(gameStateRepo, deckRepo, matcher, gameMasterService)
+	matchingUsecase := usecase.NewMatchingUsecase(gameStateRepo, deckRepo, masterCardRepo, matcher, gameMasterService)
 	putInitializeMonsterUsecase := usecase.NewPutInitializeMonsterUsecase(gameStateRepo, gameMasterService)
 	retreatUsecase := usecase.NewRetreatUsecase(gameStateRepo, gameEventSender)
 	summonUsecase := usecase.NewSummonUsecase(gameStateRepo, gameEventSender)

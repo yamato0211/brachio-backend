@@ -24,23 +24,26 @@ type MatchingInput struct {
 }
 
 type MatchingInteractor struct {
-	GameStateRepository repository.GameStateRepository
-	DeckRepository      repository.DeckRepository
-	Matcher             service.Matcher
-	GameMaster          service.GameMasterService
+	GameStateRepository  repository.GameStateRepository
+	DeckRepository       repository.DeckRepository
+	MasterCardRepository repository.MasterCardRepository
+	Matcher              service.Matcher
+	GameMaster           service.GameMasterService
 }
 
 func NewMatchingUsecase(
 	gsr repository.GameStateRepository,
 	dr repository.DeckRepository,
+	mcr repository.MasterCardRepository,
 	m service.Matcher,
 	gm service.GameMasterService,
 ) MatchingInputPort {
 	return &MatchingInteractor{
-		GameStateRepository: gsr,
-		DeckRepository:      dr,
-		Matcher:             m,
-		GameMaster:          gm,
+		GameStateRepository:  gsr,
+		DeckRepository:       dr,
+		MasterCardRepository: mcr,
+		Matcher:              m,
+		GameMaster:           gm,
 	}
 }
 
@@ -65,7 +68,7 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 		return "", err
 	}
 
-	masterCards, err := g.MasterCardRepository.FindAll(ctx)
+	masterCards, err := i.MasterCardRepository.FindAll(ctx)
 	if err != nil {
 		return "", err
 	}
