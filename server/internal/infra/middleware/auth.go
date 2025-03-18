@@ -1,0 +1,105 @@
+package middleware
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/guregu/dynamo/v2"
+	"github.com/labstack/echo/v4"
+	"github.com/lestrrat-go/jwx/jwk"
+	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/yamato0211/brachio-backend/internal/config"
+	"github.com/yamato0211/brachio-backend/internal/domain/model"
+	"github.com/yamato0211/brachio-backend/internal/usecase"
+)
+
+var (
+	UserIDKey = "userID"
+)
+
+type AuthMiddleware struct {
+	isLocal          bool
+	signingKeyURL    string
+	FindUserUsecase  usecase.FindUserInputPort
+	StoreUserUsecase usecase.StoreUserInputPort
+}
+
+func NewAuthMiddleware(cfg *config.Config, fu usecase.FindUserInputPort, su usecase.StoreUserInputPort) *AuthMiddleware {
+	return &AuthMiddleware{
+		isLocal:          cfg.Common.IsLocal,
+		signingKeyURL:    cfg.Cognito.SigningKeyURL,
+		FindUserUsecase:  fu,
+		StoreUserUsecase: su,
+	}
+}
+
+func (m *AuthMiddleware) parseJWT(ctx context.Context, token string) (jwt.Token, error) {
+	keySet, err := jwk.Fetch(ctx, m.signingKeyURL)
+	if err != nil {
+		return nil, err
+	}
+	return jwt.Parse(
+		[]byte(token),
+		jwt.WithKeySet(keySet),
+		jwt.WithValidate(true),
+	)
+}
+
+func GetUserID(c echo.Context) string {
+	return c.Get(UserIDKey).(string)
+}
+
+func (m *AuthMiddleware) Verify(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		authHeader := c.Request().Header.Get("Authorization")
+		if !strings.HasPrefix(authHeader, "Bearer ") {
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Authorization Header is required"})
+		}
+		token := strings.TrimPrefix(authHeader, "Bearer ")
+		if m.isLocal {
+			// tokenはuserID
+			c.Set(UserIDKey, token)
+			return next(c)
+		}
+
+		parsed, err := m.parseJWT(c.Request().Context(), token)
+		if err != nil {
+			log.Print(err)
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "jwt parse failed"})
+		}
+
+		// トークンの有効期限を確認
+		if time.Now().After(parsed.Expiration()) {
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "token expired"})
+		}
+		fmt.Println(parsed)
+		uid, ok := parsed.Get("cognito:username")
+		if !ok {
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "cognito:username not found"})
+		}
+
+		id := uid.(string)
+		// DynamoDBにユーザが存在するか確認
+		_, err = m.FindUserUsecase.Execute(c.Request().Context(), id)
+		if errors.Is(err, dynamo.ErrNotFound) {
+			user := &model.User{
+				ID: model.UserID(id),
+			}
+			err = m.StoreUserUsecase.Execute(c.Request().Context(), user)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, map[string]string{"message": err.Error()})
+			}
+		} else if err != nil {
+			log.Print(err)
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": err.Error()})
+		}
+
+		c.Set(UserIDKey, id)
+		return next(c)
+	}
+}

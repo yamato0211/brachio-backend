@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"sync"
 
 	"github.com/kelseyhightower/envconfig"
@@ -13,9 +12,10 @@ var (
 )
 
 type Config struct {
-	Server ServerConfig
-	Dynamo DynamoConfig
-	Common CommonConfig
+	Server  ServerConfig
+	Dynamo  DynamoConfig
+	Common  CommonConfig
+	Cognito CognitoConfig
 }
 
 type ServerConfig struct {
@@ -29,6 +29,11 @@ type DynamoConfig struct {
 
 type CommonConfig struct {
 	IsLocal bool `envconfig:"IS_LOCAL" default:"false"`
+}
+
+type CognitoConfig struct {
+	Region        string `envconfig:"REGION" default:"ap-northeast-1"`
+	SigningKeyURL string `envconfig:"SIGNING_KEY_URL"`
 }
 
 func GetConfig() (*Config, error) {
@@ -48,9 +53,12 @@ func GetConfig() (*Config, error) {
 			err = _err
 			return
 		}
-	})
 
-	log.Println(cfg.Dynamo.Endpoint)
+		if _err := envconfig.Process("", &cfg.Cognito); _err != nil {
+			err = _err
+			return
+		}
+	})
 
 	return &cfg, err
 }

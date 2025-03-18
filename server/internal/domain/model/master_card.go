@@ -33,6 +33,14 @@ const (
 	MonsterTypePopularity MonsterType = "popularity"
 )
 
+type MonsterSubType string
+
+const (
+	MonsterSubTypeBasic  MonsterSubType = "basic"
+	MonsterSubTypeStage1 MonsterSubType = "stage1"
+	MonsterSubTypeStage2 MonsterSubType = "stage2"
+)
+
 type MasterCard struct {
 	MasterCardID MasterCardID `dynamo:"MasterCardId,hash"`
 	Name         string       `dynamo:"Name"`
@@ -52,9 +60,26 @@ type MasterCard struct {
 	EvolvesFrom []MasterCardID `dynamo:"EvolvesFrom,omitempty"` // 進化元
 	EvelvesTo   []MasterCardID `dynamo:"EvolvesTo,omitempty"`   // 進化先
 	IsEx        bool           `dynamo:"IsEx,omitempty"`        // EXカード
+	SubType     MonsterSubType `dynamo:"SubType,omitempty"`     // 種, 1進化, 2進化
 
 	// Support & Goods
 	Text string `dynamo:"Text,omitempty"` // 効果説明文
+}
+
+func (m *MasterCard) EvolvesFromSlice() []string {
+	var evolvesFromStrings = make([]string, 0, len(m.EvolvesFrom))
+	for _, e := range m.EvolvesFrom {
+		evolvesFromStrings = append(evolvesFromStrings, string(e))
+	}
+	return evolvesFromStrings
+}
+
+func (m *MasterCard) EvelvesToSlice() []string {
+	var evelvesToStrings = make([]string, 0, len(m.EvelvesTo))
+	for _, e := range m.EvelvesTo {
+		evelvesToStrings = append(evelvesToStrings, string(e))
+	}
+	return evelvesToStrings
 }
 
 type Skill struct {
@@ -63,6 +88,14 @@ type Skill struct {
 	Damage       int           `dynamo:"Damage"`
 	DamageOption string        `dynamo:"DamageOption,omitempty"` // ダメージオプション 20+の`+`の部分
 	Cost         []MonsterType `dynamo:"Cost"`                   // 使用コスト (e.g. [fire, fire, water])
+}
+
+func (s *Skill) CostSlice() []string {
+	var costStrings = make([]string, 0, len(s.Cost))
+	for _, c := range s.Cost {
+		costStrings = append(costStrings, string(c))
+	}
+	return costStrings
 }
 
 type Ability struct {

@@ -41,7 +41,8 @@ locals {
   }
 
   backend_secrets = {
-    islocal        = false
-    dynamoendpoint = "https://dynamodb.ap-northeast-1.amazonaws.com"
+    islocal              = false
+    dynamoendpoint       = "https://dynamodb.ap-northeast-1.amazonaws.com"
+    cognitosigningkeyurl = "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_LXdcNPdGg/.well-known/jwks.json"
   }
 }

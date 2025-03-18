@@ -77,7 +77,7 @@ var insertCmd = &cobra.Command{
 				Skills: []model.Skill{
 					{
 						Name:   "Clean Architecture",
-						Text:   "このラムモンから2エネルギートラッシュする。相手の場のラムモンから1枚選び、そのカードを山札に戻す。",
+						Text:   "このラムモンから2エネルギートラッシュする。相手のバトル場のラムモンから1枚選び、そのカードを山札に戻す。",
 						Damage: 0,
 						Cost: []model.MonsterType{
 							model.MonsterTypeKnowledge,
@@ -983,9 +983,6 @@ var insertCmd = &cobra.Command{
 				Name:         "オライリー本",
 				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
 				Rarity:       6,
-			},
-			{
-				MasterCardID: model.NewMasterCardID(""),
 			},
 			{
 				MasterCardID: model.NewMasterCardID("protein"),

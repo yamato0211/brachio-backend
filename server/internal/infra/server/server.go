@@ -1,14 +1,20 @@
 package server
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	echomiddleware "github.com/labstack/echo/v4/middleware"
 	oapimiddleware "github.com/oapi-codegen/echo-middleware"
 	"github.com/yamato0211/brachio-backend/internal/config"
+	"github.com/yamato0211/brachio-backend/internal/gateway/db"
 	"github.com/yamato0211/brachio-backend/internal/handler"
+	"github.com/yamato0211/brachio-backend/internal/infra/dynamo"
+	"github.com/yamato0211/brachio-backend/internal/infra/middleware"
+	"github.com/yamato0211/brachio-backend/internal/usecase"
 )
 
 type Server struct {
@@ -30,6 +36,17 @@ func New() (*Server, error) {
 
 	e := echo.New()
 
+	dc, err := dynamo.New(context.Background(), cfg.Dynamo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	userRepo := db.NewUserRepository(dc)
+	findUserUsecase := usecase.NewFindUserUsecase(userRepo)
+	storeUserUsecase := usecase.NewStoreUserUsecase(userRepo)
+	authMiddleware := middleware.NewAuthMiddleware(cfg, findUserUsecase, storeUserUsecase)
+
+	e.Use(authMiddleware.Verify)
 	e.Use(echomiddleware.Logger())
 	e.Use(oapimiddleware.OapiRequestValidator(swagger))
 
