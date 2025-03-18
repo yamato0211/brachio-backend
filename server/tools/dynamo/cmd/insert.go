@@ -1106,7 +1106,7 @@ var insertCmd = &cobra.Command{
 			},
 		}
 
-		tbl := dc.Table("Cards")
+		tbl := dc.Table("MasterCards")
 
 		for _, user := range users {
 			if err := tbl.Put(user).Run(cmd.Context()); err != nil {
