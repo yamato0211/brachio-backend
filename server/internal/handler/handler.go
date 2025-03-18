@@ -1,5 +1,15 @@
 package handler
 
+import (
+	"context"
+	"log"
+
+	"github.com/yamato0211/brachio-backend/internal/config"
+	"github.com/yamato0211/brachio-backend/internal/gateway/db"
+	"github.com/yamato0211/brachio-backend/internal/infra/dynamo"
+	"github.com/yamato0211/brachio-backend/internal/usecase"
+)
+
 type Handler struct {
 	// Card
 	GetMyCardListHandler
@@ -27,6 +37,18 @@ type Handler struct {
 }
 
 func New() *Handler {
+	// DI
+	cfg, err := config.GetConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	dc, err := dynamo.New(context.Background(), cfg.Dynamo)
+	if err != nil {
+		log.Fatal(err)
+	}
+	masterCardRepo := db.NewMasterCardRepository(*dc)
+	drawGachaUsecase := usecase.NewDrawGachaUsecase(masterCardRepo)
+	postGachaDrawHandler := NewPostGachaDrawHandler(drawGachaUsecase)
 	return &Handler{
 		GetMyCardListHandler:  GetMyCardListHandler{},
 		GetDeckListHandler:    GetDeckListHandler{},
@@ -37,7 +59,7 @@ func New() *Handler {
 		GetMyItemListHandler:  GetMyItemListHandler{},
 		GetGachaPowerHandler:  GetGachaPowerHandler{},
 		GetGachaListHandler:   GetGachaListHandler{},
-		PostGachaDrawHandler:  PostGachaDrawHandler{},
+		PostGachaDrawHandler:  postGachaDrawHandler,
 		GetWebSocketHandler:   GetWebSocketHandler{},
 		GetHealthCheckHandler: GetHealthCheckHandler{},
 	}
