@@ -12,10 +12,12 @@ func MasterMonsterCardFromEntity(e *model.MasterCard) (*MasterMonsterCard, error
 		return nil, fmt.Errorf("monster master card entity is nil")
 	}
 	return &MasterMonsterCard{
-		Ability: &Ability{
-			Name: e.Ability.Name,
-			Text: e.Ability.Text,
-		},
+		Ability: lo.Ternary(e.Ability == nil, nil,
+			&Ability{
+				Name: e.Ability.Name,
+				Text: e.Ability.Text,
+			},
+		),
 		CardType:     MasterCardType(e.CardType),
 		Element:      Element(e.Type),
 		EvolvesFrom:  lo.ToPtr(e.EvolvesFromSlice()),

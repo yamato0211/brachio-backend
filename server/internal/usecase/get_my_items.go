@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
@@ -26,6 +27,8 @@ func (g *GetMyItemsInteractor) Execute(ctx context.Context, userID string) ([]*m
 		return nil, err
 	}
 
+	fmt.Println(user.ItemIDsWithCount)
+
 	masterItems, err := g.itemRepo.FindAll(ctx)
 	if err != nil {
 		return nil, err
@@ -33,6 +36,7 @@ func (g *GetMyItemsInteractor) Execute(ctx context.Context, userID string) ([]*m
 
 	var myItems []*model.MasterItemWithCount
 	for _, item := range masterItems {
+		fmt.Println(item)
 		myItems = append(myItems, &model.MasterItemWithCount{
 			MasterItem: item,
 			Count:      user.ItemIDsWithCount[item.ItemID.String()],
