@@ -1,9 +1,21 @@
 package handler
 
-import "github.com/labstack/echo/v4"
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/samber/lo"
+	"github.com/yamato0211/brachio-backend/internal/handler/schema"
+)
 
 type GetGachaListHandler struct{}
 
 func (h *GetGachaListHandler) GetGachaList(c echo.Context) error {
-	return nil
+	packs := []*schema.Gacha{
+		{
+			Id:   lo.ToPtr("1"),
+			Name: "最強の技術者",
+		},
+	}
+	return c.JSON(http.StatusOK, packs)
 }
