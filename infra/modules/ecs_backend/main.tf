@@ -44,9 +44,9 @@ resource "aws_iam_policy" "task_policy" {
         Resource = "*"
       },
       {
-        Sid      = "CognitoAccess",
-        Effect   = "Allow",
-        Action   = [
+        Sid    = "CognitoAccess",
+        Effect = "Allow",
+        Action = [
           "cognito-idp:ListUsers",
           "cognito-idp:AdminCreateUser",
           "cognito-idp:AdminDeleteUser",

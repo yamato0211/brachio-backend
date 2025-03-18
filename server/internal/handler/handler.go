@@ -48,21 +48,44 @@ func New() *Handler {
 		log.Fatal(err)
 	}
 
-	masterCardRepo := db.NewMasterCardRepository(*dc)
-	deckRepo := db.NewDeckRepository(*dc)
+	// repo
+	masterCardRepo := db.NewMasterCardRepository(dc)
+	deckRepo := db.NewDeckRepository(dc)
+	masterItemRepo := db.NewMasterItemRepository(dc)
+	userRepo := db.NewUserRepository(dc)
+
+	// usecase
 	drawGachaUsecase := usecase.NewDrawGachaUsecase(masterCardRepo)
 	getMyDecksUsecase := usecase.NewGetMyDecksUsecase(deckRepo, masterCardRepo)
+	getMyItemsUsecase := usecase.NewGetMyItemsUsecase(masterItemRepo, userRepo)
+	createMyDeckUsecase := usecase.NewCreateMyDeckUsecase(deckRepo)
+	getMyDeckUsecase := usecase.NewGetMyDeckUsecase(deckRepo, masterCardRepo)
+	updateMyDeckUsecase := usecase.NewUpdateMyDeckUsecase(deckRepo)
+	deleteMyDeckUsecase := usecase.NewDeleteMyDeckUsecase(deckRepo)
+	getMyCardsUsecase := usecase.NewGetMyCardsUsecase(masterCardRepo, userRepo)
 
 	return &Handler{
-		GetMyCardListHandler: GetMyCardListHandler{},
+		GetMyCardListHandler: GetMyCardListHandler{
+			getMyCardsUsecase: getMyCardsUsecase,
+		},
 		GetDeckListHandler: GetDeckListHandler{
 			getMyDecksUsecase: getMyDecksUsecase,
 		},
-		PostDeckHandler:      PostDeckHandler{},
-		GetDeckHandler:       GetDeckHandler{},
-		PutDeckHandler:       PutDeckHandler{},
-		DeleteDeckHandler:    DeleteDeckHandler{},
-		GetMyItemListHandler: GetMyItemListHandler{},
+		PostDeckHandler: PostDeckHandler{
+			createMyDeckUsecase: createMyDeckUsecase,
+		},
+		GetDeckHandler: GetDeckHandler{
+			getMyDeckUsecase: getMyDeckUsecase,
+		},
+		PutDeckHandler: PutDeckHandler{
+			updateMyDeckUsecase: updateMyDeckUsecase,
+		},
+		DeleteDeckHandler: DeleteDeckHandler{
+			DeleteMyDeckUsecase: deleteMyDeckUsecase,
+		},
+		GetMyItemListHandler: GetMyItemListHandler{
+			getMyItemsUsecase: getMyItemsUsecase,
+		},
 		GetGachaPowerHandler: GetGachaPowerHandler{},
 		GetGachaListHandler:  GetGachaListHandler{},
 		PostGachaDrawHandler: PostGachaDrawHandler{

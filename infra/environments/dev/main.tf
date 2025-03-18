@@ -30,6 +30,10 @@ module "frontend" {
   source         = "../../modules/frontend"
   common         = local.common
   github_actions = local.github_actions_for_front
+  domain         = local.domain
+  providers = {
+    aws = aws.us-east-1
+  }
 }
 
 module "secrets_manager" {

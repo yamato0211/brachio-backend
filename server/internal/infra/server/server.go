@@ -47,6 +47,7 @@ func New() (*Server, error) {
 	authMiddleware := middleware.NewAuthMiddleware(cfg, findUserUsecase, storeUserUsecase)
 
 	e.Use(authMiddleware.Verify)
+	e.Use(echomiddleware.CORS())
 	e.Use(echomiddleware.Logger())
 	e.Use(oapimiddleware.OapiRequestValidator(swagger))
 

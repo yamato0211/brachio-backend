@@ -141,3 +141,42 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 		ThumbnailCard: *sc,
 	}, nil
 }
+
+func MasterCardWithFromEntity(e *model.MasterCard) (*MasterCard, error) {
+	if e == nil {
+		return nil, fmt.Errorf("master card entity is nil")
+	}
+
+	var mc *MasterCard
+	switch e.CardType {
+	case model.CardTypeMonster:
+		sc, err := MasterMonsterCardFromEntity(e)
+		if err != nil {
+			return nil, err
+		}
+		if err := mc.MergeMasterMonsterCard(*sc); err != nil {
+			return nil, err
+		}
+		return mc, nil
+	case model.CardTypeGoods:
+		sc, err := MasterGoodsCardFromEntity(e)
+		if err != nil {
+			return nil, err
+		}
+		if err := mc.MergeMasterGoodsCard(*sc); err != nil {
+			return nil, err
+		}
+		return mc, nil
+	case model.CardTypeSupporter:
+		sc, err := MasterSupportCardFromEntity(e)
+		if err != nil {
+			return nil, err
+		}
+		if err := mc.MergeMasterSupporterCard(*sc); err != nil {
+			return nil, err
+		}
+		return mc, nil
+	default:
+		return nil, fmt.Errorf("unknown card type: %s", e.CardType)
+	}
+}

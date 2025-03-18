@@ -23,3 +23,7 @@ variable "github_actions" {
     account_name = string
   })
 }
+
+variable "domain" {
+  type = string
+}
