@@ -7,6 +7,7 @@ import (
 	"log"
 	"sync"
 
+	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
 	"github.com/yamato0211/brachio-backend/internal/domain/service"
@@ -63,6 +64,21 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 	if err != nil {
 		return "", err
 	}
+
+	masterCards, err := g.MasterCardRepository.FindAll(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	myCards := make([]*model.MasterCard, 0, len(deck.MasterCardIDs))
+	for _, cid := range deck.MasterCardIDs {
+		mc, ok := lo.Find(masterCards, func(item *model.MasterCard) bool { return item.MasterCardID == cid })
+		if !ok {
+			return "", errors.New("master card not found")
+		}
+		myCards = append(myCards, mc)
+	}
+	deck.MasterCards = myCards
 
 	fmt.Printf("deck: %+v\n", deck)
 
