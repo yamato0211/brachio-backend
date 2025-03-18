@@ -60,7 +60,9 @@ func (i *PutInitializeMonsterInteractor) Execute(ctx context.Context, input *Put
 		me := state.FindPlayerByUserID(userID)
 
 		// カードが手札にあるか確認
-		card, idx, isFound := lo.FindIndexOf(me.Hands, func(c *model.Card) bool { return c.CardID == cardID })
+		card, idx, isFound := lo.FindIndexOf(me.Hands, func(c *model.Card) bool {
+			return c.MasterCard.SubType == model.MonsterSubTypeBasic && c.CardID == cardID
+		})
 		if !isFound {
 			return xerrors.Errorf("card not found in hand: %d", cardID)
 		}
@@ -73,9 +75,15 @@ func (i *PutInitializeMonsterInteractor) Execute(ctx context.Context, input *Put
 		// Position 0 はバトルゾーン
 		if input.Position == 0 {
 			// バトルゾーンにカードを出す
+			if me.BattleMonster != nil {
+				return xerrors.Errorf("battle monster already exists")
+			}
 			me.BattleMonster = monster
 		} else {
 			// 控えに出す
+			if me.BenchMonsters[input.Position-1] != nil {
+				return xerrors.Errorf("monster already exists in bench: %d", input.Position)
+			}
 			me.BenchMonsters[input.Position-1] = monster
 		}
 
