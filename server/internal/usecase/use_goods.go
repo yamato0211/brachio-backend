@@ -16,10 +16,10 @@ type UseGoodsInputPort interface {
 }
 
 type UseGoodsInput struct {
-	RoomID string
-	UserID string
-	CardID string
-	Target *string
+	RoomID  string
+	UserID  string
+	CardID  string
+	Targets []int
 }
 
 type UseGoodsInteractor struct {
@@ -71,7 +71,7 @@ func (i *UseGoodsInteractor) Execute(ctx context.Context, input *UseGoodsInput) 
 		}
 		state.TurnPlayer.Hands = slices.Delete(state.TurnPlayer.Hands, idx, idx+1)
 
-		if err := i.GoodsApplier.ApplyGoods(state, card.MasterCard.MasterCardID, input.Target); err != nil {
+		if err := i.GoodsApplier.ApplyGoods(state, card.MasterCard.MasterCardID, input.Targets); err != nil {
 			return err
 		}
 

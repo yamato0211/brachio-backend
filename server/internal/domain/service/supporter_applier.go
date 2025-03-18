@@ -6,7 +6,7 @@ import (
 )
 
 type SupporterApplier interface {
-	ApplySupporter(state *model.GameState, goodsID model.MasterCardID, meta any) error
+	ApplySupporter(state *model.GameState, goodsID model.MasterCardID, targets []int) error
 }
 
 type SupporterApplierService struct {
@@ -21,20 +21,20 @@ func NewSupporterApplierService(
 	}
 }
 
-func (s *SupporterApplierService) ApplySupporter(state *model.GameState, goodsID model.MasterCardID, meta any) error {
+func (s *SupporterApplierService) ApplySupporter(state *model.GameState, goodsID model.MasterCardID, targets []int) error {
 	switch goodsID {
 	case model.MasterCardID("chat-gpt"):
-		return s.applyChatGpt(state, meta)
+		return s.applyChatGpt(state, targets)
 	case model.MasterCardID("spaghetti-code"):
-		return s.applySpaghettiCode(state, meta)
+		return s.applySpaghettiCode(state, targets)
 	case model.MasterCardID("flaming-project"):
-		return s.applyFlamingProject(state, meta)
+		return s.applyFlamingProject(state, targets)
 	case model.MasterCardID("security-soft"):
-		return s.applySecuritySoft(state, meta)
+		return s.applySecuritySoft(state, targets)
 	case model.MasterCardID("strict-mode"):
-		return s.applyStrictMode(state, meta)
+		return s.applyStrictMode(state, targets)
 	case model.MasterCardID("firewall"):
-		return s.applyFirewall(state, meta)
+		return s.applyFirewall(state, targets)
 	default:
 		return xerrors.Errorf("unknown supporter id: %s", goodsID)
 	}

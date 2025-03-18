@@ -10,7 +10,7 @@ import (
 )
 
 type GoodsApplier interface {
-	ApplyGoods(state *model.GameState, goodsID model.MasterCardID, meta any) error
+	ApplyGoods(state *model.GameState, goodsID model.MasterCardID, targets []int) error
 }
 
 type GoodsApplierService struct {
@@ -25,22 +25,22 @@ func NewGoodsApplierService(
 	}
 }
 
-func (s *GoodsApplierService) ApplyGoods(state *model.GameState, goodsID model.MasterCardID, meta any) error {
+func (s *GoodsApplierService) ApplyGoods(state *model.GameState, goodsID model.MasterCardID, targets []int) error {
 	switch goodsID {
 	case model.MasterCardID("oreilly"):
-		return s.applyOreilly(state, meta)
+		return s.applyOreilly(state, targets)
 	case model.MasterCardID("protein"):
-		return s.applyProtein(state, meta)
+		return s.applyProtein(state, targets)
 	case model.MasterCardID("credit-card"):
-		return s.applyCreditCard(state, meta)
+		return s.applyCreditCard(state, targets)
 	case model.MasterCardID("hackz-parker"):
-		return s.applyHackzParker(state, meta)
+		return s.applyHackzParker(state, targets)
 	case model.MasterCardID("sake-bottle"):
-		return s.applySakeBottle(state, meta)
+		return s.applySakeBottle(state, targets)
 	case model.MasterCardID("energy-drink"):
-		return s.applyEnergyDrink(state, meta)
+		return s.applyEnergyDrink(state, targets)
 	case model.MasterCardID("starbucks"):
-		return s.applyStarbucks(state, meta)
+		return s.applyStarbucks(state, targets)
 	case model.MasterCardID("gopher-doll"):
 		return s.applyGopherDoll(state)
 	case model.MasterCardID("hot-reload"):
@@ -50,7 +50,7 @@ func (s *GoodsApplierService) ApplyGoods(state *model.GameState, goodsID model.M
 	case model.MasterCardID("programming-school"):
 		return s.applyProgrammingSchool(state)
 	case model.MasterCardID("lan-cable"):
-		return s.applyLanCable(state, meta)
+		return s.applyLanCable(state, targets)
 	case model.MasterCardID("hhkb"):
 		return s.applyHhkb(state)
 	case model.MasterCardID("macbook"):

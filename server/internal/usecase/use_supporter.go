@@ -12,32 +12,32 @@ import (
 )
 
 type UseSupporterInputPort interface {
-	Execute(ctx context.Context, input *UseGoodsInput) error
+	Execute(ctx context.Context, input *UseSupporterInput) error
 }
 
 type UseSupporterInput struct {
-	RoomID string
-	UserID string
-	CardID string
-	Target *string
+	RoomID  string
+	UserID  string
+	CardID  string
+	Targets []int
 }
 
 type UseSupporterInteractor struct {
 	GameStateRepository repository.GameStateRepository
-	GoodsApplier        service.GoodsApplier
+	SupporterApplier    service.SupporterApplier
 }
 
 func NewUserSupporterUsecase(
 	gsr repository.GameStateRepository,
-	ga service.GoodsApplier,
+	sa service.SupporterApplier,
 ) UseSupporterInputPort {
 	return &UseSupporterInteractor{
 		GameStateRepository: gsr,
-		GoodsApplier:        ga,
+		SupporterApplier:    sa,
 	}
 }
 
-func (i *UseSupporterInteractor) Execute(ctx context.Context, input *UseGoodsInput) error {
+func (i *UseSupporterInteractor) Execute(ctx context.Context, input *UseSupporterInput) error {
 	userID, err := model.ParseUserID(input.UserID)
 	if err != nil {
 		return err
@@ -71,7 +71,7 @@ func (i *UseSupporterInteractor) Execute(ctx context.Context, input *UseGoodsInp
 		}
 		state.TurnPlayer.Hands = slices.Delete(state.TurnPlayer.Hands, idx, idx+1)
 
-		if err := i.GoodsApplier.ApplyGoods(state, card.MasterCard.MasterCardID, input.Target); err != nil {
+		if err := i.SupporterApplier.ApplySupporter(state, card.MasterCard.MasterCardID, input.Targets); err != nil {
 			return err
 		}
 

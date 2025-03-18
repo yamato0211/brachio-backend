@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
@@ -16,20 +15,7 @@ import (
 type Client struct {
 	id   string
 	conn *websocket.Conn
-	ch   chan interface{}
-}
-
-func (c *Client) send(v interface{}) error {
-	w, err := c.conn.NextWriter(websocket.TextMessage)
-	if err != nil {
-		return err
-	}
-	err1 := json.NewEncoder(w).Encode(v)
-	err2 := w.Close()
-	if err1 != nil {
-		return err1
-	}
-	return err2
+	ch   chan []byte
 }
 
 func (c *Client) run(ctx context.Context) error {
@@ -41,14 +27,7 @@ func (c *Client) run(ctx context.Context) error {
 			if !ok {
 				return nil
 			}
-			length := len(c.ch)
-			messages := make([]interface{}, 0, length)
-			messages = append(messages, msg)
-			for len(c.ch) > 0 {
-				messages = append(messages, <-c.ch)
-			}
-
-			if err := c.send(messages); err != nil {
+			if err := c.conn.WriteMessage(websocket.BinaryMessage, msg); err != nil {
 				return err
 			}
 		}
@@ -72,7 +51,7 @@ func NewPusher() *Pusher {
 }
 
 // Send implements service.Pusher.
-func (p *Pusher) Send(ctx context.Context, userID model.UserID, event interface{}) error {
+func (p *Pusher) Send(ctx context.Context, userID model.UserID, event []byte) error {
 	p.mutex.RLock()
 	defer p.mutex.RUnlock()
 
@@ -94,7 +73,7 @@ func (p *Pusher) Send(ctx context.Context, userID model.UserID, event interface{
 	return nil
 }
 
-func (p *Pusher) SendAll(ctx context.Context, userIDs []model.UserID, event interface{}) error {
+func (p *Pusher) SendAll(ctx context.Context, userIDs []model.UserID, event []byte) error {
 	ch := make(chan error, len(userIDs))
 
 	for _, userID := range userIDs {
@@ -127,7 +106,7 @@ func (p *Pusher) Register(ctx context.Context, userID model.UserID, conn *websoc
 	client := &Client{
 		id:   id.String(),
 		conn: conn,
-		ch:   make(chan interface{}, 1000),
+		ch:   make(chan []byte, 1000),
 	}
 	p.clients[userID] = client
 

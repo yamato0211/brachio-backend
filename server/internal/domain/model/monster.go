@@ -12,6 +12,7 @@ type Monster struct {
 	SkillCostAddition    int
 	SkillDamageAddition  int
 	SkillDamageReduction int
+	AbilityUsed          bool
 }
 
 func (m *Monster) IsTypeEqual(t MonsterType) bool {
