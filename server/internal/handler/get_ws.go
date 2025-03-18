@@ -81,7 +81,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 			input := &usecase.MatchingInput{
 				UserID:   userID,
 				Password: req.EnterRoomEventToServer.Payload.Password,
-				// DeckID:   req.EnterRoomEventToServer.Payload.DeckID,
+				DeckID:   req.EnterRoomEventToServer.Payload.DeckId,
 			}
 			_roomID, err := h.MatchingInputPort.Execute(ctx, input)
 			if err != nil {

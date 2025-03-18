@@ -60,7 +60,11 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 
 	ch := make(chan string)
 
+	log.Println("matching", input.Password, userID)
+
 	err = i.Matcher.Apply(ctx, input.Password, func(roomID model.RoomID) {
+		log.Println("matched", input.Password, userID)
+
 		var both bool
 		err := i.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
 			state, err := i.GameStateRepository.Find(ctx, roomID)
