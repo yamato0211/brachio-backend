@@ -35,7 +35,7 @@ type AuthMiddleware struct {
 }
 
 func defaultSkipper(c echo.Context) bool {
-	skipPaths := []string{"/", "/ws"}
+	skipPaths := []string{"/"}
 	path := c.Request().URL.Path
 	return slices.Contains(skipPaths, path)
 }
@@ -67,16 +67,26 @@ func GetUserID(c echo.Context) string {
 	return c.Get(UserIDKey).(string)
 }
 
+func (m *AuthMiddleware) extractToken(c echo.Context) (string, error) {
+	if c.Request().URL.Path == "/ws" {
+		return c.QueryParam("token"), nil
+	}
+	authHeader := c.Request().Header.Get("Authorization")
+	if !strings.HasPrefix(authHeader, "Bearer ") {
+		return "", errors.New("authorization header is required")
+	}
+	return strings.TrimPrefix(authHeader, "Bearer "), nil
+}
+
 func (m *AuthMiddleware) Verify(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		if defaultSkipper(c) {
 			return next(c)
 		}
-		authHeader := c.Request().Header.Get("Authorization")
-		if !strings.HasPrefix(authHeader, "Bearer ") {
-			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Authorization Header is required"})
+		token, err := m.extractToken(c)
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": err.Error()})
 		}
-		token := strings.TrimPrefix(authHeader, "Bearer ")
 		if m.isLocal {
 			// tokenはuserID
 			c.Set(UserIDKey, token)
