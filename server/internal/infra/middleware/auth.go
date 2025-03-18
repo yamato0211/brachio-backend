@@ -130,9 +130,11 @@ func (m *AuthMiddleware) Verify(next echo.HandlerFunc) echo.HandlerFunc {
 		_, err = m.FindUserUsecase.Execute(c.Request().Context(), id)
 		if errors.Is(err, dynamo.ErrNotFound) {
 			user := &model.User{
-				ID:       model.UserID(id),
-				Name:     userNickName,
-				ImageURL: picture,
+				ID:               model.UserID(id),
+				Name:             userNickName,
+				ImageURL:         picture,
+				CardIDsWithCount: map[string]int{},
+				ItemIDsWithCount: map[string]int{},
 			}
 			err = m.StoreUserUsecase.Execute(c.Request().Context(), user)
 			if err != nil {
