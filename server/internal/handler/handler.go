@@ -68,7 +68,7 @@ func New() *Handler {
 	updateMyDeckUsecase := usecase.NewUpdateMyDeckUsecase(deckRepo)
 	deleteMyDeckUsecase := usecase.NewDeleteMyDeckUsecase(deckRepo)
 	getMyCardsUsecase := usecase.NewGetMyCardsUsecase(masterCardRepo, userRepo)
-	GetMyPresentUsecase := usecase.NewGetMyPresentsUsecase(presentRepo)
+	GetMyPresentUsecase := usecase.NewGetMyPresentsUsecase(presentRepo, masterItemRepo)
 	ReceivePresentUsecase := usecase.NewReceivePresentUsecase(presentRepo, userRepo)
 
 	return &Handler{

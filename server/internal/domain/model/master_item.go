@@ -1,6 +1,12 @@
 package model
 
-import "github.com/google/uuid"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
+
+var ErrItemNotFound = errors.New("item not found")
 
 type MasterItemID string
 

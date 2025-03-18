@@ -17,10 +17,11 @@ func (id PresentID) String() string {
 }
 
 type Present struct {
-	PresentID       PresentID  `dynamo:"PresentId,hash"`
-	Time            int        `dynamo:"Time,range"`
-	Message         string     `dynamo:"Message"`
-	ReceivedUserIDs []UserID   `dynamo:"ReceivedUserIds"`
-	Item            MasterItem `dynamo:"MasterItem"`
-	ItemCount       int        `dynamo:"ItemCount"`
+	PresentID       PresentID    `dynamo:"PresentId,hash"`
+	Time            int          `dynamo:"Time,range"`
+	Message         string       `dynamo:"Message"`
+	ReceivedUserIDs []UserID     `dynamo:"ReceivedUserIds"`
+	ItemID          MasterItemID `dynamo:"ItemId"`
+	Item            MasterItem   `dynamo:"-"`
+	ItemCount       int          `dynamo:"ItemCount"`
 }
