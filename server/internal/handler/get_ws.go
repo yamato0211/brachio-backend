@@ -12,6 +12,7 @@ import (
 	"github.com/yamato0211/brachio-backend/internal/handler/schema/messages"
 	wsmsg "github.com/yamato0211/brachio-backend/internal/handler/schema/websocket"
 	"github.com/yamato0211/brachio-backend/internal/handler/schema/websocket/payload"
+	"github.com/yamato0211/brachio-backend/internal/infra/middleware"
 	"github.com/yamato0211/brachio-backend/internal/usecase"
 	"google.golang.org/protobuf/proto"
 )
@@ -62,7 +63,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		return conn.SetWriteDeadline(time.Now().Add(60 * time.Second))
 	})
 
-	userID := "dummy"
+	userID := middleware.GetUserID(c)
 
 	var roomID string
 	for {
