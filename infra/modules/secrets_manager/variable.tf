@@ -7,7 +7,8 @@ variable "common" {
 
 variable "backend" {
   type = object({
-    islocal        = bool
-    dynamoendpoint = string
+    islocal              = bool
+    dynamoendpoint       = string
+    cognitosigningkeyurl = string
   })
 }

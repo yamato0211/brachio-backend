@@ -1,22 +1,16 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"github.com/yamato0211/brachio-backend/internal/handler/schema"
 	"github.com/yamato0211/brachio-backend/internal/usecase"
 )
 
 type PostGachaDrawHandler struct {
 	drawGachaUsecase usecase.DrawGachaInputPort
-}
-
-func NewPostGachaDrawHandler(drawGachaUsecase usecase.DrawGachaInputPort) PostGachaDrawHandler {
-	return PostGachaDrawHandler{
-		drawGachaUsecase: drawGachaUsecase,
-	}
 }
 
 func (h *PostGachaDrawHandler) DrawGacha(c echo.Context, gachaId string) error {
@@ -28,7 +22,7 @@ func (h *PostGachaDrawHandler) DrawGacha(c echo.Context, gachaId string) error {
 		IsTen: payload.IsTenDraw,
 	})
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 

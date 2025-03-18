@@ -28,6 +28,8 @@ func (h *PutDeckHandler) UpdateDeck(c echo.Context, deckId string) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
+	// TODO: 所有権の確認
+
 	input := &model.Deck{
 		DeckID: dki,
 		Name:   payload.Name,

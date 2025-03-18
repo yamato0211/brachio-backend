@@ -66,12 +66,36 @@ type MasterCard struct {
 	Text string `dynamo:"Text,omitempty"` // 効果説明文
 }
 
+func (m *MasterCard) EvolvesFromSlice() []string {
+	var evolvesFromStrings = make([]string, 0, len(m.EvolvesFrom))
+	for _, e := range m.EvolvesFrom {
+		evolvesFromStrings = append(evolvesFromStrings, string(e))
+	}
+	return evolvesFromStrings
+}
+
+func (m *MasterCard) EvelvesToSlice() []string {
+	var evelvesToStrings = make([]string, 0, len(m.EvolvesTo))
+	for _, e := range m.EvolvesTo {
+		evelvesToStrings = append(evelvesToStrings, string(e))
+	}
+	return evelvesToStrings
+}
+
 type Skill struct {
 	Name         string        `dynamo:"Name"`
 	Text         string        `dynamo:"Text,omitempty"` // 効果説明文 (e.g. コインを投げて表の場合20ダメージ追加)
 	Damage       int           `dynamo:"Damage"`
 	DamageOption string        `dynamo:"DamageOption,omitempty"` // ダメージオプション 20+の`+`の部分
 	Cost         []MonsterType `dynamo:"Cost"`                   // 使用コスト (e.g. [fire, fire, water])
+}
+
+func (s *Skill) CostSlice() []string {
+	var costStrings = make([]string, 0, len(s.Cost))
+	for _, c := range s.Cost {
+		costStrings = append(costStrings, string(c))
+	}
+	return costStrings
 }
 
 type Ability struct {

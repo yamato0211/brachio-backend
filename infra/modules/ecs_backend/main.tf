@@ -42,6 +42,18 @@ resource "aws_iam_policy" "task_policy" {
         Effect   = "Allow",
         Action   = "lambda:*",
         Resource = "*"
+      },
+      {
+        Sid      = "CognitoAccess",
+        Effect   = "Allow",
+        Action   = [
+          "cognito-idp:ListUsers",
+          "cognito-idp:AdminCreateUser",
+          "cognito-idp:AdminDeleteUser",
+          "cognito-idp:AdminUpdateUserAttributes",
+          "cognito-idp:DescribeUserPool"
+        ],
+        Resource = "*"
       }
     ]
   })
@@ -77,6 +89,10 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name      = "DYNAMO_ENDPOINT"
           valueFrom = "${var.secrets_manager.secret_for_backend_arn}:dynamoendpoint::"
+        },
+        {
+          name      = "SIGNING_KEY_URL"
+          valueFrom = "${var.secrets_manager.secret_for_backend_arn}:cognitosigningkeyurl::"
         }
       ]
 
@@ -376,7 +392,7 @@ resource "aws_iam_role_policy_attachment" "github_actions" {
 }
 
 resource "aws_dynamodb_table" "card_table" {
-  name = "MasterCards"
+  name     = "MasterCards"
   hash_key = "MasterCardId"
 
   billing_mode = "PAY_PER_REQUEST"
@@ -410,7 +426,7 @@ resource "aws_dynamodb_table" "user_table" {
 }
 
 resource "aws_dynamodb_table" "item_table" {
-  name = "MasterItems"
+  name     = "MasterItems"
   hash_key = "MasterItemId"
 
   billing_mode = "PAY_PER_REQUEST"
@@ -427,7 +443,7 @@ resource "aws_dynamodb_table" "item_table" {
 }
 
 resource "aws_dynamodb_table" "deck_table" {
-  name = "Decks"
+  name     = "Decks"
   hash_key = "DeckId"
 
   billing_mode = "PAY_PER_REQUEST"
@@ -443,8 +459,8 @@ resource "aws_dynamodb_table" "deck_table" {
   }
 
   global_secondary_index {
-    name = "UserIdIndex"
-    hash_key = "UserId"
+    name            = "UserIdIndex"
+    hash_key        = "UserId"
     projection_type = "ALL"
   }
 

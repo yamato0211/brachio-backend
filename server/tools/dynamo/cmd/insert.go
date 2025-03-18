@@ -48,7 +48,7 @@ var insertCmd = &cobra.Command{
 					Name: "技術的には可能です",
 					Text: "自分の番に1回使える。自分のエネルギーゾーンからランダムにエネルギーを5個出し、このラムモンにつける。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "博打",
 						Text: "コインを1回投げ表なら相手のベンチラムモン全員にも200ダメージ、裏ならこのラムモンについているエネルギーをすべてトラッシュする",
@@ -74,10 +74,10 @@ var insertCmd = &cobra.Command{
 				Weakness:     model.MonsterTypePopularity,
 				IsEx:         false,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "Clean Architecture",
-						Text:   "このラムモンから2エネルギートラッシュする。相手の場のラムモンから1枚選び、そのカードを山札に戻す。",
+						Text:   "このラムモンから2エネルギートラッシュする。相手のバトル場のラムモンから1枚選び、そのカードを山札に戻す。",
 						Damage: 0,
 						Cost: []model.MonsterType{
 							model.MonsterTypeKnowledge,
@@ -106,7 +106,7 @@ var insertCmd = &cobra.Command{
 				Weakness:     model.MonsterTypeAlchohol,
 				IsEx:         false,
 				RetreatCost:  3,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "ベンチプレス",
 						Text:   "このラムモンにも20ダメージ",
@@ -139,7 +139,7 @@ var insertCmd = &cobra.Command{
 					Name: "金がすべて",
 					Text: "このラムモンがワザを使うとき、このラムモンについている[金]エネルギーの数x10ダメージ追加。また、このラムモンがワザを受けるとき、このラムモンについている[金]エネルギーの数x10ぶんだけダメージを軽減する。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "バイクで突っ込む",
 						Text:   "相手のベンチラムモン全員にも50ダメージ。このラムモンについているエネルギーをすべてトラッシュ。このラムモンにも70ダメージ",
@@ -162,7 +162,7 @@ var insertCmd = &cobra.Command{
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  0,
 				HP:           30,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "かみつく",
 						Damage: 10,
@@ -185,7 +185,7 @@ var insertCmd = &cobra.Command{
 					Name: "さめはだ",
 					Text: "このラムモンが、バトル場で相手のラムモンからワザのダメージを受けたとき、ワザを使ったラムモンに40ダメージ",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "ひっかく",
 						Text:   "コインを2回投げ2回ともウラなら、このラムモンにも100ダメージ",
@@ -208,7 +208,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "#駆け出しエンジニア",
 						Damage: 10,
@@ -225,7 +225,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  0,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "リバースエンジニアリング",
 						Text:   "自分のトラッシュのカードを1枚選び、手札に加える",
@@ -256,7 +256,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypeKnowledge,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "lint設定",
 						Text:   "自分のラムモン全員のHPを10回復",
@@ -287,7 +287,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "あっそこのUI変えていいですか？",
 						Text:   "相手のベンチラムモン全員に10ダメージ",
@@ -318,7 +318,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:         "DB設計",
 						Text:         "このラムモンがダメージを受けているなら、60ダメージ追加",
@@ -350,7 +350,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "環境構築",
 						Text:   "コインを3回投げ、オモテの数ぶんの[知識]エネルギーを自分のエネルギーゾーンから出し、ベンチの[知識]ラムモンに好きなようにつける。",
@@ -383,7 +383,7 @@ var insertCmd = &cobra.Command{
 					Name: "広く浅く",
 					Text: "このラムモンがたねラムモンから受けるワザのダメージを-20、2進化ラムモンから受けるワザのダメージを+10する。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "",
 						Text:   "自分の山札からラムモンをランダムに1枚、手札に加える。",
@@ -405,7 +405,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  3,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "クソツイ",
 						Damage: 5,
@@ -425,7 +425,7 @@ var insertCmd = &cobra.Command{
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  0,
 
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "パチンコ",
 						Text: "コインを1回投げ裏ならこの技は失敗する",
@@ -450,7 +450,7 @@ var insertCmd = &cobra.Command{
 					Name: "タバコ休憩",
 					Text: "自分の番に1回使える。[金]エネルギーを1つトラッシュする代わりにこのラムモンのHPを20回復する",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "副流煙",
 						Text: "相手のベンチラムモン1匹にも10ダメージ",
@@ -476,7 +476,7 @@ var insertCmd = &cobra.Command{
 					Name: "酒の力",
 					Text: "自分のエネルギーゾーンからこのラムモンに[酒]エネルギーをつけるたび、このラムモンのHPを10回復する",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "飲酒駆動開発",
 						Text: "このラムモンについている[金]エネルギーの数x20ダメージ追加",
@@ -499,7 +499,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "勉強する",
 						Damage: 30,
@@ -518,7 +518,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "まじめに働く",
 						Damage: 50,
@@ -539,7 +539,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "大盤振る舞い",
 						Text:   "相手のベンチラムモン全員にも20ダメージ。",
@@ -563,7 +563,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "筋トレ",
 						Damage: 10,
@@ -582,7 +582,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "筋トレ",
 						Damage: 40,
@@ -606,7 +606,7 @@ var insertCmd = &cobra.Command{
 					Name: "パワーーー！！！",
 					Text: "このラムモンがいるかぎり、自分の[筋肉]ラムモンが使うワザのダメージを+30する",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "筋トレ",
 						Damage: 100,
@@ -628,7 +628,7 @@ var insertCmd = &cobra.Command{
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  0,
 
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "ともだちをさがす",
 						Text:   "自分の山札から[金]ラムモンをランダムに1枚、手札に加える",
@@ -652,7 +652,7 @@ var insertCmd = &cobra.Command{
 					Name: "荒稼ぎ",
 					Text: "自分の番に1回使える。自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "有料note販売",
 						Text:   "自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
@@ -672,7 +672,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  3,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "納税",
 						Text:   "このラムモンから[金]エネルギーを3個トラッシュし、このラムモンのHPを100回復",
@@ -703,7 +703,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "がむしゃらに働く",
 						Text:   "このラムモンにも50ダメージ",
@@ -727,7 +727,7 @@ var insertCmd = &cobra.Command{
 					Name: "まだ諦めない",
 					Text: "このラムモンのワザの効果により、このラムモンがダメージを受けHPが0以下にならなかった場合、このラムモンのHPを50回復する。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "血反吐を吐く",
 						Text:   "このラムモンにも100ダメージ",
@@ -752,7 +752,7 @@ var insertCmd = &cobra.Command{
 					Name: "組織の奴隷",
 					Text: "自分の番に1回使える。このラムモンに50ダメージを与える代わりに、自分のエネルギーゾーンから[人気]エネルギーを2個出し、このラムモンにつける。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:         "一斉攻撃",
 						Text:         "このラムモンについている[人気]エネルギーの数x20ダメージ追加",
@@ -775,7 +775,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "業務委託",
 						Text:   "",
@@ -796,7 +796,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "コーディング",
 						Text:   "",
@@ -818,7 +818,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  3,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "秘密の業務",
 						Text:   "自分の山札を1枚引く。",
@@ -838,7 +838,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeNull,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "人事面接",
 						Text:   "自分の山札からラムモンをランダムに1枚、手札に加える。",
@@ -865,7 +865,7 @@ var insertCmd = &cobra.Command{
 					Name: "Goroutineの追撃",
 					Text: "このラムモンが、相手のバトルラムモンにワザを使ったとき、ウラが出るまでコインを投げ、オモテの数x10ダメージ追加",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "ビンタ",
 						Text:   "",
@@ -890,7 +890,7 @@ var insertCmd = &cobra.Command{
 					Name: "所有権の濫用",
 					Text: "このラムモンがバトル場にいる限り、相手は手札からグッズを使えない。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "はさむ",
 						Text:   "",
@@ -915,7 +915,7 @@ var insertCmd = &cobra.Command{
 					Name: "as unknown as",
 					Text: "このラムモンがいる限り、相手のラムモンのワザのタイプをNULLにし、追加効果を無効化する。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "as any",
 						Text:   "",
@@ -940,7 +940,7 @@ var insertCmd = &cobra.Command{
 					Name: "Apple Developer Program",
 					Text: "このラムモンがいる限り、相手は手札からラムモンを出せない。また、このラムモンは自分の番の終了時に、40ダメージを受ける。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "つばめがえし",
 						Text:   "",
@@ -965,7 +965,7 @@ var insertCmd = &cobra.Command{
 					Name: "破壊的変更",
 					Text: "このラムモンがいる限り、相手がラムモンを進化させた時にそのラムモンに40ダメージを与える。",
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "まきつく",
 						Text:   "",
@@ -983,9 +983,6 @@ var insertCmd = &cobra.Command{
 				Name:         "オライリー本",
 				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
 				Rarity:       6,
-			},
-			{
-				MasterCardID: model.NewMasterCardID(""),
 			},
 			{
 				MasterCardID: model.NewMasterCardID("protein"),

@@ -37,29 +37,37 @@ type Handler struct {
 }
 
 func New() *Handler {
+	ctx := context.Background()
 	// DI
 	cfg, err := config.GetConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
-	dc, err := dynamo.New(context.Background(), cfg.Dynamo)
+	dc, err := dynamo.New(ctx, cfg.Dynamo)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	masterCardRepo := db.NewMasterCardRepository(*dc)
+	deckRepo := db.NewDeckRepository(*dc)
 	drawGachaUsecase := usecase.NewDrawGachaUsecase(masterCardRepo)
-	postGachaDrawHandler := NewPostGachaDrawHandler(drawGachaUsecase)
+	getMyDecksUsecase := usecase.NewGetMyDecksUsecase(deckRepo, masterCardRepo)
+
 	return &Handler{
-		GetMyCardListHandler:  GetMyCardListHandler{},
-		GetDeckListHandler:    GetDeckListHandler{},
-		PostDeckHandler:       PostDeckHandler{},
-		GetDeckHandler:        GetDeckHandler{},
-		PutDeckHandler:        PutDeckHandler{},
-		DeleteDeckHandler:     DeleteDeckHandler{},
-		GetMyItemListHandler:  GetMyItemListHandler{},
-		GetGachaPowerHandler:  GetGachaPowerHandler{},
-		GetGachaListHandler:   GetGachaListHandler{},
-		PostGachaDrawHandler:  postGachaDrawHandler,
+		GetMyCardListHandler: GetMyCardListHandler{},
+		GetDeckListHandler: GetDeckListHandler{
+			getMyDecksUsecase: getMyDecksUsecase,
+		},
+		PostDeckHandler:      PostDeckHandler{},
+		GetDeckHandler:       GetDeckHandler{},
+		PutDeckHandler:       PutDeckHandler{},
+		DeleteDeckHandler:    DeleteDeckHandler{},
+		GetMyItemListHandler: GetMyItemListHandler{},
+		GetGachaPowerHandler: GetGachaPowerHandler{},
+		GetGachaListHandler:  GetGachaListHandler{},
+		PostGachaDrawHandler: PostGachaDrawHandler{
+			drawGachaUsecase: drawGachaUsecase,
+		},
 		GetWebSocketHandler:   GetWebSocketHandler{},
 		GetHealthCheckHandler: GetHealthCheckHandler{},
 	}

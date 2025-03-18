@@ -16,27 +16,15 @@ type User struct {
 	ImageURL string `dynamo:"ImageUrl"`
 
 	// ユーザーが持っているカード
-	CardIDsWithCount []*MasterCardIDWithCount `dynamo:"cardWithCount"`
-	CardsWithCount   []*MasterCardWithCount   `dynamo:"-"`
+	CardIDsWithCount map[string]int `dynamo:"cardWithCount,set"`
 
 	// ユーザーが持っているアイテム
-	ItemIDsWithCount []*MasterItemIDWithCount `dynamo:"itemWithCount"`
-	ItemsWithCount   []*MasterItemWithCount   `dynamo:"-"`
-}
-
-type MasterCardIDWithCount struct {
-	MasterCardID MasterCardID `dynamo:"MasterCardId"`
-	Count        int          `dynamo:"Count"`
+	ItemIDsWithCount map[string]int `dynamo:"itemWithCount,set"`
 }
 
 type MasterCardWithCount struct {
 	MasterCard *MasterCard `dynamo:"-"`
 	Count      int         `dynamo:"Count"`
-}
-
-type MasterItemIDWithCount struct {
-	MasterItemID MasterItemID `dynamo:"MasterItemId"`
-	Count        int          `dynamo:"Count"`
 }
 
 type MasterItemWithCount struct {
