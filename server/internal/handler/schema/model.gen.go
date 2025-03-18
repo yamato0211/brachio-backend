@@ -165,6 +165,18 @@ type Item struct {
 	Name string `json:"name"`
 }
 
+// ItemBase defines model for itemBase.
+type ItemBase struct {
+	// Id アイテムID（アイテムごとに一意）
+	Id string `json:"id"`
+
+	// ImageUrl 画像URL
+	ImageUrl string `json:"imageUrl"`
+
+	// Name アイテム名
+	Name string `json:"name"`
+}
+
 // MasterCard defines model for masterCard.
 type MasterCard struct {
 	union json.RawMessage
@@ -298,6 +310,19 @@ type MyCardList = []MasterCardWithCount
 // Pack defines model for pack.
 type Pack struct {
 	Cards *[]MasterCard `json:"cards,omitempty"`
+}
+
+// Present defines model for present.
+type Present struct {
+	// Id プレゼントID
+	Id   string   `json:"id"`
+	Item ItemBase `json:"item"`
+
+	// ItemCount アイテム数
+	ItemCount int `json:"itemCount"`
+
+	// Message メッセージ
+	Message string `json:"message"`
 }
 
 // Skill ワザ

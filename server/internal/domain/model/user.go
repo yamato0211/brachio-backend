@@ -5,6 +5,7 @@ import "errors"
 type UserID string
 
 var ErrNoEnoughPackPower = errors.New("not enough pack power")
+var ErrUserNotFound = errors.New("user not found")
 
 func ParseUserID(s string) (UserID, error) {
 	return UserID(s), nil

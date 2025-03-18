@@ -24,6 +24,6 @@ type Deck struct {
 	ThumbnailCard   *MasterCard    `dynamo:"-"`
 	Color           MonsterType    `dynamo:"Color"`
 	Energies        []MonsterType  `dynamo:"Energies"`
-	MasterCardIDs   []MasterCardID `dynamo:"MasterCardIDs"`
+	MasterCardIDs   []MasterCardID `dynamo:"MasterCardIds"`
 	MasterCards     []*MasterCard  `dynamo:"-"`
 }

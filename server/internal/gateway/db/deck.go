@@ -36,7 +36,7 @@ func (d *deckRepository) FindAll(ctx context.Context, userID model.UserID) ([]*m
 }
 
 func (d *deckRepository) Store(ctx context.Context, deck *model.Deck) error {
-	return d.db.Table(masterCardsTableName).Put(deck).Run(ctx)
+	return d.db.Table(deckTableName).Put(deck).Run(ctx)
 }
 
 func (d *deckRepository) Delete(ctx context.Context, deckID model.DeckID) error {
