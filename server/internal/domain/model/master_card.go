@@ -22,6 +22,10 @@ const (
 	CardTypeGoods     CardType = "goods"
 )
 
+func (m CardType) String() string {
+	return string(m)
+}
+
 type MonsterType string
 
 const (
@@ -32,6 +36,10 @@ const (
 	MonsterTypeAlchohol   MonsterType = "alchohol"
 	MonsterTypePopularity MonsterType = "popularity"
 )
+
+func (m MonsterType) IsZero() bool {
+	return m == MonsterType("")
+}
 
 type SubType string
 

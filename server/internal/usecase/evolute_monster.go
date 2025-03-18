@@ -7,6 +7,8 @@ import (
 	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
+	"github.com/yamato0211/brachio-backend/internal/domain/service"
+	"github.com/yamato0211/brachio-backend/internal/handler/schema/messages"
 	"golang.org/x/xerrors"
 )
 
@@ -23,13 +25,16 @@ type EvoluteMonsterInput struct {
 
 type EvoluteMonsterInteractor struct {
 	GameStateRepository repository.GameStateRepository
+	GameEventSender     service.GameEventSender
 }
 
 func NewEvoluteMonsterUsecase(
-	gameStateRepository repository.GameStateRepository,
+	gsr repository.GameStateRepository,
+	ges service.GameEventSender,
 ) EvoluteMonsterInputPort {
 	return &EvoluteMonsterInteractor{
-		GameStateRepository: gameStateRepository,
+		GameStateRepository: gsr,
+		GameEventSender:     ges,
 	}
 }
 
@@ -50,17 +55,28 @@ func (i *EvoluteMonsterInteractor) Execute(ctx context.Context, input *EvoluteMo
 		return err
 	}
 
+	var oppoID model.UserID
+	var eventsForMe []*messages.EffectWithSecret
+	var eventsForOppo []*messages.Effect
+
 	err = i.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
 		state, err := i.GameStateRepository.Find(ctx, roomID)
 		if err != nil {
 			return err
 		}
 
-		if state.TurnPlayer.UserID != userID {
-			return xerrors.Errorf("you are not turn player")
+		if !state.IsMyTurn(userID) {
+			return xerrors.Errorf("not your turn")
 		}
 
-		monster, err := state.TurnPlayer.GetMonsterByPosition(input.Position)
+		oppoID = state.NonTurnPlayer.UserID
+
+		me, err := state.FindMeByUserID(userID)
+		if err != nil {
+			return err
+		}
+
+		monster, err := me.GetMonsterByPosition(input.Position)
 		if err != nil {
 			return err
 		}
@@ -85,8 +101,43 @@ func (i *EvoluteMonsterInteractor) Execute(ctx context.Context, input *EvoluteMo
 
 		state.TurnPlayer.Hands = slices.Delete(state.TurnPlayer.Hands, idx, idx+1)
 
+		eventsForMe = append(eventsForMe, i.makeEventForMe(input.Position, card))
+		eventsForOppo = append(eventsForOppo, i.makeEventForOppo(input.Position, card))
+
 		return i.GameStateRepository.Store(ctx, state)
 	})
+	if err != nil {
+		return err
+	}
+
+	if err := i.GameEventSender.SendDrawEffectEventToActor(ctx, userID, eventsForMe...); err != nil {
+		return err
+	}
+	if err := i.GameEventSender.SendDrawEffectEventToRecipient(ctx, oppoID, eventsForOppo...); err != nil {
+		return err
+	}
 
 	return err
+}
+
+func (i *EvoluteMonsterInteractor) makeEventForMe(position int, card *model.Card) *messages.EffectWithSecret {
+	return &messages.EffectWithSecret{
+		Effect: &messages.EffectWithSecret_Evolution{
+			Evolution: &messages.EvolutionEffect{
+				Card:     messages.NewCard(card),
+				Position: int32(position),
+			},
+		},
+	}
+}
+
+func (i *EvoluteMonsterInteractor) makeEventForOppo(position int, card *model.Card) *messages.Effect {
+	return &messages.Effect{
+		Effect: &messages.Effect_Evolution{
+			Evolution: &messages.EvolutionEffect{
+				Card:     messages.NewCard(card),
+				Position: int32(position),
+			},
+		},
+	}
 }

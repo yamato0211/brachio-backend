@@ -4,11 +4,11 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/samber/lo"
 	"golang.org/x/xerrors"
 )
 
 var ErrRoomNotFound = errors.New("room not found")
+var ErrUserNotFound = errors.New("user not found")
 
 type RoomID string
 
@@ -25,32 +25,67 @@ func (m RoomID) String() string {
 	return string(m)
 }
 
+type GamePhase string
+
+const (
+	GamePhaseReady        GamePhase = "ready"
+	GamePhaseInitializing GamePhase = "initializing"
+	GamePhaseBattle       GamePhase = "battle"
+	GamePhaseEnd          GamePhase = "end"
+)
+
 type GameState struct {
 	RoomID RoomID
 
 	TurnPlayer    *Player
 	NonTurnPlayer *Player
 
-	Turn int
+	Phase          GamePhase
+	Turn           int
+	LotteriedCoins []bool
 }
 
-func (m *GameState) FindPlayerByUserID(userID UserID) *Player {
-	return lo.Ternary(m.TurnPlayer.UserID == userID, m.TurnPlayer, m.NonTurnPlayer)
+func (m *GameState) IsMyTurn(userID UserID) bool {
+	return m.TurnPlayer.UserID == userID
 }
 
-func (m *GameState) FindEnemyByUserID(userID UserID) *Player {
-	return lo.Ternary(m.TurnPlayer.UserID == userID, m.NonTurnPlayer, m.TurnPlayer)
+func (m *GameState) FindMeByUserID(userID UserID) (*Player, error) {
+	if m.TurnPlayer.UserID == userID {
+		return m.TurnPlayer, nil
+	}
+
+	if m.NonTurnPlayer.UserID == userID {
+		return m.NonTurnPlayer, nil
+	}
+
+	return nil, ErrUserNotFound
+}
+
+func (m *GameState) FindEnemyByUserID(userID UserID) (*Player, error) {
+	var enemy *Player
+	if m.TurnPlayer.UserID == userID {
+		enemy = m.NonTurnPlayer
+	} else {
+		enemy = m.TurnPlayer
+	}
+
+	if enemy == nil {
+		return nil, xerrors.Errorf("enemy not found: %s", userID)
+	}
+
+	return enemy, nil
 }
 
 type Player struct {
-	UserID        UserID
-	BaseDeck      *Deck
-	Deck          []*Card
-	Hands         []*Card
-	Fields        []*Card
-	Trash         []*Card
-	CurrentEnergy *MonsterType
-	NextEnergy    *MonsterType
+	UserID          UserID
+	BaseDeck        *Deck
+	Deck            []*Card
+	Hands           []*Card
+	Fields          []*Card
+	Trash           []*Card
+	CurrentEnergies []MonsterType
+	NextEnergy      MonsterType
+	IsReady         bool
 
 	Effect []*Effect
 

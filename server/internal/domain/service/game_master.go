@@ -1,12 +1,15 @@
 package service
 
 import (
+	"context"
 	"math/rand/v2"
 
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/samber/lo/mutable"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
+	"github.com/yamato0211/brachio-backend/internal/domain/repository"
+	"golang.org/x/xerrors"
 )
 
 const (
@@ -19,12 +22,23 @@ type GameMasterService interface {
 	ShuffleDeck(deck []*model.Card) []*model.Card
 	DrawCards(player *model.Player, count int)
 	RunEffect(effects []*model.Effect, trigger string, args any) ([]*model.Effect, error)
+	Matched(ctx context.Context, roomID model.RoomID) error
+	ReadyForStart(ctx context.Context, roomID model.RoomID, userID model.UserID) error
 }
 
-type gameMasterService struct{}
+type gameMasterService struct {
+	GameStateRepository repository.GameStateRepository
+	GameEventSender     GameEventSender
+}
 
-func NewGameMasterService() GameMasterService {
-	return &gameMasterService{}
+func NewGameMasterService(
+	gsr repository.GameStateRepository,
+	ges GameEventSender,
+) GameMasterService {
+	return &gameMasterService{
+		GameStateRepository: gsr,
+		GameEventSender:     ges,
+	}
 }
 
 func (s *gameMasterService) InitializeGame(state *model.GameState) error {
@@ -83,16 +97,29 @@ func (s *gameMasterService) ShuffleDeck(deck []*model.Card) []*model.Card {
 }
 
 func (s *gameMasterService) lotteryNextEnergy(player *model.Player) {
-	nextEnergy := &player.BaseDeck.Energies[rand.IntN(len(player.BaseDeck.Energies))]
-	player.CurrentEnergy, player.NextEnergy = player.NextEnergy, nextEnergy
+	if !player.NextEnergy.IsZero() {
+		player.CurrentEnergies = append(player.CurrentEnergies, player.NextEnergy)
+	}
+	player.NextEnergy = player.BaseDeck.Energies[rand.IntN(len(player.BaseDeck.Energies))]
 }
 
-func (s *gameMasterService) ChangeTurn(state *model.GameState) {
+func (s *gameMasterService) ChangeTurn(ctx context.Context, state *model.GameState) error {
 	state.Turn++
 
 	state.TurnPlayer, state.NonTurnPlayer = state.NonTurnPlayer, state.TurnPlayer
 
+	s.lotteryNextEnergy(state.TurnPlayer)
+
+	if err := s.GameEventSender.SendTurnStartEvent(ctx, state.TurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+		return err
+	}
+	if err := s.GameEventSender.SendTurnStartEvent(context.Background(), state.NonTurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+		return err
+	}
+
 	s.DrawCards(state.TurnPlayer, 1)
+
+	return nil
 }
 
 func (s *gameMasterService) IsFinish(state *model.GameState) bool {
@@ -105,9 +132,9 @@ func (s *gameMasterService) IsFinish(state *model.GameState) bool {
 	return false
 }
 
-func (s *gameMasterService) DrawCards(player *model.Player, count int) {
+func (s *gameMasterService) DrawCards(player *model.Player, count int) []*model.Card {
 	if len(player.Deck) == 0 {
-		return
+		return nil
 	}
 
 	count = min(count, len(player.Deck))
@@ -115,6 +142,8 @@ func (s *gameMasterService) DrawCards(player *model.Player, count int) {
 	cards := player.Deck[:count]
 	player.Deck = player.Deck[count:]
 	player.Hands = append(player.Hands, cards...)
+
+	return cards
 }
 
 func (s *gameMasterService) RunEffect(effects []*model.Effect, trigger string, args any) ([]*model.Effect, error) {
@@ -132,4 +161,77 @@ func (s *gameMasterService) RunEffect(effects []*model.Effect, trigger string, a
 	}
 
 	return lo.Filter(effects, func(effect *model.Effect, _ int) bool { return effect != nil }), nil
+}
+
+func (s *gameMasterService) ReadyForStart(ctx context.Context, roomID model.RoomID, userID model.UserID) error {
+	var readyBothPlayers bool
+	playerIDs := []model.UserID{userID}
+	err := s.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
+		state, err := s.GameStateRepository.Find(ctx, roomID)
+		if err != nil {
+			return err
+		}
+
+		me, err := state.FindMeByUserID(userID)
+		if err != nil {
+			return err
+		}
+		me.IsReady = true
+
+		enemy, err := state.FindEnemyByUserID(userID)
+		if err != nil {
+			return err
+		}
+		readyBothPlayers = enemy.IsReady
+		if readyBothPlayers {
+			state.Phase = model.GamePhaseBattle
+		}
+
+		playerIDs = append(playerIDs, enemy.UserID)
+
+		return s.GameStateRepository.Store(ctx, state)
+	})
+	if err != nil {
+		return err
+	}
+
+	if !readyBothPlayers {
+		return nil
+	}
+
+	// TODO: ゲームスタート通知
+
+	return nil
+}
+
+func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) error {
+	var users []*model.User
+	err := s.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
+		state, err := s.GameStateRepository.Find(ctx, roomID)
+		if err != nil {
+			return err
+		}
+		if state.TurnPlayer == nil || state.NonTurnPlayer == nil {
+			return xerrors.Errorf("player not found")
+		}
+
+		users = []*model.User{
+			{ID: state.TurnPlayer.UserID, Name: "Player1"},
+			{ID: state.NonTurnPlayer.UserID, Name: "Player2"},
+		}
+
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	if err := s.GameEventSender.SendMatchingComplete(ctx, users[0].ID, users[1].ID, roomID); err != nil {
+		return err
+	}
+	if err := s.GameEventSender.SendMatchingComplete(ctx, users[1].ID, users[0].ID, roomID); err != nil {
+		return err
+	}
+
+	return nil
 }

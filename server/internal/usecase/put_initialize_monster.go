@@ -57,7 +57,10 @@ func (i *PutInitializeMonsterInteractor) Execute(ctx context.Context, input *Put
 			return err
 		}
 
-		me := state.FindPlayerByUserID(userID)
+		me, err := state.FindMeByUserID(userID)
+		if err != nil {
+			return err
+		}
 
 		// カードが手札にあるか確認
 		card, idx, isFound := lo.FindIndexOf(me.Hands, func(c *model.Card) bool {

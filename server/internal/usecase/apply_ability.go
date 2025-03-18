@@ -10,7 +10,7 @@ import (
 )
 
 type ApplyAbilityInputPort interface {
-	ApplyAbility(ctx context.Context, input *ApplyAbilityInput) error
+	Execute(ctx context.Context, input *ApplyAbilityInput) error
 }
 
 type ApplyAbilityInput struct {
@@ -34,7 +34,7 @@ func NewApplyAbilityUsecase(
 	}
 }
 
-func (i *ApplyAbilityInteractor) ApplyAbility(ctx context.Context, input *ApplyAbilityInput) error {
+func (i *ApplyAbilityInteractor) Execute(ctx context.Context, input *ApplyAbilityInput) error {
 	roomID, err := model.ParseRoomID(input.RoomID)
 	if err != nil {
 		return err

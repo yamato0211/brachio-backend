@@ -7,6 +7,8 @@ import (
 	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
+	"github.com/yamato0211/brachio-backend/internal/domain/service"
+	"github.com/yamato0211/brachio-backend/internal/handler/schema/messages"
 	"golang.org/x/xerrors"
 )
 
@@ -23,13 +25,16 @@ type SummonInput struct {
 
 type SummonInteractor struct {
 	GameStateRepository repository.GameStateRepository
+	GameEventSender     service.GameEventSender
 }
 
 func NewSummonUsecase(
 	gsr repository.GameStateRepository,
+	ges service.GameEventSender,
 ) SummonInputPort {
 	return &SummonInteractor{
 		GameStateRepository: gsr,
+		GameEventSender:     ges,
 	}
 }
 
@@ -49,15 +54,26 @@ func (i *SummonInteractor) Execute(ctx context.Context, input *SummonInput) erro
 		return err
 	}
 
+	var oppoID model.UserID
+
+	var eventsForMe []*messages.EffectWithSecret
+	var eventsForOppo []*messages.Effect
+
 	err = i.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
 		state, err := i.GameStateRepository.Find(ctx, roomID)
 		if err != nil {
 			return err
 		}
 
-		me := state.FindPlayerByUserID(userID)
-		if me == nil {
-			return xerrors.Errorf("player not found: %s", userID)
+		if !state.IsMyTurn(userID) {
+			return xerrors.Errorf("you are not turn player")
+		}
+
+		oppoID = state.NonTurnPlayer.UserID
+
+		me, err := state.FindMeByUserID(userID)
+		if err != nil {
+			return err
 		}
 
 		card, idx, isFound := lo.FindIndexOf(me.Hands, func(c *model.Card) bool {
@@ -90,6 +106,9 @@ func (i *SummonInteractor) Execute(ctx context.Context, input *SummonInput) erro
 		// 手札からカードを削除
 		me.Hands = slices.Delete(me.Hands, idx, idx+1)
 
+		eventsForMe = append(eventsForMe, i.makeEventForMe(input.Position, card))
+		eventsForOppo = append(eventsForOppo, i.makeEventForOppo(input.Position, card))
+
 		return i.GameStateRepository.Store(ctx, state)
 
 	})
@@ -97,5 +116,34 @@ func (i *SummonInteractor) Execute(ctx context.Context, input *SummonInput) erro
 		return err
 	}
 
+	if err := i.GameEventSender.SendDrawEffectEventToActor(ctx, userID, eventsForMe...); err != nil {
+		return err
+	}
+	if err := i.GameEventSender.SendDrawEffectEventToRecipient(ctx, oppoID, eventsForOppo...); err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func (i *SummonInteractor) makeEventForMe(position int, card *model.Card) *messages.EffectWithSecret {
+	return &messages.EffectWithSecret{
+		Effect: &messages.EffectWithSecret_Summon{
+			Summon: &messages.SummonEffect{
+				Card:     messages.NewCard(card),
+				Position: int32(position),
+			},
+		},
+	}
+}
+
+func (i *SummonInteractor) makeEventForOppo(position int, card *model.Card) *messages.Effect {
+	return &messages.Effect{
+		Effect: &messages.Effect_Summon{
+			Summon: &messages.SummonEffect{
+				Card:     messages.NewCard(card),
+				Position: int32(position),
+			},
+		},
+	}
 }

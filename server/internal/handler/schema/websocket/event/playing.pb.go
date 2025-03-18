@@ -2155,6 +2155,144 @@ func (x *NextEnergyEventToActor) GetPayload() *payload.NextEnergyPayload {
 	return nil
 }
 
+// //
+// 描画する必要のあるイベント通知イベント
+// //
+type DrawEffectEventToActor struct {
+	state         protoimpl.MessageState            `protogen:"open.v1"`
+	Payload       *payload.DrawEffectPayloadToActor `protobuf:"bytes,1,opt,name=payload,proto3" json:"payload,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DrawEffectEventToActor) Reset() {
+	*x = DrawEffectEventToActor{}
+	mi := &file_websocket_event_playing_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DrawEffectEventToActor) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DrawEffectEventToActor) ProtoMessage() {}
+
+func (x *DrawEffectEventToActor) ProtoReflect() protoreflect.Message {
+	mi := &file_websocket_event_playing_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DrawEffectEventToActor.ProtoReflect.Descriptor instead.
+func (*DrawEffectEventToActor) Descriptor() ([]byte, []int) {
+	return file_websocket_event_playing_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *DrawEffectEventToActor) GetPayload() *payload.DrawEffectPayloadToActor {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+type DrawEffectEventToRecipient struct {
+	state         protoimpl.MessageState                `protogen:"open.v1"`
+	Payload       *payload.DrawEffectPayloadToRecipient `protobuf:"bytes,1,opt,name=payload,proto3" json:"payload,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DrawEffectEventToRecipient) Reset() {
+	*x = DrawEffectEventToRecipient{}
+	mi := &file_websocket_event_playing_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DrawEffectEventToRecipient) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DrawEffectEventToRecipient) ProtoMessage() {}
+
+func (x *DrawEffectEventToRecipient) ProtoReflect() protoreflect.Message {
+	mi := &file_websocket_event_playing_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DrawEffectEventToRecipient.ProtoReflect.Descriptor instead.
+func (*DrawEffectEventToRecipient) Descriptor() ([]byte, []int) {
+	return file_websocket_event_playing_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *DrawEffectEventToRecipient) GetPayload() *payload.DrawEffectPayloadToRecipient {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+// //
+// バトル場が空いた時にバトル場に置くカードを選択するイベント(クライアントへの通知はDrawEffectEventを用いる)
+// //
+type SelectBattlePositionEventToServer struct {
+	state         protoimpl.MessageState               `protogen:"open.v1"`
+	Payload       *payload.SelectBattlePositionPayload `protobuf:"bytes,1,opt,name=payload,proto3" json:"payload,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SelectBattlePositionEventToServer) Reset() {
+	*x = SelectBattlePositionEventToServer{}
+	mi := &file_websocket_event_playing_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SelectBattlePositionEventToServer) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectBattlePositionEventToServer) ProtoMessage() {}
+
+func (x *SelectBattlePositionEventToServer) ProtoReflect() protoreflect.Message {
+	mi := &file_websocket_event_playing_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectBattlePositionEventToServer.ProtoReflect.Descriptor instead.
+func (*SelectBattlePositionEventToServer) Descriptor() ([]byte, []int) {
+	return file_websocket_event_playing_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *SelectBattlePositionEventToServer) GetPayload() *payload.SelectBattlePositionPayload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
 var File_websocket_event_playing_proto protoreflect.FileDescriptor
 
 var file_websocket_event_playing_proto_rawDesc = string([]byte{
@@ -2467,23 +2605,45 @@ var file_websocket_event_playing_proto_rawDesc = string([]byte{
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x77, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b,
 	0x65, 0x74, 0x2e, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x70, 0x6c, 0x61, 0x79, 0x69,
 	0x6e, 0x67, 0x2e, 0x4e, 0x65, 0x78, 0x74, 0x45, 0x6e, 0x65, 0x72, 0x67, 0x79, 0x50, 0x61, 0x79,
-	0x6c, 0x6f, 0x61, 0x64, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x42, 0xf8, 0x01,
-	0x0a, 0x1b, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2e,
-	0x65, 0x76, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x42, 0x0c, 0x50,
-	0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4d, 0x67,
-	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x79, 0x61, 0x6d, 0x61, 0x74, 0x6f,
-	0x30, 0x32, 0x31, 0x31, 0x2f, 0x62, 0x72, 0x61, 0x63, 0x68, 0x69, 0x6f, 0x2d, 0x62, 0x61, 0x63,
-	0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x68, 0x61,
-	0x6e, 0x64, 0x6c, 0x65, 0x72, 0x2f, 0x73, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x2f, 0x77, 0x65, 0x62,
-	0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0xa2, 0x02, 0x03, 0x57,
-	0x45, 0x50, 0xaa, 0x02, 0x17, 0x57, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2e, 0x45,
-	0x76, 0x65, 0x6e, 0x74, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0xca, 0x02, 0x17, 0x57,
-	0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x5c, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x5c, 0x50,
-	0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0xe2, 0x02, 0x23, 0x57, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b,
-	0x65, 0x74, 0x5c, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x5c, 0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67,
-	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x19, 0x57,
-	0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x3a, 0x3a, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x3a,
-	0x3a, 0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x6f, 0x61, 0x64, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x22, 0x67, 0x0a,
+	0x16, 0x44, 0x72, 0x61, 0x77, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x45, 0x76, 0x65, 0x6e, 0x74,
+	0x54, 0x6f, 0x41, 0x63, 0x74, 0x6f, 0x72, 0x12, 0x4d, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f,
+	0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x33, 0x2e, 0x77, 0x65, 0x62, 0x73, 0x6f,
+	0x63, 0x6b, 0x65, 0x74, 0x2e, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x70, 0x6c, 0x61,
+	0x79, 0x69, 0x6e, 0x67, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x50,
+	0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x54, 0x6f, 0x41, 0x63, 0x74, 0x6f, 0x72, 0x52, 0x07, 0x70,
+	0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x22, 0x6f, 0x0a, 0x1a, 0x44, 0x72, 0x61, 0x77, 0x45, 0x66,
+	0x66, 0x65, 0x63, 0x74, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x54, 0x6f, 0x52, 0x65, 0x63, 0x69, 0x70,
+	0x69, 0x65, 0x6e, 0x74, 0x12, 0x51, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x37, 0x2e, 0x77, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65,
+	0x74, 0x2e, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x2e, 0x70, 0x6c, 0x61, 0x79, 0x69, 0x6e,
+	0x67, 0x2e, 0x44, 0x72, 0x61, 0x77, 0x45, 0x66, 0x66, 0x65, 0x63, 0x74, 0x50, 0x61, 0x79, 0x6c,
+	0x6f, 0x61, 0x64, 0x54, 0x6f, 0x52, 0x65, 0x63, 0x69, 0x70, 0x69, 0x65, 0x6e, 0x74, 0x52, 0x07,
+	0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x22, 0x75, 0x0a, 0x21, 0x53, 0x65, 0x6c, 0x65, 0x63,
+	0x74, 0x42, 0x61, 0x74, 0x74, 0x6c, 0x65, 0x50, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x45,
+	0x76, 0x65, 0x6e, 0x74, 0x54, 0x6f, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x12, 0x50, 0x0a, 0x07,
+	0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x36, 0x2e,
+	0x77, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2e, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61,
+	0x64, 0x2e, 0x70, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74,
+	0x42, 0x61, 0x74, 0x74, 0x6c, 0x65, 0x50, 0x6f, 0x73, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x61,
+	0x79, 0x6c, 0x6f, 0x61, 0x64, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x42, 0xf8,
+	0x01, 0x0a, 0x1b, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74,
+	0x2e, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x42, 0x0c,
+	0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4d,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x79, 0x61, 0x6d, 0x61, 0x74,
+	0x6f, 0x30, 0x32, 0x31, 0x31, 0x2f, 0x62, 0x72, 0x61, 0x63, 0x68, 0x69, 0x6f, 0x2d, 0x62, 0x61,
+	0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x68,
+	0x61, 0x6e, 0x64, 0x6c, 0x65, 0x72, 0x2f, 0x73, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x2f, 0x77, 0x65,
+	0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0xa2, 0x02, 0x03,
+	0x57, 0x45, 0x50, 0xaa, 0x02, 0x17, 0x57, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x2e,
+	0x45, 0x76, 0x65, 0x6e, 0x74, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0xca, 0x02, 0x17,
+	0x57, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x5c, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x5c,
+	0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0xe2, 0x02, 0x23, 0x57, 0x65, 0x62, 0x73, 0x6f, 0x63,
+	0x6b, 0x65, 0x74, 0x5c, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x5c, 0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e,
+	0x67, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x19,
+	0x57, 0x65, 0x62, 0x73, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x3a, 0x3a, 0x45, 0x76, 0x65, 0x6e, 0x74,
+	0x3a, 0x3a, 0x50, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 })
 
 var (
@@ -2498,7 +2658,7 @@ func file_websocket_event_playing_proto_rawDescGZIP() []byte {
 	return file_websocket_event_playing_proto_rawDescData
 }
 
-var file_websocket_event_playing_proto_msgTypes = make([]protoimpl.MessageInfo, 43)
+var file_websocket_event_playing_proto_msgTypes = make([]protoimpl.MessageInfo, 46)
 var file_websocket_event_playing_proto_goTypes = []any{
 	(*AttackMonsterEventToServer)(nil),              // 0: websocket.event.playing.AttackMonsterEventToServer
 	(*AttackMonsterEventToActor)(nil),               // 1: websocket.event.playing.AttackMonsterEventToActor
@@ -2543,79 +2703,88 @@ var file_websocket_event_playing_proto_goTypes = []any{
 	(*ConfirmTargetEventToServer)(nil),              // 40: websocket.event.playing.ConfirmTargetEventToServer
 	(*ConfirmTargetEventToActor)(nil),               // 41: websocket.event.playing.ConfirmTargetEventToActor
 	(*NextEnergyEventToActor)(nil),                  // 42: websocket.event.playing.NextEnergyEventToActor
-	(*payload.AttackMonsterPayload)(nil),            // 43: websocket.payload.playing.AttackMonsterPayload
-	(*payload.SummonMonsterPayload)(nil),            // 44: websocket.payload.playing.SummonMonsterPayload
-	(*payload.EvolutionMonsterPayload)(nil),         // 45: websocket.payload.playing.EvolutionMonsterPayload
-	(*payload.TakeSupportPayload)(nil),              // 46: websocket.payload.playing.TakeSupportPayload
-	(*payload.TakeGoodsPayload)(nil),                // 47: websocket.payload.playing.TakeGoodsPayload
-	(*payload.RetreatPayload)(nil),                  // 48: websocket.payload.playing.RetreatPayload
-	(*payload.SupplyEnergyPayload)(nil),             // 49: websocket.payload.playing.SupplyEnergyPayload
-	(*payload.SurrenderPayload)(nil),                // 50: websocket.payload.playing.SurrenderPayload
-	(*payload.AbilityPayload)(nil),                  // 51: websocket.payload.playing.AbilityPayload
-	(*payload.DrawCardPayload)(nil),                 // 52: websocket.payload.playing.DrawCardPayload
-	(*payload.DrawCardIndividualPayload)(nil),       // 53: websocket.payload.playing.DrawCardIndividualPayload
-	(*payload.ConfirmActionPayload)(nil),            // 54: websocket.payload.playing.ConfirmActionPayload
-	(*payload.InitialPlacementCompletePayload)(nil), // 55: websocket.payload.playing.InitialPlacementCompletePayload
-	(*payload.StartGamePayload)(nil),                // 56: websocket.payload.playing.StartGamePayload
-	(*payload.TurnStartPayload)(nil),                // 57: websocket.payload.playing.TurnStartPayload
-	(*payload.TurnEndPayload)(nil),                  // 58: websocket.payload.playing.TurnEndPayload
-	(*payload.CoinTossEmptyPayload)(nil),            // 59: websocket.payload.playing.CoinTossEmptyPayload
-	(*payload.CoinTossPayload)(nil),                 // 60: websocket.payload.playing.CoinTossPayload
-	(*payload.ConfirmEnergyResponsePayload)(nil),    // 61: websocket.payload.playing.ConfirmEnergyResponsePayload
-	(*payload.ConfirmEnergyRequestPayload)(nil),     // 62: websocket.payload.playing.ConfirmEnergyRequestPayload
-	(*payload.ConfirmTargetResponsePayload)(nil),    // 63: websocket.payload.playing.ConfirmTargetResponsePayload
-	(*payload.ConfirmTargetRequestPayload)(nil),     // 64: websocket.payload.playing.ConfirmTargetRequestPayload
-	(*payload.NextEnergyPayload)(nil),               // 65: websocket.payload.playing.NextEnergyPayload
+	(*DrawEffectEventToActor)(nil),                  // 43: websocket.event.playing.DrawEffectEventToActor
+	(*DrawEffectEventToRecipient)(nil),              // 44: websocket.event.playing.DrawEffectEventToRecipient
+	(*SelectBattlePositionEventToServer)(nil),       // 45: websocket.event.playing.SelectBattlePositionEventToServer
+	(*payload.AttackMonsterPayload)(nil),            // 46: websocket.payload.playing.AttackMonsterPayload
+	(*payload.SummonMonsterPayload)(nil),            // 47: websocket.payload.playing.SummonMonsterPayload
+	(*payload.EvolutionMonsterPayload)(nil),         // 48: websocket.payload.playing.EvolutionMonsterPayload
+	(*payload.TakeSupportPayload)(nil),              // 49: websocket.payload.playing.TakeSupportPayload
+	(*payload.TakeGoodsPayload)(nil),                // 50: websocket.payload.playing.TakeGoodsPayload
+	(*payload.RetreatPayload)(nil),                  // 51: websocket.payload.playing.RetreatPayload
+	(*payload.SupplyEnergyPayload)(nil),             // 52: websocket.payload.playing.SupplyEnergyPayload
+	(*payload.SurrenderPayload)(nil),                // 53: websocket.payload.playing.SurrenderPayload
+	(*payload.AbilityPayload)(nil),                  // 54: websocket.payload.playing.AbilityPayload
+	(*payload.DrawCardPayload)(nil),                 // 55: websocket.payload.playing.DrawCardPayload
+	(*payload.DrawCardIndividualPayload)(nil),       // 56: websocket.payload.playing.DrawCardIndividualPayload
+	(*payload.ConfirmActionPayload)(nil),            // 57: websocket.payload.playing.ConfirmActionPayload
+	(*payload.InitialPlacementCompletePayload)(nil), // 58: websocket.payload.playing.InitialPlacementCompletePayload
+	(*payload.StartGamePayload)(nil),                // 59: websocket.payload.playing.StartGamePayload
+	(*payload.TurnStartPayload)(nil),                // 60: websocket.payload.playing.TurnStartPayload
+	(*payload.TurnEndPayload)(nil),                  // 61: websocket.payload.playing.TurnEndPayload
+	(*payload.CoinTossEmptyPayload)(nil),            // 62: websocket.payload.playing.CoinTossEmptyPayload
+	(*payload.CoinTossPayload)(nil),                 // 63: websocket.payload.playing.CoinTossPayload
+	(*payload.ConfirmEnergyResponsePayload)(nil),    // 64: websocket.payload.playing.ConfirmEnergyResponsePayload
+	(*payload.ConfirmEnergyRequestPayload)(nil),     // 65: websocket.payload.playing.ConfirmEnergyRequestPayload
+	(*payload.ConfirmTargetResponsePayload)(nil),    // 66: websocket.payload.playing.ConfirmTargetResponsePayload
+	(*payload.ConfirmTargetRequestPayload)(nil),     // 67: websocket.payload.playing.ConfirmTargetRequestPayload
+	(*payload.NextEnergyPayload)(nil),               // 68: websocket.payload.playing.NextEnergyPayload
+	(*payload.DrawEffectPayloadToActor)(nil),        // 69: websocket.payload.playing.DrawEffectPayloadToActor
+	(*payload.DrawEffectPayloadToRecipient)(nil),    // 70: websocket.payload.playing.DrawEffectPayloadToRecipient
+	(*payload.SelectBattlePositionPayload)(nil),     // 71: websocket.payload.playing.SelectBattlePositionPayload
 }
 var file_websocket_event_playing_proto_depIdxs = []int32{
-	43, // 0: websocket.event.playing.AttackMonsterEventToServer.payload:type_name -> websocket.payload.playing.AttackMonsterPayload
-	43, // 1: websocket.event.playing.AttackMonsterEventToActor.payload:type_name -> websocket.payload.playing.AttackMonsterPayload
-	43, // 2: websocket.event.playing.AttackMonsterEventToRecipient.payload:type_name -> websocket.payload.playing.AttackMonsterPayload
-	44, // 3: websocket.event.playing.SummonMonsterEventToServer.payload:type_name -> websocket.payload.playing.SummonMonsterPayload
-	44, // 4: websocket.event.playing.SummonMonsterEventToActor.payload:type_name -> websocket.payload.playing.SummonMonsterPayload
-	44, // 5: websocket.event.playing.SummonMonsterEventToRecipient.payload:type_name -> websocket.payload.playing.SummonMonsterPayload
-	45, // 6: websocket.event.playing.EvolutionMonsterEventToServer.payload:type_name -> websocket.payload.playing.EvolutionMonsterPayload
-	45, // 7: websocket.event.playing.EvolutionMonsterEventToActor.payload:type_name -> websocket.payload.playing.EvolutionMonsterPayload
-	45, // 8: websocket.event.playing.EvolutionMonsterEventToRecipient.payload:type_name -> websocket.payload.playing.EvolutionMonsterPayload
-	46, // 9: websocket.event.playing.TakeSupportEventToServer.payload:type_name -> websocket.payload.playing.TakeSupportPayload
-	46, // 10: websocket.event.playing.TakeSupportEventToActor.payload:type_name -> websocket.payload.playing.TakeSupportPayload
-	46, // 11: websocket.event.playing.TakeSupportEventToRecipient.payload:type_name -> websocket.payload.playing.TakeSupportPayload
-	47, // 12: websocket.event.playing.TakeGoodsEventToServer.payload:type_name -> websocket.payload.playing.TakeGoodsPayload
-	47, // 13: websocket.event.playing.TakeGoodsEventToActor.payload:type_name -> websocket.payload.playing.TakeGoodsPayload
-	47, // 14: websocket.event.playing.TakeGoodsEventToRecipient.payload:type_name -> websocket.payload.playing.TakeGoodsPayload
-	48, // 15: websocket.event.playing.RetreatEventToServer.payload:type_name -> websocket.payload.playing.RetreatPayload
-	48, // 16: websocket.event.playing.RetreatEventToActor.payload:type_name -> websocket.payload.playing.RetreatPayload
-	48, // 17: websocket.event.playing.RetreatEventToRecipient.payload:type_name -> websocket.payload.playing.RetreatPayload
-	49, // 18: websocket.event.playing.SupplyEnergyEventToServer.payload:type_name -> websocket.payload.playing.SupplyEnergyPayload
-	49, // 19: websocket.event.playing.SupplyEnergyEventToActor.payload:type_name -> websocket.payload.playing.SupplyEnergyPayload
-	49, // 20: websocket.event.playing.SupplyEnergyEventToRecipient.payload:type_name -> websocket.payload.playing.SupplyEnergyPayload
-	50, // 21: websocket.event.playing.SurrenderEventToServer.payload:type_name -> websocket.payload.playing.SurrenderPayload
-	50, // 22: websocket.event.playing.SurrenderEventToActor.payload:type_name -> websocket.payload.playing.SurrenderPayload
-	50, // 23: websocket.event.playing.SurrenderEventToRecipient.payload:type_name -> websocket.payload.playing.SurrenderPayload
-	51, // 24: websocket.event.playing.AbilityEventToServer.payload:type_name -> websocket.payload.playing.AbilityPayload
-	51, // 25: websocket.event.playing.AbilityEventToActor.payload:type_name -> websocket.payload.playing.AbilityPayload
-	51, // 26: websocket.event.playing.AbilityEventToRecipient.payload:type_name -> websocket.payload.playing.AbilityPayload
-	52, // 27: websocket.event.playing.DrawEventToServer.payload:type_name -> websocket.payload.playing.DrawCardPayload
-	53, // 28: websocket.event.playing.DrawEventToActor.payload:type_name -> websocket.payload.playing.DrawCardIndividualPayload
-	52, // 29: websocket.event.playing.DrawEventToRecipient.payload:type_name -> websocket.payload.playing.DrawCardPayload
-	54, // 30: websocket.event.playing.ConfirmActionEventToActor.payload:type_name -> websocket.payload.playing.ConfirmActionPayload
-	55, // 31: websocket.event.playing.InitialPlacementCompleteEventToServer.payload:type_name -> websocket.payload.playing.InitialPlacementCompletePayload
-	56, // 32: websocket.event.playing.StartGameEventToClients.payload:type_name -> websocket.payload.playing.StartGamePayload
-	57, // 33: websocket.event.playing.TurnStartEventToClients.payload:type_name -> websocket.payload.playing.TurnStartPayload
-	58, // 34: websocket.event.playing.TurnEndEventToClients.payload:type_name -> websocket.payload.playing.TurnEndPayload
-	59, // 35: websocket.event.playing.CoinTossEventToServer.payload:type_name -> websocket.payload.playing.CoinTossEmptyPayload
-	60, // 36: websocket.event.playing.CoinTossEventToActor.payload:type_name -> websocket.payload.playing.CoinTossPayload
-	60, // 37: websocket.event.playing.CoinTossResultEventToRecipient.payload:type_name -> websocket.payload.playing.CoinTossPayload
-	61, // 38: websocket.event.playing.ConfirmEnergyEventToServer.payload:type_name -> websocket.payload.playing.ConfirmEnergyResponsePayload
-	62, // 39: websocket.event.playing.ConfirmEnergyEventToActor.payload:type_name -> websocket.payload.playing.ConfirmEnergyRequestPayload
-	63, // 40: websocket.event.playing.ConfirmTargetEventToServer.payload:type_name -> websocket.payload.playing.ConfirmTargetResponsePayload
-	64, // 41: websocket.event.playing.ConfirmTargetEventToActor.payload:type_name -> websocket.payload.playing.ConfirmTargetRequestPayload
-	65, // 42: websocket.event.playing.NextEnergyEventToActor.payload:type_name -> websocket.payload.playing.NextEnergyPayload
-	43, // [43:43] is the sub-list for method output_type
-	43, // [43:43] is the sub-list for method input_type
-	43, // [43:43] is the sub-list for extension type_name
-	43, // [43:43] is the sub-list for extension extendee
-	0,  // [0:43] is the sub-list for field type_name
+	46, // 0: websocket.event.playing.AttackMonsterEventToServer.payload:type_name -> websocket.payload.playing.AttackMonsterPayload
+	46, // 1: websocket.event.playing.AttackMonsterEventToActor.payload:type_name -> websocket.payload.playing.AttackMonsterPayload
+	46, // 2: websocket.event.playing.AttackMonsterEventToRecipient.payload:type_name -> websocket.payload.playing.AttackMonsterPayload
+	47, // 3: websocket.event.playing.SummonMonsterEventToServer.payload:type_name -> websocket.payload.playing.SummonMonsterPayload
+	47, // 4: websocket.event.playing.SummonMonsterEventToActor.payload:type_name -> websocket.payload.playing.SummonMonsterPayload
+	47, // 5: websocket.event.playing.SummonMonsterEventToRecipient.payload:type_name -> websocket.payload.playing.SummonMonsterPayload
+	48, // 6: websocket.event.playing.EvolutionMonsterEventToServer.payload:type_name -> websocket.payload.playing.EvolutionMonsterPayload
+	48, // 7: websocket.event.playing.EvolutionMonsterEventToActor.payload:type_name -> websocket.payload.playing.EvolutionMonsterPayload
+	48, // 8: websocket.event.playing.EvolutionMonsterEventToRecipient.payload:type_name -> websocket.payload.playing.EvolutionMonsterPayload
+	49, // 9: websocket.event.playing.TakeSupportEventToServer.payload:type_name -> websocket.payload.playing.TakeSupportPayload
+	49, // 10: websocket.event.playing.TakeSupportEventToActor.payload:type_name -> websocket.payload.playing.TakeSupportPayload
+	49, // 11: websocket.event.playing.TakeSupportEventToRecipient.payload:type_name -> websocket.payload.playing.TakeSupportPayload
+	50, // 12: websocket.event.playing.TakeGoodsEventToServer.payload:type_name -> websocket.payload.playing.TakeGoodsPayload
+	50, // 13: websocket.event.playing.TakeGoodsEventToActor.payload:type_name -> websocket.payload.playing.TakeGoodsPayload
+	50, // 14: websocket.event.playing.TakeGoodsEventToRecipient.payload:type_name -> websocket.payload.playing.TakeGoodsPayload
+	51, // 15: websocket.event.playing.RetreatEventToServer.payload:type_name -> websocket.payload.playing.RetreatPayload
+	51, // 16: websocket.event.playing.RetreatEventToActor.payload:type_name -> websocket.payload.playing.RetreatPayload
+	51, // 17: websocket.event.playing.RetreatEventToRecipient.payload:type_name -> websocket.payload.playing.RetreatPayload
+	52, // 18: websocket.event.playing.SupplyEnergyEventToServer.payload:type_name -> websocket.payload.playing.SupplyEnergyPayload
+	52, // 19: websocket.event.playing.SupplyEnergyEventToActor.payload:type_name -> websocket.payload.playing.SupplyEnergyPayload
+	52, // 20: websocket.event.playing.SupplyEnergyEventToRecipient.payload:type_name -> websocket.payload.playing.SupplyEnergyPayload
+	53, // 21: websocket.event.playing.SurrenderEventToServer.payload:type_name -> websocket.payload.playing.SurrenderPayload
+	53, // 22: websocket.event.playing.SurrenderEventToActor.payload:type_name -> websocket.payload.playing.SurrenderPayload
+	53, // 23: websocket.event.playing.SurrenderEventToRecipient.payload:type_name -> websocket.payload.playing.SurrenderPayload
+	54, // 24: websocket.event.playing.AbilityEventToServer.payload:type_name -> websocket.payload.playing.AbilityPayload
+	54, // 25: websocket.event.playing.AbilityEventToActor.payload:type_name -> websocket.payload.playing.AbilityPayload
+	54, // 26: websocket.event.playing.AbilityEventToRecipient.payload:type_name -> websocket.payload.playing.AbilityPayload
+	55, // 27: websocket.event.playing.DrawEventToServer.payload:type_name -> websocket.payload.playing.DrawCardPayload
+	56, // 28: websocket.event.playing.DrawEventToActor.payload:type_name -> websocket.payload.playing.DrawCardIndividualPayload
+	55, // 29: websocket.event.playing.DrawEventToRecipient.payload:type_name -> websocket.payload.playing.DrawCardPayload
+	57, // 30: websocket.event.playing.ConfirmActionEventToActor.payload:type_name -> websocket.payload.playing.ConfirmActionPayload
+	58, // 31: websocket.event.playing.InitialPlacementCompleteEventToServer.payload:type_name -> websocket.payload.playing.InitialPlacementCompletePayload
+	59, // 32: websocket.event.playing.StartGameEventToClients.payload:type_name -> websocket.payload.playing.StartGamePayload
+	60, // 33: websocket.event.playing.TurnStartEventToClients.payload:type_name -> websocket.payload.playing.TurnStartPayload
+	61, // 34: websocket.event.playing.TurnEndEventToClients.payload:type_name -> websocket.payload.playing.TurnEndPayload
+	62, // 35: websocket.event.playing.CoinTossEventToServer.payload:type_name -> websocket.payload.playing.CoinTossEmptyPayload
+	63, // 36: websocket.event.playing.CoinTossEventToActor.payload:type_name -> websocket.payload.playing.CoinTossPayload
+	63, // 37: websocket.event.playing.CoinTossResultEventToRecipient.payload:type_name -> websocket.payload.playing.CoinTossPayload
+	64, // 38: websocket.event.playing.ConfirmEnergyEventToServer.payload:type_name -> websocket.payload.playing.ConfirmEnergyResponsePayload
+	65, // 39: websocket.event.playing.ConfirmEnergyEventToActor.payload:type_name -> websocket.payload.playing.ConfirmEnergyRequestPayload
+	66, // 40: websocket.event.playing.ConfirmTargetEventToServer.payload:type_name -> websocket.payload.playing.ConfirmTargetResponsePayload
+	67, // 41: websocket.event.playing.ConfirmTargetEventToActor.payload:type_name -> websocket.payload.playing.ConfirmTargetRequestPayload
+	68, // 42: websocket.event.playing.NextEnergyEventToActor.payload:type_name -> websocket.payload.playing.NextEnergyPayload
+	69, // 43: websocket.event.playing.DrawEffectEventToActor.payload:type_name -> websocket.payload.playing.DrawEffectPayloadToActor
+	70, // 44: websocket.event.playing.DrawEffectEventToRecipient.payload:type_name -> websocket.payload.playing.DrawEffectPayloadToRecipient
+	71, // 45: websocket.event.playing.SelectBattlePositionEventToServer.payload:type_name -> websocket.payload.playing.SelectBattlePositionPayload
+	46, // [46:46] is the sub-list for method output_type
+	46, // [46:46] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func init() { file_websocket_event_playing_proto_init() }
@@ -2629,7 +2798,7 @@ func file_websocket_event_playing_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_websocket_event_playing_proto_rawDesc), len(file_websocket_event_playing_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   43,
+			NumMessages:   46,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

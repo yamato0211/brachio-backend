@@ -10,7 +10,7 @@ import (
 )
 
 type AttackInputPort interface {
-	Execute(ctx context.Context, input AttackInput) error
+	Execute(ctx context.Context, input *AttackInput) error
 }
 
 type AttackInput struct {
@@ -37,7 +37,7 @@ func NewAttackUsecase(
 	}
 }
 
-func (i *AttackInteractor) Execute(ctx context.Context, input AttackInput) error {
+func (i *AttackInteractor) Execute(ctx context.Context, input *AttackInput) error {
 	roomID, err := model.ParseRoomID(input.RoomID)
 	if err != nil {
 		return err
@@ -54,14 +54,18 @@ func (i *AttackInteractor) Execute(ctx context.Context, input AttackInput) error
 			return err
 		}
 
-		me := state.FindPlayerByUserID(userID)
-		if me == nil {
-			return xerrors.Errorf("player not found: %s", userID)
+		if !state.IsMyTurn(userID) {
+			return xerrors.Errorf("not your turn")
 		}
 
-		enemy := state.FindEnemyByUserID(userID)
-		if enemy == nil {
-			return xerrors.Errorf("enemy not found: %s", userID)
+		me, err := state.FindMeByUserID(userID)
+		if err != nil {
+			return err
+		}
+
+		enemy, err := state.FindEnemyByUserID(userID)
+		if err != nil {
+			return err
 		}
 
 		me.Effect, err = i.GameMaster.RunEffect(me.Effect, "before-attack", nil)

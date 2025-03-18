@@ -24,20 +24,20 @@ type MatchingInteractor struct {
 	GameStateRepository repository.GameStateRepository
 	DeckRepository      repository.DeckRepository
 	Matcher             service.Matcher
-	GameEventSender     service.GameEventSender
+	GameMaster          service.GameMasterService
 }
 
 func NewMatchingUsecase(
 	gsr repository.GameStateRepository,
 	dr repository.DeckRepository,
 	m service.Matcher,
-	ges service.GameEventSender,
+	gm service.GameMasterService,
 ) MatchingInputPort {
 	return &MatchingInteractor{
 		GameStateRepository: gsr,
 		DeckRepository:      dr,
 		Matcher:             m,
-		GameEventSender:     ges,
+		GameMaster:          gm,
 	}
 }
 
@@ -61,6 +61,7 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 	ch := make(chan string)
 
 	err = i.Matcher.Apply(ctx, input.Password, func(roomID model.RoomID) {
+		var both bool
 		err := i.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
 			state, err := i.GameStateRepository.Find(ctx, roomID)
 			if err != nil && !errors.Is(err, model.ErrRoomNotFound) {
@@ -85,6 +86,7 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 				UserID:   userID,
 				BaseDeck: deck,
 			}
+			both = true
 
 			if err := i.GameStateRepository.Store(ctx, state); err != nil {
 				return err
@@ -94,6 +96,13 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 		})
 		if err != nil {
 			log.Printf("transaction error: %v", err)
+		}
+
+		if both {
+			if err := i.GameMaster.Matched(ctx, roomID); err != nil {
+				log.Printf("game master matched error: %v", err)
+				return
+			}
 		}
 
 		ch <- roomID.String()
