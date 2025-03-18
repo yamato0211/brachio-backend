@@ -174,5 +174,18 @@ func (d *DrawGachaInteractor) Execute(ctx context.Context, input *DrawGachaInput
 		drawnCards = append(drawnCards, drawn...)
 	}
 
+	// パックパワーを消費
+	user.ItemIDsWithCount[packPower] -= requiredPackPower * count
+
+	// カードをユーザーに付与
+	for _, card := range drawnCards {
+		user.CardIDsWithCount[card.MasterCardID.String()]++
+	}
+
+	// ユーザー情報を更新
+	if err := d.UserRepository.Store(ctx, user); err != nil {
+		return nil, err
+	}
+
 	return drawnCards, nil
 }

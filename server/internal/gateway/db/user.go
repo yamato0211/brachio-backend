@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/guregu/dynamo/v2"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
@@ -21,7 +20,6 @@ type userRepository struct {
 func (u *userRepository) Find(ctx context.Context, userID model.UserID) (*model.User, error) {
 	var data model.User
 	if err := u.db.Table(userTable).Get(userHashKey, userID).One(ctx, &data); err != nil {
-		fmt.Println("This error")
 		return nil, err
 	}
 	return &data, nil

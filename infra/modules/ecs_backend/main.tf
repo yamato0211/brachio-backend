@@ -478,6 +478,29 @@ resource "aws_dynamodb_table" "deck_table" {
   }
 }
 
+resource "aws_dynamodb_table" "present_table" {
+  name      = "Presents"
+  hash_key  = "PresentId"
+  range_key = "Time"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "PresentId"
+    type = "S"
+  }
+
+  attribute {
+    name = "Time"
+    type = "N"
+  }
+
+  tags = {
+    Name        = "${local.prefix}-dynamodb-present-table"
+    Environment = var.common.env
+  }
+}
+
 resource "aws_iam_policy" "dynamodb_policy" {
   name = "${local.prefix}-dynamodb-policy"
   policy = jsonencode({
@@ -491,7 +514,8 @@ resource "aws_iam_policy" "dynamodb_policy" {
           aws_dynamodb_table.card_table.arn,
           aws_dynamodb_table.user_table.arn,
           aws_dynamodb_table.item_table.arn,
-          aws_dynamodb_table.deck_table.arn
+          aws_dynamodb_table.deck_table.arn,
+          aws_dynamodb_table.present_table.arn
         ]
       }
     ]

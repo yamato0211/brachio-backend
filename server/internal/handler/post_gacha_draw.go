@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/handler/schema"
+	"github.com/yamato0211/brachio-backend/internal/infra/middleware"
 	"github.com/yamato0211/brachio-backend/internal/usecase"
 )
 
@@ -20,8 +21,10 @@ func (h *PostGachaDrawHandler) DrawGacha(c echo.Context, gachaId string) error {
 	if err := c.Bind(&payload); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
+	userID := middleware.GetUserID(c)
 	cards, err := h.drawGachaUsecase.Execute(c.Request().Context(), &usecase.DrawGachaInput{
-		IsTen: payload.IsTenDraw,
+		IsTen:  payload.IsTenDraw,
+		UserID: userID,
 	})
 	if errors.Is(err, model.ErrNoEnoughPackPower) {
 		return c.JSON(http.StatusBadRequest, err)
