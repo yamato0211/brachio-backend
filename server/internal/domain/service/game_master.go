@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"math/rand/v2"
 
 	"github.com/google/uuid"
@@ -67,6 +68,7 @@ func (s *gameMasterService) FlipCoin() bool {
 func (s *gameMasterService) initializePlayer(player *model.Player) error {
 	cards := make([]*model.Card, 0, len(player.BaseDeck.MasterCards))
 	for i, masterCard := range player.BaseDeck.MasterCards {
+		fmt.Printf("masterCard: %+v\n", masterCard)
 		var monsterID string
 		if masterCard.CardType == model.CardTypeMonster {
 			monsterID = uuid.New().String()
@@ -257,6 +259,10 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 		if state.TurnPlayer == nil || state.NonTurnPlayer == nil {
 			return xerrors.Errorf("player not found")
 		}
+
+		fmt.Printf("state: %+v\n", state)
+		fmt.Printf("deck: %+v\n", state.TurnPlayer.BaseDeck)
+		fmt.Printf("deck: %+v\n", state.NonTurnPlayer.BaseDeck)
 
 		users = []*model.User{
 			{ID: state.TurnPlayer.UserID, Name: "Player1"},

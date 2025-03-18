@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"sync"
 
@@ -48,16 +49,22 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 		return "", err
 	}
 
+	fmt.Println("userID: ", userID)
+
 	deckID, err := model.ParseDeckID(input.DeckID)
 	if err != nil {
 		return "", err
 	}
+
+	fmt.Println("deckID: ", deckID)
 
 	// ユーザーのデッキを取得する
 	deck, err := i.DeckRepository.Find(ctx, deckID)
 	if err != nil {
 		return "", err
 	}
+
+	fmt.Printf("deck: %+v\n", deck)
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
@@ -74,6 +81,7 @@ func (i *MatchingInteractor) Execute(ctx context.Context, input *MatchingInput) 
 			if err != nil && !errors.Is(err, model.ErrRoomNotFound) {
 				return err
 			}
+			fmt.Printf("deck: %+v\n", deck)
 
 			if state == nil {
 				state = &model.GameState{
