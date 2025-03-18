@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"slices"
 
 	"github.com/samber/lo"
@@ -41,6 +42,8 @@ func (g *GetMyPresentsInteractor) Execute(ctx context.Context, userID string) ([
 		return nil, err
 	}
 
+	fmt.Println(masterItems)
+
 	slices.SortFunc(presents, func(i *model.Present, j *model.Present) int {
 		return i.Time - j.Time
 	})
@@ -50,7 +53,7 @@ func (g *GetMyPresentsInteractor) Execute(ctx context.Context, userID string) ([
 		// 未受け取りのプレゼントのみを取得
 		if !slices.Contains(p.ReceivedUserIDs, uid) {
 			item, ok := lo.Find(masterItems, func(i *model.MasterItem) bool {
-				return i.ItemID == p.Item.ItemID
+				return i.ItemID == p.ItemID
 			})
 			if !ok {
 				return nil, model.ErrItemNotFound
