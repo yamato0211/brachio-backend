@@ -11,13 +11,18 @@ func MasterMonsterCardFromEntity(e *model.MasterCard) (*MasterMonsterCard, error
 	if e == nil {
 		return nil, fmt.Errorf("monster master card entity is nil")
 	}
+
+	var ability *Ability
+	if e.Ability == nil {
+		ability = &Ability{}
+	} else {
+		ability = &Ability{
+			Name: e.Ability.Name,
+			Text: e.Ability.Text,
+		}
+	}
 	return &MasterMonsterCard{
-		Ability: lo.Ternary(e.Ability == nil, nil,
-			&Ability{
-				Name: e.Ability.Name,
-				Text: e.Ability.Text,
-			},
-		),
+		Ability:      ability,
 		CardType:     MasterCardType(e.CardType),
 		Element:      Element(e.Type),
 		EvolvesFrom:  lo.ToPtr(e.EvolvesFromSlice()),

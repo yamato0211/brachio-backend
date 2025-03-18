@@ -1,6 +1,10 @@
 package model
 
+import "errors"
+
 type UserID string
+
+var ErrNoEnoughPackPower = errors.New("not enough pack power")
 
 func ParseUserID(s string) (UserID, error) {
 	return UserID(s), nil

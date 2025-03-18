@@ -24,9 +24,10 @@ func (h *GetMyItemListHandler) GetMyItemList(c echo.Context) error {
 	resp := make([]*schema.Item, 0, len(items))
 	for _, item := range items {
 		resp = append(resp, &schema.Item{
-			Id:    item.MasterItem.ItemID.String(),
-			Name:  item.MasterItem.Name,
-			Count: item.Count,
+			Id:       item.MasterItem.ItemID.String(),
+			Name:     item.MasterItem.Name,
+			Count:    item.Count,
+			ImageUrl: item.MasterItem.ImageURL,
 		})
 	}
 	return c.JSON(http.StatusOK, resp)

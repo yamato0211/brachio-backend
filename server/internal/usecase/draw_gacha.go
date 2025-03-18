@@ -54,6 +54,10 @@ var (
 const (
 	// 1パックのカード枚数
 	packCardCount = 5
+	// パックパワー
+	packPower = "pack-power"
+	// 必要なパックパワー
+	requiredPackPower = 10
 )
 
 type DrawGachaInputPort interface {
@@ -61,7 +65,8 @@ type DrawGachaInputPort interface {
 }
 
 type DrawGachaInput struct {
-	IsTen bool
+	IsTen  bool
+	UserID string
 }
 
 type DrawGachaInteractor struct {
@@ -131,8 +136,30 @@ func selectRarity(dist rarityDistribution) int {
 }
 
 func (d *DrawGachaInteractor) Execute(ctx context.Context, input *DrawGachaInput) ([]*model.MasterCard, error) {
-	// 所持しているアイテム数を確認
+	// パックパワー数を確認
+	uid, err := model.ParseUserID(input.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := d.UserRepository.Find(ctx, uid)
+	if err != nil {
+		return nil, err
+	}
+
 	count := lo.Ternary(input.IsTen, 10, 1)
+
+	fmt.Println(user.ItemIDsWithCount)
+	userPackPower := user.ItemIDsWithCount[packPower]
+
+	fmt.Println(userPackPower)
+
+	// パックパワーが足りない場合
+	if userPackPower < requiredPackPower*count {
+		fmt.Println("パックパワーが足りません")
+		return nil, model.ErrNoEnoughPackPower
+	}
+
 	masterCards, err := d.MasterCardRepository.FindAll(ctx)
 	if err != nil {
 		return nil, err

@@ -152,6 +152,9 @@ type Item struct {
 	// Id アイテムID（アイテムごとに一意）
 	Id string `json:"id"`
 
+	// ImageUrl 画像URL
+	ImageUrl string `json:"imageUrl"`
+
 	// Name アイテム名
 	Name string `json:"name"`
 }
