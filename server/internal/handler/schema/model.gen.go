@@ -361,6 +361,15 @@ type UpdateDeck struct {
 	ThumbnailCardId string `json:"thumbnailCardId"`
 }
 
+// User defines model for user.
+type User struct {
+	// ImageUrl 画像URL
+	ImageUrl string `json:"imageUrl"`
+
+	// Name ユーザー名
+	Name string `json:"name"`
+}
+
 // GetCardsParams defines parameters for GetCards.
 type GetCardsParams struct {
 	// IsAll 全件取得フラグ（0: 非全件, 1: 全件)

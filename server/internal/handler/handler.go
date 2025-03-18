@@ -38,6 +38,9 @@ type Handler struct {
 	// Present
 	GetMyPresentsHandler
 	ReceivePresentHandler
+
+	// User
+	GetUserHandler
 }
 
 func New() *Handler {
@@ -68,8 +71,9 @@ func New() *Handler {
 	updateMyDeckUsecase := usecase.NewUpdateMyDeckUsecase(deckRepo)
 	deleteMyDeckUsecase := usecase.NewDeleteMyDeckUsecase(deckRepo)
 	getMyCardsUsecase := usecase.NewGetMyCardsUsecase(masterCardRepo, userRepo)
-	GetMyPresentUsecase := usecase.NewGetMyPresentsUsecase(presentRepo, masterItemRepo)
-	ReceivePresentUsecase := usecase.NewReceivePresentUsecase(presentRepo, userRepo)
+	getMyPresentUsecase := usecase.NewGetMyPresentsUsecase(presentRepo, masterItemRepo)
+	receivePresentUsecase := usecase.NewReceivePresentUsecase(presentRepo, userRepo)
+	getUserUsecase := usecase.NewGetUserUsecase(userRepo)
 
 	return &Handler{
 		GetMyCardListHandler: GetMyCardListHandler{
@@ -101,10 +105,13 @@ func New() *Handler {
 		GetWebSocketHandler:   GetWebSocketHandler{},
 		GetHealthCheckHandler: GetHealthCheckHandler{},
 		GetMyPresentsHandler: GetMyPresentsHandler{
-			getMyPresentsUsecase: GetMyPresentUsecase,
+			getMyPresentsUsecase: getMyPresentUsecase,
 		},
 		ReceivePresentHandler: ReceivePresentHandler{
-			receivePresentUsecase: ReceivePresentUsecase,
+			receivePresentUsecase: receivePresentUsecase,
+		},
+		GetUserHandler: GetUserHandler{
+			getUserUsecase: getUserUsecase,
 		},
 	}
 }
