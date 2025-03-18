@@ -20,10 +20,11 @@ type GameMasterService interface {
 	InitializeGame(state *model.GameState) error
 	FlipCoin() bool
 	ShuffleDeck(deck []*model.Card) []*model.Card
-	DrawCards(player *model.Player, count int)
+	DrawCards(player *model.Player, count int) []*model.Card
 	RunEffect(effects []*model.Effect, trigger string, args any) ([]*model.Effect, error)
 	Matched(ctx context.Context, roomID model.RoomID) error
 	ReadyForStart(ctx context.Context, roomID model.RoomID, userID model.UserID) error
+	ChangeTurn(ctx context.Context, roomID model.RoomID) error
 }
 
 type gameMasterService struct {
@@ -43,8 +44,7 @@ func NewGameMasterService(
 
 func (s *gameMasterService) InitializeGame(state *model.GameState) error {
 	// コイントスを行い、先攻を決める
-	// 表なら Player1 が先攻、裏なら Player2 が先攻
-	if !s.FlipCoin() {
+	if s.FlipCoin() {
 		state.TurnPlayer, state.NonTurnPlayer = state.NonTurnPlayer, state.TurnPlayer
 	}
 
@@ -103,23 +103,46 @@ func (s *gameMasterService) lotteryNextEnergy(player *model.Player) {
 	player.NextEnergy = player.BaseDeck.Energies[rand.IntN(len(player.BaseDeck.Energies))]
 }
 
-func (s *gameMasterService) ChangeTurn(ctx context.Context, state *model.GameState) error {
-	state.Turn++
+func (s *gameMasterService) ChangeTurn(ctx context.Context, roomID model.RoomID) error {
+	err := s.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
+		state, err := s.GameStateRepository.Find(ctx, roomID)
+		if err != nil {
+			return err
+		}
 
-	state.TurnPlayer, state.NonTurnPlayer = state.NonTurnPlayer, state.TurnPlayer
+		state.Turn++
+		state.TurnPlayer, state.NonTurnPlayer = state.NonTurnPlayer, state.TurnPlayer
+		s.lotteryNextEnergy(state.TurnPlayer)
+		drawedCard := s.DrawCards(state.TurnPlayer, 1)
 
-	s.lotteryNextEnergy(state.TurnPlayer)
+		if err := s.GameEventSender.SendTurnStartEvent(ctx, state.TurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendTurnStartEvent(context.Background(), state.NonTurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+			return err
+		}
 
-	if err := s.GameEventSender.SendTurnStartEvent(ctx, state.TurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+		if err := s.GameEventSender.SendDrawCardsEventToActor(ctx, state.TurnPlayer.UserID, len(state.TurnPlayer.Deck), drawedCard...); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendDrawCardsEventToRecipient(ctx, state.NonTurnPlayer.UserID, len(state.TurnPlayer.Deck), drawedCard...); err != nil {
+			return err
+		}
+
+		if err := s.GameEventSender.SendNextEnergyEventToActor(ctx, state.TurnPlayer.UserID, state.TurnPlayer.NextEnergy); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendNextEnergyEventToRecipient(ctx, state.NonTurnPlayer.UserID, state.TurnPlayer.NextEnergy); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
 		return err
 	}
-	if err := s.GameEventSender.SendTurnStartEvent(context.Background(), state.NonTurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
-		return err
-	}
 
-	s.DrawCards(state.TurnPlayer, 1)
-
-	return nil
+	return err
 }
 
 func (s *gameMasterService) IsFinish(state *model.GameState) bool {
@@ -164,8 +187,6 @@ func (s *gameMasterService) RunEffect(effects []*model.Effect, trigger string, a
 }
 
 func (s *gameMasterService) ReadyForStart(ctx context.Context, roomID model.RoomID, userID model.UserID) error {
-	var readyBothPlayers bool
-	playerIDs := []model.UserID{userID}
 	err := s.GameStateRepository.Transaction(ctx, roomID, func(ctx context.Context) error {
 		state, err := s.GameStateRepository.Find(ctx, roomID)
 		if err != nil {
@@ -182,24 +203,46 @@ func (s *gameMasterService) ReadyForStart(ctx context.Context, roomID model.Room
 		if err != nil {
 			return err
 		}
-		readyBothPlayers = enemy.IsReady
-		if readyBothPlayers {
+		if enemy.IsReady {
 			state.Phase = model.GamePhaseBattle
 		}
 
-		playerIDs = append(playerIDs, enemy.UserID)
+		drawedCard := s.DrawCards(state.TurnPlayer, 1)
 
-		return s.GameStateRepository.Store(ctx, state)
+		if err := s.GameStateRepository.Store(ctx, state); err != nil {
+			return err
+		}
+
+		if !enemy.IsReady {
+			return nil
+		}
+
+		if err := s.GameEventSender.SendTurnStartEvent(ctx, state.TurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendTurnStartEvent(context.Background(), state.NonTurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
+			return err
+		}
+
+		if err := s.GameEventSender.SendDrawCardsEventToActor(ctx, state.TurnPlayer.UserID, len(state.TurnPlayer.Deck), drawedCard...); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendDrawCardsEventToRecipient(ctx, state.NonTurnPlayer.UserID, len(state.TurnPlayer.Deck), drawedCard...); err != nil {
+			return err
+		}
+
+		if err := s.GameEventSender.SendNextEnergyEventToActor(ctx, state.TurnPlayer.UserID, state.TurnPlayer.NextEnergy); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendNextEnergyEventToRecipient(ctx, state.NonTurnPlayer.UserID, state.TurnPlayer.NextEnergy); err != nil {
+			return err
+		}
+
+		return nil
 	})
 	if err != nil {
 		return err
 	}
-
-	if !readyBothPlayers {
-		return nil
-	}
-
-	// TODO: ゲームスタート通知
 
 	return nil
 }
@@ -220,7 +263,12 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 			{ID: state.NonTurnPlayer.UserID, Name: "Player2"},
 		}
 
-		return nil
+		// プレイヤーの初期化
+		if err := s.InitializeGame(state); err != nil {
+			return err
+		}
+
+		return s.GameStateRepository.Store(ctx, state)
 	})
 	if err != nil {
 		return err
@@ -230,6 +278,13 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 		return err
 	}
 	if err := s.GameEventSender.SendMatchingComplete(ctx, users[1].ID, users[0].ID, roomID); err != nil {
+		return err
+	}
+
+	if err := s.GameEventSender.SendDecideOrderEvent(ctx, users[0].ID, users[0].ID, users[1].ID); err != nil {
+		return err
+	}
+	if err := s.GameEventSender.SendDecideOrderEvent(ctx, users[1].ID, users[0].ID, users[1].ID); err != nil {
 		return err
 	}
 

@@ -9,8 +9,13 @@ import (
 
 type GameEventSender interface {
 	SendMatchingComplete(ctx context.Context, userID, oppoUserID model.UserID, roomID model.RoomID) error
+	SendTurnStartEvent(ctx context.Context, userID, turnUserID model.UserID) error
+	SendDrawCardsEventToActor(ctx context.Context, actorID model.UserID, deckCount int, cards ...*model.Card) error
+	SendDrawCardsEventToRecipient(ctx context.Context, opponentID model.UserID, deckCount int, cards ...*model.Card) error
+	SendNextEnergyEventToActor(ctx context.Context, actorID model.UserID, energy model.MonsterType) error
+	SendNextEnergyEventToRecipient(ctx context.Context, opponentID model.UserID, energy model.MonsterType) error
+	SendDecideOrderEvent(ctx context.Context, userID, firstUserID, secondUserID model.UserID) error
+
 	SendDrawEffectEventToActor(ctx context.Context, actorID model.UserID, effects ...*messages.EffectWithSecret) error
 	SendDrawEffectEventToRecipient(ctx context.Context, actorID model.UserID, effects ...*messages.Effect) error
-	SendTurnStartEvent(ctx context.Context, userID, turnUserID model.UserID) error
-	// Send
 }
