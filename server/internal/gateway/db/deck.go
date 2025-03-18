@@ -19,6 +19,14 @@ type deckRepository struct {
 	db dynamo.DB
 }
 
+func (d *deckRepository) FindAllTempalte(ctx context.Context) ([]*model.Deck, error) {
+	var data []*model.Deck
+	if err := d.db.Table(deckTableName).Scan().Filter("begins_with(DeckId, ?)", "template-").All(ctx, &data); err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 func (d *deckRepository) Find(ctx context.Context, deckID model.DeckID) (*model.Deck, error) {
 	var data model.Deck
 	if err := d.db.Table(deckTableName).Get(deckHashKey, deckID).One(ctx, &data); err != nil {

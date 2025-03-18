@@ -29,7 +29,15 @@ func (g *GetMyDecksInteractor) Execute(ctx context.Context, userID string) ([]*m
 	if err != nil {
 		return nil, err
 	}
+
+	// 自分の持つデッキ
 	decks, err := g.DeckRepository.FindAll(ctx, uid)
+	if err != nil {
+		return nil, err
+	}
+
+	// テンプレートデッキ
+	templateDecks, err := g.DeckRepository.FindAllTempalte(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -39,8 +47,10 @@ func (g *GetMyDecksInteractor) Execute(ctx context.Context, userID string) ([]*m
 		return nil, err
 	}
 
-	var resp = make([]*model.Deck, 0, len(decks))
-	for _, deck := range decks {
+	concatDecks := append(decks, templateDecks...)
+
+	var resp = make([]*model.Deck, 0, len(concatDecks))
+	for _, deck := range concatDecks {
 		thumbnailCard, _ := lo.Find(masterCards, func(item *model.MasterCard) bool {
 			return item.MasterCardID == deck.ThumbnailCardID
 		})
