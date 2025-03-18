@@ -84,7 +84,7 @@ func (i *PutInitializeMonsterInteractor) Execute(ctx context.Context, input *Put
 			if me.BenchMonsters[input.Position-1] != nil {
 				return xerrors.Errorf("monster already exists in bench: %d", input.Position)
 			}
-			me.BenchMonsters[input.Position-1] = monster
+			me.BattleMonster = monster
 		}
 
 		// 手札からカードを削除

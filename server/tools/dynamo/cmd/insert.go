@@ -194,7 +194,7 @@ var insertCmd = &cobra.Command{
 				// 	Name: "さめはだ",
 				// 	Text: "このラムモンが、バトル場で相手のラムモンからワザのダメージを受けたとき、ワザを使ったラムモンに40ダメージ",
 				// },
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "ふいうち",
 						Text:   "",
@@ -225,7 +225,7 @@ var insertCmd = &cobra.Command{
 				HP:           40,
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("security-engineer"),
 					model.NewMasterCardID("frontend-engineer"),
 					model.NewMasterCardID("designer"),
@@ -235,7 +235,7 @@ var insertCmd = &cobra.Command{
 					model.NewMasterCardID("full-stack-engineer"),
 				},
 				RetreatCost: 1,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "#駆け出しエンジニア",
 						Damage: 10,
@@ -256,7 +256,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "リバースエンジニアリング",
 						Text:   "自分のトラッシュのカードを1枚選び、手札に加える",
@@ -291,7 +291,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "lint設定",
 						Text:   "自分のラムモン全員のHPを10回復",
@@ -326,7 +326,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "あっそこのUI変えていいですか？",
 						Text:   "相手のベンチラムモン全員に10ダメージ",
@@ -361,7 +361,7 @@ var insertCmd = &cobra.Command{
 					model.NewMasterCardID("newbie-engineer"),
 				},
 				RetreatCost: 2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:         "DB設計",
 						Text:         "このラムモンがダメージを受けているなら、60ダメージ追加",
@@ -397,7 +397,7 @@ var insertCmd = &cobra.Command{
 					model.NewMasterCardID("newbie-engineer"),
 				},
 				RetreatCost: 2,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "環境構築",
 						Text:   "コインを3回投げ、オモテの数ぶんの[知識]エネルギーを自分のエネルギーゾーンから出し、ベンチの[知識]ラムモンに好きなようにつける。",
@@ -477,10 +477,10 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeAlchohol,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  0,
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("yanikasu"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "パチンコ",
 						Text: "コインを1回投げ裏ならこの技は失敗する",
@@ -509,10 +509,10 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("pachikasu"),
 				},
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("sakekasu"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "副流煙",
 						Text: "相手のベンチラムモン1匹にも10ダメージ",
@@ -542,7 +542,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("yanikasu"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name: "飲酒駆動開発",
 						Text: "このラムモンについている[金]エネルギーの数x20ダメージ追加",
@@ -566,10 +566,10 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypeMuscle,
 				RetreatCost:  1,
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("jtc"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "勉強する",
 						Damage: 30,
@@ -592,10 +592,10 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("student"),
 				},
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("venture-president"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "まじめに働く",
 						Damage: 50,
@@ -620,7 +620,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("jtc"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "大盤振る舞い",
 						Text:   "相手のベンチラムモン全員にも20ダメージ。",
@@ -645,10 +645,10 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
 				RetreatCost:  1,
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("muchimuchi"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "筋トレ",
 						Damage: 10,
@@ -671,10 +671,10 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("garigari"),
 				},
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("mukimuki"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "筋トレ",
 						Damage: 40,
@@ -724,10 +724,10 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  0,
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("info-product"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "ともだちをさがす",
 						Text:   "自分の山札から[金]ラムモンをランダムに1枚、手札に加える",
@@ -751,7 +751,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("multi-business"),
 				},
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("high-tax-payer"),
 				},
 				Ability: &model.Ability{
@@ -782,7 +782,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("info-product"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "納税",
 						Text:   "このラムモンから[金]エネルギーを3個トラッシュし、このラムモンのHPを100回復",
@@ -814,10 +814,10 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypePopularity,
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  1,
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("venture-cto"),
 				},
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "がむしゃらに働く",
 						Text:   "このラムモンにも50ダメージ",
@@ -841,7 +841,7 @@ var insertCmd = &cobra.Command{
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("startup-cto"),
 				},
-				EvelvesTo: []model.MasterCardID{
+				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("big-company-cto"),
 				},
 				Ability: &model.Ability{
@@ -1319,7 +1319,7 @@ var insertCmd = &cobra.Command{
 				Type:         model.MonsterTypeNull,
 				SubType:      model.MonsterSubTypeBasic,
 				RetreatCost:  3,
-				Skills: []model.Skill{
+				Skills: []*model.Skill{
 					{
 						Name:   "壁殴り",
 						Text:   "",
