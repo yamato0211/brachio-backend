@@ -110,6 +110,19 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 				c.Logger().Warnf("failed to apply ability: %v", err)
 			}
 			roomID = _roomID
+
+		case *wsmsg.EventEnvelope_InitialSummonEventToServer: // モンスターを初期配置するイベント
+			input := &usecase.PutInitializeMonsterInput{
+				RoomID:   roomID,
+				UserID:   rawUserID,
+				CardID:   req.InitialSummonEventToServer.Payload.Card.Id,
+				Position: int(req.InitialSummonEventToServer.Payload.Position),
+			}
+
+			if err := h.PutInitializeMonsterInputPort.Execute(ctx, input); err != nil {
+				c.Logger().Warnf("failed to put initialize monster: %v", err)
+			}
+
 		case *wsmsg.EventEnvelope_InitialPlacementCompleteEventToServer: // 初期配置完了イベント
 			input := &usecase.CompleteInitialPlacementInput{
 				RoomID: roomID,
