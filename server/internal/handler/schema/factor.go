@@ -85,6 +85,9 @@ func MasterSupportCardFromEntity(e *model.MasterCard) (*MasterSupporterCard, err
 }
 
 func FactoryCard(masterCard *model.MasterCard) (*Card, error) {
+	if masterCard == nil {
+		return nil, nil
+	}
 	var card = &Card{}
 	switch masterCard.CardType {
 	case model.CardTypeMonster:
