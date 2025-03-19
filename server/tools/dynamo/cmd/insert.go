@@ -1215,7 +1215,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/issyoubin.avif",
 				Name:         "一升瓶",
-				Text:         "自分の[酒]ラムモンを1匹選び、コイントスをする。表が出た場合そのラムモンに好きなエネルギーを1つつける。裏が出た場合そのラムモンのランダムなエネルギーを1つトラッシュする。",
+				Text:         "自分のバトルポケモンに自分のエネルギーゾーンから[酒]エネルギーを1つつける。",
 				Rarity:       6,
 			},
 			{
