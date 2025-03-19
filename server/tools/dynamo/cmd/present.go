@@ -43,7 +43,7 @@ to quickly create a Cobra application.`,
 				ReceivedUserIDs: []model.UserID{},
 				ItemID:          model.MasterItemID("pack-power"),
 				ItemCount:       100,
-				Message:         "運営からのプレゼント1",
+				Message:         "運営からのプレゼントです！",
 			},
 		}
 
