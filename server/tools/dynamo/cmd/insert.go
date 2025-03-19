@@ -169,6 +169,7 @@ var insertCmd = &cobra.Command{
 				Weakness:     model.MonsterTypeMoney,
 				RetreatCost:  0,
 				HP:           30,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/tosaken.avif",
 				Skills: []*model.Skill{
 					{
 						Name:   "かみつく",
@@ -223,8 +224,10 @@ var insertCmd = &cobra.Command{
 				Rarity:       1,
 				CardType:     model.CardTypeMonster,
 				HP:           40,
-				Type:         model.MonsterTypePopularity,
-				Weakness:     model.MonsterTypeMoney,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/kakedasi.avif",
+
+				Type:     model.MonsterTypePopularity,
+				Weakness: model.MonsterTypeMoney,
 				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("security-engineer"),
 					model.NewMasterCardID("frontend-engineer"),
@@ -250,9 +253,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           90,
-				Type:         model.MonsterTypeAlchohol,
-				Weakness:     model.MonsterTypePopularity,
-				RetreatCost:  0,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/secure.avif",
+
+				Type:        model.MonsterTypeAlchohol,
+				Weakness:    model.MonsterTypePopularity,
+				RetreatCost: 0,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
@@ -285,6 +290,7 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           90,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/frontend.avif",
 				Type:         model.MonsterTypeMoney,
 				Weakness:     model.MonsterTypeKnowledge,
 				RetreatCost:  2,
@@ -355,8 +361,10 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           90,
-				Type:         model.MonsterTypePopularity,
-				Weakness:     model.MonsterTypeMoney,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/backend.avif",
+
+				Type:     model.MonsterTypePopularity,
+				Weakness: model.MonsterTypeMoney,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
@@ -391,8 +399,10 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           120,
-				Type:         model.MonsterTypeKnowledge,
-				Weakness:     model.MonsterTypeMuscle,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/sre.avif",
+
+				Type:     model.MonsterTypeKnowledge,
+				Weakness: model.MonsterTypeMuscle,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
@@ -425,8 +435,10 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           130,
-				Type:         model.MonsterTypeNull,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/fullstuck.avif",
+
+				Type:        model.MonsterTypeNull,
+				RetreatCost: 2,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("newbie-engineer"),
 				},
@@ -453,10 +465,12 @@ var insertCmd = &cobra.Command{
 				Description:  "全てを諦めたひと。",
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
-				HP:           50,
-				Type:         model.MonsterTypeNull,
-				Weakness:     model.MonsterTypePopularity,
-				RetreatCost:  3,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/neet.avif",
+
+				HP:          50,
+				Type:        model.MonsterTypeNull,
+				Weakness:    model.MonsterTypePopularity,
+				RetreatCost: 3,
 				Skills: []*model.Skill{
 					{
 						Name:   "クソツイ",
@@ -474,9 +488,11 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeMonster,
 				Rarity:       2,
 				HP:           30,
-				Type:         model.MonsterTypeAlchohol,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  0,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/pachinko.avif",
+
+				Type:        model.MonsterTypeAlchohol,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 0,
 				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("yanikasu"),
 				},
@@ -499,9 +515,11 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeMonster,
 				Rarity:       3,
 				HP:           60,
-				Type:         model.MonsterTypeAlchohol,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  0,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/タバコ.avif",
+
+				Type:        model.MonsterTypeAlchohol,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 0,
 				Ability: &model.Ability{
 					Name: "タバコ休憩",
 					Text: "自分の番に1回使える。[金]エネルギーを1つトラッシュする代わりにこのラムモンのHPを20回復する",
@@ -532,9 +550,11 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeMonster,
 				Rarity:       4,
 				HP:           110,
-				Type:         model.MonsterTypeAlchohol,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/sakekasu.avif",
+
+				Type:        model.MonsterTypeAlchohol,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 1,
 				Ability: &model.Ability{
 					Name: "酒の力",
 					Text: "自分のエネルギーゾーンからこのラムモンに[酒]エネルギーをつけるたび、このラムモンのHPを10回復する",
@@ -563,9 +583,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           50,
-				Type:         model.MonsterTypeKnowledge,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/student.avif",
+
+				Type:        model.MonsterTypeKnowledge,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 1,
 				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("jtc"),
 				},
@@ -586,9 +608,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           80,
-				Type:         model.MonsterTypeKnowledge,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/syakaijin.avif",
+
+				Type:        model.MonsterTypeKnowledge,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 1,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("student"),
 				},
@@ -614,9 +638,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
 				HP:           130,
-				Type:         model.MonsterTypeKnowledge,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/syatyo.avif",
+
+				Type:        model.MonsterTypeKnowledge,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 1,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("jtc"),
 				},
@@ -642,9 +668,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           50,
-				Type:         model.MonsterTypeMuscle,
-				Weakness:     model.MonsterTypeAlchohol,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/garigari.avif",
+
+				Type:        model.MonsterTypeMuscle,
+				Weakness:    model.MonsterTypeAlchohol,
+				RetreatCost: 1,
 				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("muchimuchi"),
 				},
@@ -665,9 +693,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           90,
-				Type:         model.MonsterTypeMuscle,
-				Weakness:     model.MonsterTypeAlchohol,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/mutimurti.avif",
+
+				Type:        model.MonsterTypeMuscle,
+				Weakness:    model.MonsterTypeAlchohol,
+				RetreatCost: 2,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("garigari"),
 				},
@@ -692,9 +722,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
 				HP:           170,
-				Type:         model.MonsterTypeMuscle,
-				Weakness:     model.MonsterTypeAlchohol,
-				RetreatCost:  3,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/mukimuki.avif",
+
+				Type:        model.MonsterTypeMuscle,
+				Weakness:    model.MonsterTypeAlchohol,
+				RetreatCost: 3,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("muchimuchi"),
 				},
@@ -721,9 +753,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           50,
-				Type:         model.MonsterTypeMoney,
-				Weakness:     model.MonsterTypePopularity,
-				RetreatCost:  0,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/multi_syouhou_kanyuu.avif",
+
+				Type:        model.MonsterTypeMoney,
+				Weakness:    model.MonsterTypePopularity,
+				RetreatCost: 0,
 				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("info-product"),
 				},
@@ -745,9 +779,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           80,
-				Type:         model.MonsterTypeMoney,
-				Weakness:     model.MonsterTypePopularity,
-				RetreatCost:  0,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/johosyozai.avif",
+
+				Type:        model.MonsterTypeMoney,
+				Weakness:    model.MonsterTypePopularity,
+				RetreatCost: 0,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("multi-business"),
 				},
@@ -776,9 +812,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
 				HP:           160,
-				Type:         model.MonsterTypeMoney,
-				Weakness:     model.MonsterTypePopularity,
-				RetreatCost:  3,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/kougakunouzeisya.avif",
+
+				Type:        model.MonsterTypeMoney,
+				Weakness:    model.MonsterTypePopularity,
+				RetreatCost: 3,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("info-product"),
 				},
@@ -811,9 +849,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           60,
-				Type:         model.MonsterTypePopularity,
-				Weakness:     model.MonsterTypeMoney,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/start-up-cto.avif",
+
+				Type:        model.MonsterTypePopularity,
+				Weakness:    model.MonsterTypeMoney,
+				RetreatCost: 1,
 				EvolvesTo: []model.MasterCardID{
 					model.NewMasterCardID("venture-cto"),
 				},
@@ -835,9 +875,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           120,
-				Type:         model.MonsterTypePopularity,
-				Weakness:     model.MonsterTypeMoney,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/bencha-cto.avif",
+
+				Type:        model.MonsterTypePopularity,
+				Weakness:    model.MonsterTypeMoney,
+				RetreatCost: 2,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("startup-cto"),
 				},
@@ -867,9 +909,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       4,
 				CardType:     model.CardTypeMonster,
 				HP:           180,
-				Type:         model.MonsterTypePopularity,
-				Weakness:     model.MonsterTypeMoney,
-				RetreatCost:  3,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/big-cto.avif",
+
+				Type:        model.MonsterTypePopularity,
+				Weakness:    model.MonsterTypeMoney,
+				RetreatCost: 3,
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("venture-cto"),
 				},
@@ -898,9 +942,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           100,
-				Type:         model.MonsterTypeNull,
-				Weakness:     model.MonsterTypeMoney,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/free-eng.avif",
+
+				Type:        model.MonsterTypeNull,
+				Weakness:    model.MonsterTypeMoney,
+				RetreatCost: 2,
 				Skills: []*model.Skill{
 					{
 						Name:   "業務委託",
@@ -920,9 +966,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       3,
 				CardType:     model.CardTypeMonster,
 				HP:           80,
-				Type:         model.MonsterTypeNull,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  1,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/bunkei-engeer.avif",
+
+				Type:        model.MonsterTypeNull,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 1,
 				Skills: []*model.Skill{
 					{
 						Name:   "コーディング",
@@ -943,9 +991,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           60,
-				Type:         model.MonsterTypeNull,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  3,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/ses-eng.avif",
+
+				Type:        model.MonsterTypeNull,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 3,
 				Skills: []*model.Skill{
 					{
 						Name:   "秘密の業務",
@@ -964,9 +1014,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       2,
 				CardType:     model.CardTypeMonster,
 				HP:           120,
-				Type:         model.MonsterTypeNull,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/jinjinia.avif",
+
+				Type:        model.MonsterTypeNull,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 2,
 				Skills: []*model.Skill{
 					{
 						Name:   "人事面接",
@@ -988,9 +1040,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
 				HP:           100,
-				Type:         model.MonsterTypeAlchohol,
-				Weakness:     model.MonsterTypeKnowledge,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/gopher.avif",
+
+				Type:        model.MonsterTypeAlchohol,
+				Weakness:    model.MonsterTypeKnowledge,
+				RetreatCost: 2,
 				Ability: &model.Ability{
 					Name: "Goroutineの追撃",
 					Text: "このラムモンが、相手のバトルラムモンにワザを使ったとき、ウラが出るまでコインを投げ、オモテの数x10ダメージ追加",
@@ -1014,6 +1068,7 @@ var insertCmd = &cobra.Command{
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
 				HP:           100,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/Ferris.avif",
 				Type:         model.MonsterTypeMuscle,
 				Weakness:     model.MonsterTypeAlchohol,
 				RetreatCost:  2,
@@ -1040,9 +1095,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
 				HP:           100,
-				Type:         model.MonsterTypeMoney,
-				Weakness:     model.MonsterTypeMuscle,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/typescript.avif",
+
+				Type:        model.MonsterTypeMoney,
+				Weakness:    model.MonsterTypeMuscle,
+				RetreatCost: 2,
 				Ability: &model.Ability{
 					Name: "as unknown as",
 					Text: "このラムモンがいる限り、相手のラムモンのワザのタイプをNULLにし、追加効果を無効化する。",
@@ -1066,9 +1123,11 @@ var insertCmd = &cobra.Command{
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
 				HP:           100,
-				Type:         model.MonsterTypePopularity,
-				Weakness:     model.MonsterTypeMoney,
-				RetreatCost:  2,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/swift.webp",
+
+				Type:        model.MonsterTypePopularity,
+				Weakness:    model.MonsterTypeMoney,
+				RetreatCost: 2,
 				Ability: &model.Ability{
 					Name: "Apple Developer Program",
 					Text: "このラムモンがいる限り、相手は手札からラムモンを出せない。また、このラムモンは自分の番の終了時に、40ダメージを受ける。",
@@ -1092,6 +1151,7 @@ var insertCmd = &cobra.Command{
 				Rarity:       5,
 				CardType:     model.CardTypeMonster,
 				HP:           100,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/python.avif",
 				Type:         model.MonsterTypeKnowledge,
 				Weakness:     model.MonsterTypePopularity,
 				RetreatCost:  2,
@@ -1115,6 +1175,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("oreilly-book"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/oreilly.avif",
 				Name:         "オライリー本",
 				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
 				Rarity:       6,
@@ -1122,6 +1183,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("protein"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/protain.avif",
 				Name:         "プロテイン",
 				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ラムモン1匹につける",
 				Rarity:       6,
@@ -1129,6 +1191,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("credit-card"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/crebitcard.avif",
 				Name:         "クレカ",
 				Text:         "自分の[金]ラムモン1匹に[金]エネルギーを5つつける。",
 				Rarity:       6,
@@ -1136,13 +1199,15 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("hackz-parker"),
 				CardType:     model.CardTypeGoods,
-				Name:         "ハックツパーカー",
-				Text:         "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果や特性によるダメージを受けない。",
-				Rarity:       6,
+				// ImageURL: "https://pokepoke.kurichi.dev/images/crebitcard.avif",
+				Name:   "ハックツパーカー",
+				Text:   "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果や特性によるダメージを受けない。",
+				Rarity: 6,
 			},
 			{
 				MasterCardID: model.NewMasterCardID("sake-bottle"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/issyoubin.avif",
 				Name:         "一升瓶",
 				Text:         "自分の[酒]ラムモンを1匹選び、コイントスをする。表が出た場合そのラムモンに好きなエネルギーを1つつける。裏が出た場合そのラムモンのランダムなエネルギーを1つトラッシュする。",
 				Rarity:       6,
@@ -1150,6 +1215,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("energy-drink"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/energy-drink.avif",
 				Name:         "エナジードリンク",
 				Text:         "次の相手のターンに受けるダメージを全て無効にし、その分のダメージを次の自分の番の終わりに受ける。",
 				Rarity:       5,
@@ -1157,6 +1223,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("starbucks"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/starbacks.avif",
 				Name:         "スタバ",
 				Text:         "自分のラムモン1匹のHPを20回復",
 				Rarity:       2,
@@ -1165,6 +1232,7 @@ var insertCmd = &cobra.Command{
 
 				MasterCardID: model.NewMasterCardID("gopher-doll"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/gophers.avif",
 				Name:         "Gopherくん人形",
 				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、1個少なくする。",
 				Rarity:       2,
@@ -1172,6 +1240,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("hot-reload"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/hotreload.avif",
 				Name:         "ホットリロード",
 				Text:         "自分の手札をすべて山札に戻し、山札から同じ枚数のカードを引く。",
 				Rarity:       2,
@@ -1179,6 +1248,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("recruitment-agency"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/e-jent.avif",
 				Name:         "転職エージェント",
 				Text:         "自分の山札からたねラムモン以外のラムモンをランダムに1枚、手札に加える。",
 				Rarity:       2,
@@ -1186,6 +1256,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("programming-school"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/programing-school.avif",
 				Name:         "プログラミングスクール",
 				Text:         "自分の山札からたねラムモンをランダムに1枚、手札に加える。",
 				Rarity:       2,
@@ -1193,6 +1264,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("lan-cable"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/lan.avif",
 				Name:         "LANケーブル",
 				Text:         "自分のベンチラムモン1匹を選び、そのラムモンについているエネルギーを1つバトルラムモンに付け替える。",
 				Rarity:       2,
@@ -1200,6 +1272,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("hhkb"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/hhkb.avif",
 				Name:         "HHKB",
 				Text:         "自分の山札から「駆け出しエンジニア」の進化先のラムモンをランダムに1枚、手札に加える。",
 				Rarity:       2,
@@ -1207,6 +1280,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("macbook"),
 				CardType:     model.CardTypeGoods,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/macbook.avif",
 				Name:         "MacBook",
 				Text:         "「駆け出しエンジニア」とその進化先のラムモンが使うワザの、相手のバトルポケモンへのダメージを+20する",
 				Rarity:       2,
@@ -1214,6 +1288,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("refactoring"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/refactor.avif",
 				Name:         "リファクタリング",
 				Text:         "相手のベンチラムモン1体を選び、バトル場のラムモンと入れ替える。",
 				Rarity:       5,
@@ -1221,6 +1296,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("chat-gpt"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/ChatGPT.webp",
 				Name:         "ChatGPT",
 				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、2個少なくする。",
 				Rarity:       3,
@@ -1228,6 +1304,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("spaghetti-code"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/spagettexi.avif",
 				Name:         "スパゲッティコード",
 				Text:         "相手のバトルラムモンのランダムなエネルギー1個を、ランダムなエネルギーに変える。",
 				Rarity:       4,
@@ -1235,6 +1312,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("flaming-project"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/enjou.avif",
 				Name:         "炎上プロジェクト",
 				Text:         "お互いのバトルラムモンについているエネルギーを1つずつトラッシュする。",
 				Rarity:       3,
@@ -1249,6 +1327,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("strict-mode"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/react.avif",
 				Name:         "React.StrictMode",
 				Text:         "自分の山札を2枚引く。",
 				Rarity:       3,
@@ -1256,6 +1335,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("firewall"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/firewall.avif",
 				Name:         "ファイヤーウォール",
 				Text:         "次の相手の番、自分のラムモン全員が、相手のラムモンから受けるダメージを-20する。",
 				Rarity:       3,
@@ -1263,6 +1343,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("bartender"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/bar.avif",
 				Name:         "バーテンダー",
 				Text:         "自分の[酒]ラムモンを1匹選ぶ。5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから出し、そのラムモンにつける。ウラの数1つにつき、そのラムモンに20ダメージ与える。",
 				Rarity:       6,
@@ -1270,6 +1351,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("izakaya-taisyo"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/taisyo.avif",
 				Name:         "居酒屋大将",
 				Text:         "自分のラムモンを1匹選ぶ。コイントスを裏が出るまで行い、表の数分自分についていないエネルギーの種類の中からランダムで1種類を選び、そのラムモンにつける。",
 				Rarity:       6,
@@ -1277,6 +1359,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("personal-trainer"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/personal-trainer.avif",
 				Name:         "パーソナルトレーナー",
 				Text:         "自分のバトルラムモンに[筋肉]エネルギーを2つつける。",
 				Rarity:       6,
@@ -1284,6 +1367,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("yamikin-gyosya"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/yamikin.avif",
 				Name:         "ヤミ金業者",
 				Text:         "自分の[金]ラムモンを1匹選ぶ。そのラムモンに[金]エネルギーを10個つける。2ターン後に[金]エネルギーを20個トラッシュ。できない場合はそのラムモンをきぜつさせる。",
 				Rarity:       6,
@@ -1291,6 +1375,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("librarian"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/tosyokan.avif",
 				Name:         "図書館司書",
 				Text:         "自分の山札から本のグッズカードを2枚まで手札に加える。",
 				Rarity:       3,
@@ -1298,6 +1383,7 @@ var insertCmd = &cobra.Command{
 			{
 				MasterCardID: model.NewMasterCardID("ci-cd-pipeline"),
 				CardType:     model.CardTypeSupporter,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/CICD.webp",
 				Name:         "CI/CDパイプライン",
 				Text:         "自分の手札全てを山札に戻し、同じ枚数のカードを引く。同時に、バトル場にいる自分の[知識]ラムモン1体は、次のターンまで受けるダメージが-20される。",
 				Rarity:       3,
@@ -1315,6 +1401,7 @@ var insertCmd = &cobra.Command{
 				Name:         "壁",
 				Text:         "",
 				HP:           100,
+				ImageURL:     "https://pokepoke.kurichi.dev/images/wall.avif",
 				Rarity:       1,
 				Type:         model.MonsterTypeNull,
 				SubType:      model.MonsterSubTypeBasic,
