@@ -3,9 +3,11 @@ package usecase
 import (
 	"context"
 
+	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
 	"github.com/yamato0211/brachio-backend/internal/domain/service"
+	"github.com/yamato0211/brachio-backend/internal/handler/schema/messages"
 	"golang.org/x/xerrors"
 )
 
@@ -23,17 +25,20 @@ type AttackInteractor struct {
 	GameStateRepository repository.GameStateRepository
 	SkillApprier        service.SkillApprier
 	GameMaster          service.GameMasterService
+	GameEventSender     service.GameEventSender
 }
 
 func NewAttackUsecase(
 	gsr repository.GameStateRepository,
 	sa service.SkillApprier,
 	gm service.GameMasterService,
+	ges service.GameEventSender,
 ) AttackInputPort {
 	return &AttackInteractor{
 		GameStateRepository: gsr,
 		SkillApprier:        sa,
 		GameMaster:          gm,
+		GameEventSender:     ges,
 	}
 }
 
@@ -63,24 +68,24 @@ func (i *AttackInteractor) Execute(ctx context.Context, input *AttackInput) erro
 			return err
 		}
 
-		enemy, err := state.FindEnemyByUserID(userID)
+		me.Effect, err = i.GameMaster.RunEffect(state, me.Effect, "before-attack", nil)
 		if err != nil {
 			return err
 		}
 
-		me.Effect, err = i.GameMaster.RunEffect(me.Effect, "before-attack", nil)
+		if _, err := i.SkillApprier.ApplySkill(state, input.SkillID); err != nil {
+			return err
+		}
+
+		me.Effect, err = i.GameMaster.RunEffect(state, me.Effect, "after-attack", nil)
 		if err != nil {
 			return err
 		}
 
-		damage, err := i.SkillApprier.ApplySkill(me, enemy, input.SkillID)
-		if err != nil {
+		if err := i.GameEventSender.SendDrawEffectEventToActor(ctx, userID, i.makeEventForMe(0, state)); err != nil {
 			return err
 		}
-		_ = damage
-
-		me.Effect, err = i.GameMaster.RunEffect(me.Effect, "after-attack", nil)
-		if err != nil {
+		if err := i.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.NonTurnPlayer.UserID, i.makeEventForOppo(0, state)); err != nil {
 			return err
 		}
 
@@ -89,12 +94,37 @@ func (i *AttackInteractor) Execute(ctx context.Context, input *AttackInput) erro
 		if err != nil {
 			return err
 		}
-
 		return nil
 	})
 	if err != nil {
 		return err
 	}
 
+	if err := i.GameMaster.ChangeTurn(ctx, roomID); err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func (i *AttackInteractor) makeEventForMe(position int, state *model.GameState) *messages.EffectWithSecret {
+	return &messages.EffectWithSecret{
+		Effect: &messages.EffectWithSecret_Damage{
+			Damage: &messages.DamageEffect{
+				Position: int32(position),
+				Amount:   lo.Map(state.Damages, func(d int, _ int) int32 { return int32(d) }),
+			},
+		},
+	}
+}
+
+func (i *AttackInteractor) makeEventForOppo(position int, state *model.GameState) *messages.Effect {
+	return &messages.Effect{
+		Effect: &messages.Effect_Damage{
+			Damage: &messages.DamageEffect{
+				Position: int32(position),
+				Amount:   lo.Map(state.Damages, func(d int, _ int) int32 { return int32(d) }),
+			},
+		},
+	}
 }

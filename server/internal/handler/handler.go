@@ -98,7 +98,7 @@ func New() *Handler {
 	evoluteMonsterUsecase := usecase.NewEvoluteMonsterUsecase(gameStateRepo, gameEventSender)
 	flipCoinUsecase := usecase.NewFlipCoinUsecase(gameStateRepo, gameEventSender)
 	giveUpUsecase := usecase.NewGiveUpUsecase(gameStateRepo)
-	matchingUsecase := usecase.NewMatchingUsecase(gameStateRepo, deckRepo, matcher, gameMasterService)
+	matchingUsecase := usecase.NewMatchingUsecase(gameStateRepo, deckRepo, masterCardRepo, matcher, gameMasterService)
 	putInitializeMonsterUsecase := usecase.NewPutInitializeMonsterUsecase(gameStateRepo, gameMasterService)
 	retreatUsecase := usecase.NewRetreatUsecase(gameStateRepo, gameEventSender)
 	summonUsecase := usecase.NewSummonUsecase(gameStateRepo, gameEventSender)
@@ -156,6 +156,8 @@ func New() *Handler {
 			SupplyEnergyInputPort:             supplyEnergyUsecase,
 			UseGoodsInputPort:                 useGoodsUsecase,
 			UseSupporterInputPort:             useSupporterUsecase,
+
+			pusher: pusher,
 			upgrader: gorillawebsocket.Upgrader{
 				CheckOrigin: func(r *http.Request) bool {
 					return true

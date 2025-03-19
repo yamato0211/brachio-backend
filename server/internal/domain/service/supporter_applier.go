@@ -48,7 +48,7 @@ func (s *SupporterApplierService) applyChatGpt(state *model.GameState, meta any)
 
 	me.Effect = append(me.Effect, &model.Effect{
 		Trigger: "turn-end",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			me.BattleMonster.RetreatCostAddition = 0
 			return true, nil
 		},

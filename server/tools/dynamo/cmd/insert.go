@@ -47,12 +47,12 @@ var insertCmd = &cobra.Command{
 				RetreatCost:  1,
 				Ability: &model.Ability{
 					Name: "技術的には可能です",
-					Text: "自分の番に1回使える。自分のエネルギーゾーンからランダムにエネルギーを5個出し、このラムモンにつける。",
+					Text: "自分の番に1回使える。自分のエネルギーゾーンからランダムにエネルギーを5個出し、このポケモンにつける。",
 				},
 				Skills: []*model.Skill{
 					{
 						Name: "博打",
-						Text: "コインを1回投げ表なら相手のベンチラムモン全員にも200ダメージ、裏ならこのラムモンについているエネルギーをすべてトラッシュする",
+						Text: "コインを1回投げ表なら相手のベンチポケモン全員にも200ダメージ、裏ならこのポケモンについているエネルギーをすべてトラッシュする",
 						Cost: []model.MonsterType{
 							model.MonsterTypeAlchohol,
 							model.MonsterTypeMoney,
@@ -81,7 +81,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "Clean Architecture",
-						Text:   "このラムモンから2エネルギートラッシュする。相手のバトル場のラムモンから1枚選び、そのカードを山札に戻す。",
+						Text:   "このポケモンから2エネルギートラッシュする。相手のバトル場のポケモンから1枚選び、そのカードを山札に戻す。",
 						Damage: 0,
 						Cost: []model.MonsterType{
 							model.MonsterTypeKnowledge,
@@ -115,7 +115,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "ベンチプレス",
-						Text:   "相手の場のラムモン全てに999ダメージ",
+						Text:   "相手の場のポケモン全てに999ダメージ",
 						Damage: 999,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMuscle,
@@ -147,12 +147,12 @@ var insertCmd = &cobra.Command{
 				ImageURL:     "https://pokepoke.kurichi.dev/images/tosaken-ex.avif",
 				Ability: &model.Ability{
 					Name: "金がすべて",
-					Text: "このラムモンがワザを使うとき、このラムモンについている[金]エネルギーの数x10ダメージ追加。また、このラムモンがワザを受けるとき、このラムモンについている[金]エネルギーの数x10ぶんだけダメージを軽減する。",
+					Text: "このポケモンがワザを使うとき、このポケモンについている[金]エネルギーの数x10ダメージ追加。",
 				},
 				Skills: []*model.Skill{
 					{
 						Name:   "バイクで突っ込む",
-						Text:   "相手のベンチラムモン全員にも50ダメージ。このラムモンについているエネルギーをすべてトラッシュ。このラムモンにも70ダメージ",
+						Text:   "相手のベンチポケモン全員にも50ダメージ。このポケモンについているエネルギーをすべてトラッシュ。このポケモンにも70ダメージ",
 						Damage: 200,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMoney,
@@ -198,7 +198,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost:  3,
 				// Ability: &model.Ability{
 				// 	Name: "さめはだ",
-				// 	Text: "このラムモンが、バトル場で相手のラムモンからワザのダメージを受けたとき、ワザを使ったラムモンに40ダメージ",
+				// 	Text: "このポケモンが、バトル場で相手のポケモンからワザのダメージを受けたとき、ワザを使ったポケモンに40ダメージ",
 				// },
 				Skills: []*model.Skill{
 					{
@@ -211,7 +211,7 @@ var insertCmd = &cobra.Command{
 					},
 					{
 						Name:   "ひっかく",
-						Text:   "コインを2回投げ2回ともウラなら、このラムモンにも100ダメージ",
+						Text:   "コインを2回投げ2回ともウラなら、このポケモンにも100ダメージ",
 						Damage: 200,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
@@ -305,7 +305,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "lint設定",
-						Text:   "自分のラムモン全員のHPを10回復",
+						Text:   "自分のポケモン全員のHPを10回復",
 						Damage: 30,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMoney,
@@ -313,7 +313,7 @@ var insertCmd = &cobra.Command{
 					},
 					{
 						Name:         "デザイナーへの悪口",
-						Text:         "相手のバトルラムモンが「デザイナー」のとき、50ダメージ追加",
+						Text:         "相手のバトルポケモンが「デザイナー」のとき、50ダメージ追加",
 						Damage:       50,
 						DamageOption: "+50",
 						Cost: []model.MonsterType{
@@ -341,7 +341,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "あっそこのUI変えていいですか？",
-						Text:   "相手のベンチラムモン全員に10ダメージ",
+						Text:   "相手のベンチポケモン全員に10ダメージ",
 						Damage: 10,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMuscle,
@@ -349,7 +349,7 @@ var insertCmd = &cobra.Command{
 					},
 					{
 						Name:         "フロントエンドエンジニアへの悪口",
-						Text:         "相手のバトルラムモンが「フロントエンドエンジニア」のとき、50ダメージ追加",
+						Text:         "相手のバトルポケモンが「フロントエンドエンジニア」のとき、50ダメージ追加",
 						Damage:       50,
 						DamageOption: "+50",
 						Cost: []model.MonsterType{
@@ -378,7 +378,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:         "DB設計",
-						Text:         "このラムモンがダメージを受けているなら、60ダメージ追加",
+						Text:         "このポケモンがダメージを受けているなら、60ダメージ追加",
 						Damage:       40,
 						DamageOption: "+60",
 						Cost: []model.MonsterType{
@@ -416,7 +416,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "環境構築",
-						Text:   "コインを3回投げ、オモテの数ぶんの[知識]エネルギーを自分のエネルギーゾーンから出し、ベンチの[知識]ラムモンに好きなようにつける。",
+						Text:   "コインを3回投げ、オモテの数ぶんの[知識]エネルギーを自分のエネルギーゾーンから出し、ベンチの[知識]ポケモンに好きなようにつける。",
 						Damage: 0,
 						Cost: []model.MonsterType{
 							model.MonsterTypeKnowledge,
@@ -450,12 +450,12 @@ var insertCmd = &cobra.Command{
 				},
 				Ability: &model.Ability{
 					Name: "広く浅く",
-					Text: "このラムモンがたねラムモンから受けるワザのダメージを-20、2進化ラムモンから受けるワザのダメージを+10する。",
+					Text: "このポケモンがたねポケモンから受けるワザのダメージを-20、2進化ポケモンから受けるワザのダメージを+10する。",
 				},
 				Skills: []*model.Skill{
 					{
 						Name:   "全知全能",
-						Text:   "自分の山札からラムモンをランダムに1枚、手札に加える。",
+						Text:   "自分の山札からポケモンをランダムに1枚、手札に加える。",
 						Damage: 20,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
@@ -528,7 +528,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost: 0,
 				Ability: &model.Ability{
 					Name: "タバコ休憩",
-					Text: "自分の番に1回使える。[金]エネルギーを1つトラッシュする代わりにこのラムモンのHPを20回復する",
+					Text: "自分の番に1回使える。[金]エネルギーを1つトラッシュする代わりにこのポケモンのHPを20回復する",
 				},
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("pachikasu"),
@@ -539,7 +539,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name: "副流煙",
-						Text: "相手のベンチラムモン1匹にも10ダメージ",
+						Text: "相手のベンチポケモン1匹にも10ダメージ",
 						Cost: []model.MonsterType{
 							model.MonsterTypeAlchohol,
 							model.MonsterTypeMoney,
@@ -563,7 +563,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost: 1,
 				Ability: &model.Ability{
 					Name: "酒の力",
-					Text: "自分のエネルギーゾーンからこのラムモンに[酒]エネルギーをつけるたび、このラムモンのHPを10回復する",
+					Text: "自分のエネルギーゾーンからこのポケモンに[酒]エネルギーをつけるたび、このポケモンのHPを10回復する",
 				},
 				EvolvesFrom: []model.MasterCardID{
 					model.NewMasterCardID("yanikasu"),
@@ -571,7 +571,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name: "飲酒駆動開発",
-						Text: "このラムモンについている[金]エネルギーの数x20ダメージ追加",
+						Text: "このポケモンについている[金]エネルギーの数x20ダメージ追加",
 						Cost: []model.MonsterType{
 							model.MonsterTypeAlchohol,
 							model.MonsterTypeAlchohol,
@@ -655,7 +655,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "大盤振る舞い",
-						Text:   "相手のベンチラムモン全員にも20ダメージ。",
+						Text:   "相手のベンチポケモン全員にも20ダメージ。",
 						Damage: 120,
 						Cost: []model.MonsterType{
 							model.MonsterTypeKnowledge,
@@ -738,7 +738,7 @@ var insertCmd = &cobra.Command{
 				},
 				Ability: &model.Ability{
 					Name: "パワーーー！！！",
-					Text: "このラムモンがいるかぎり、自分の[筋肉]ラムモンが使うワザのダメージを+30する",
+					Text: "このポケモンがいるかぎり、自分の[筋肉]ポケモンが使うワザのダメージを+30する",
 				},
 				Skills: []*model.Skill{
 					{
@@ -770,7 +770,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "ともだちをさがす",
-						Text:   "自分の山札から[金]ラムモンをランダムに1枚、手札に加える",
+						Text:   "自分の山札から[金]ポケモンをランダムに1枚、手札に加える",
 						Damage: 0,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMoney,
@@ -798,12 +798,12 @@ var insertCmd = &cobra.Command{
 				},
 				Ability: &model.Ability{
 					Name: "荒稼ぎ",
-					Text: "自分の番に1回使える。自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
+					Text: "自分の番に1回使える。自分のエネルギーゾーンから[金]エネルギーを1個出し、このポケモンにつける。",
 				},
 				Skills: []*model.Skill{
 					{
 						Name:   "有料note販売",
-						Text:   "自分のエネルギーゾーンから[金]エネルギーを1個出し、このラムモンにつける。",
+						Text:   "自分のエネルギーゾーンから[金]エネルギーを1個出し、このポケモンにつける。",
 						Damage: 20,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMoney,
@@ -829,7 +829,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "納税",
-						Text:   "このラムモンから[金]エネルギーを3個トラッシュし、このラムモンのHPを100回復",
+						Text:   "このポケモンから[金]エネルギーを3個トラッシュし、このポケモンのHPを100回復",
 						Damage: 0,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMoney,
@@ -839,7 +839,7 @@ var insertCmd = &cobra.Command{
 					},
 					{
 						Name:   "札束ビンタ",
-						Text:   "このラムモンから[金]エネルギーを2個トラッシュ",
+						Text:   "このポケモンから[金]エネルギーを2個トラッシュ",
 						Damage: 100,
 						Cost: []model.MonsterType{
 							model.MonsterTypeMoney,
@@ -866,7 +866,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "がむしゃらに働く",
-						Text:   "このラムモンにも50ダメージ",
+						Text:   "このポケモンにも50ダメージ",
 						Damage: 50,
 						Cost: []model.MonsterType{
 							model.MonsterTypePopularity,
@@ -894,12 +894,12 @@ var insertCmd = &cobra.Command{
 				},
 				Ability: &model.Ability{
 					Name: "まだ諦めない",
-					Text: "このラムモンのワザの効果により、このラムモンがダメージを受けHPが0以下にならなかった場合、このラムモンのHPを50回復する。",
+					Text: "このポケモンのワザの効果により、このポケモンがダメージを受けHPが0以下にならなかった場合、このポケモンのHPを50回復する。",
 				},
 				Skills: []*model.Skill{
 					{
 						Name:   "血反吐を吐く",
-						Text:   "このラムモンにも100ダメージ",
+						Text:   "このポケモンにも100ダメージ",
 						Damage: 100,
 						Cost: []model.MonsterType{
 							model.MonsterTypePopularity,
@@ -925,12 +925,12 @@ var insertCmd = &cobra.Command{
 				},
 				Ability: &model.Ability{
 					Name: "組織の奴隷",
-					Text: "自分の番に1回使える。このラムモンに50ダメージを与える代わりに、自分のエネルギーゾーンから[人気]エネルギーを2個出し、このラムモンにつける。",
+					Text: "自分の番に1回使える。このポケモンに50ダメージを与える代わりに、自分のエネルギーゾーンから[人気]エネルギーを2個出し、このポケモンにつける。",
 				},
 				Skills: []*model.Skill{
 					{
 						Name:         "一斉攻撃",
-						Text:         "このラムモンについている[人気]エネルギーの数x20ダメージ追加",
+						Text:         "このポケモンについている[人気]エネルギーの数x20ダメージ追加",
 						Damage:       100,
 						DamageOption: "x20",
 						Cost: []model.MonsterType{
@@ -1028,7 +1028,7 @@ var insertCmd = &cobra.Command{
 				Skills: []*model.Skill{
 					{
 						Name:   "人事面接",
-						Text:   "自分の山札からラムモンをランダムに1枚、手札に加える。",
+						Text:   "自分の山札からポケモンをランダムに1枚、手札に加える。",
 						Damage: 80,
 						Cost: []model.MonsterType{
 							model.MonsterTypeNull,
@@ -1053,7 +1053,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost: 2,
 				Ability: &model.Ability{
 					Name: "Goroutineの追撃",
-					Text: "このラムモンが、相手のバトルラムモンにワザを使ったとき、ウラが出るまでコインを投げ、オモテの数x10ダメージ追加",
+					Text: "このポケモンが、相手のバトルポケモンにワザを使ったとき、ウラが出るまでコインを投げ、オモテの数x10ダメージ追加",
 				},
 				Skills: []*model.Skill{
 					{
@@ -1080,7 +1080,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost:  2,
 				Ability: &model.Ability{
 					Name: "所有権の濫用",
-					Text: "このラムモンがバトル場にいる限り、相手は手札からグッズを使えない。",
+					Text: "このポケモンがバトル場にいる限り、相手は手札からグッズを使えない。",
 				},
 				Skills: []*model.Skill{
 					{
@@ -1108,7 +1108,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost: 2,
 				Ability: &model.Ability{
 					Name: "as unknown as",
-					Text: "このラムモンがいる限り、相手のラムモンのワザのタイプをNULLにし、追加効果を無効化する。",
+					Text: "このポケモンがいる限り、相手のポケモンのワザのタイプをNULLにし、追加効果を無効化する。",
 				},
 				Skills: []*model.Skill{
 					{
@@ -1136,7 +1136,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost: 2,
 				Ability: &model.Ability{
 					Name: "Apple Developer Program",
-					Text: "このラムモンがいる限り、相手は手札からラムモンを出せない。また、このラムモンは自分の番の終了時に、40ダメージを受ける。",
+					Text: "このポケモンがいる限り、相手は手札からポケモンを出せない。また、このポケモンは自分の番の終了時に、40ダメージを受ける。",
 				},
 				Skills: []*model.Skill{
 					{
@@ -1163,7 +1163,7 @@ var insertCmd = &cobra.Command{
 				RetreatCost:  2,
 				Ability: &model.Ability{
 					Name: "破壊的変更",
-					Text: "このラムモンがいる限り、相手がラムモンを進化させた時にそのラムモンに40ダメージを与える。",
+					Text: "このポケモンがいる限り、相手がポケモンを進化させた時にそのポケモンに40ダメージを与える。",
 				},
 				Skills: []*model.Skill{
 					{
@@ -1183,7 +1183,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/oreilly.avif",
 				Name:         "オライリー本",
-				Text:         "この番、自分の[知識]ラムモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
+				Text:         "この番、自分の[知識]ポケモンが使うワザの、相手のバトルポケモンへのダメージを+40する",
 				Rarity:       6,
 			},
 			{
@@ -1191,7 +1191,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/protain.avif",
 				Name:         "プロテイン",
-				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ラムモン1匹につける",
+				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ポケモン1匹につける",
 				Rarity:       6,
 			},
 			{
@@ -1199,23 +1199,23 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/crebitcard.avif",
 				Name:         "クレカ",
-				Text:         "自分の[金]ラムモン1匹に[金]エネルギーを5つつける。",
+				Text:         "自分の[金]ポケモン1匹に[金]エネルギーを5つつける。",
 				Rarity:       6,
 			},
 			{
 				MasterCardID: model.NewMasterCardID("hackz-parker"),
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/hackz-parcker.avif",
-				Name:         "ハックツパーカー",
-				Text:         "この番と次の相手の番、自分の[人気]ラムモン1匹は、ワザの追加効果や特性によるダメージを受けない。",
-				Rarity:       6,
+				Name:   "ハックツパーカー",
+				Text:   "この番と次の相手の番、自分の[人気]ポケモン1匹は、ワザの追加効果や特性によるダメージを受けない。",
+				Rarity: 6,
 			},
 			{
 				MasterCardID: model.NewMasterCardID("sake-bottle"),
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/issyoubin.avif",
 				Name:         "一升瓶",
-				Text:         "自分の[酒]ラムモンを1匹選び、コイントスをする。表が出た場合そのラムモンに好きなエネルギーを1つつける。裏が出た場合そのラムモンのランダムなエネルギーを1つトラッシュする。",
+				Text:         "自分の[酒]ポケモンを1匹選び、コイントスをする。表が出た場合そのポケモンに好きなエネルギーを1つつける。裏が出た場合そのポケモンのランダムなエネルギーを1つトラッシュする。",
 				Rarity:       6,
 			},
 			{
@@ -1231,7 +1231,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/starbacks.avif",
 				Name:         "スタバ",
-				Text:         "自分のラムモン1匹のHPを20回復",
+				Text:         "自分のポケモン1匹のHPを20回復",
 				Rarity:       2,
 			},
 			{
@@ -1240,7 +1240,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/gophers.avif",
 				Name:         "Gopherくん人形",
-				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、1個少なくする。",
+				Text:         "この番、自分のバトルポケモンのにげるためのエネルギーを、1個少なくする。",
 				Rarity:       2,
 			},
 			{
@@ -1256,7 +1256,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/e-jent.avif",
 				Name:         "転職エージェント",
-				Text:         "自分の山札からたねラムモン以外のラムモンをランダムに1枚、手札に加える。",
+				Text:         "自分の山札からたねポケモン以外のポケモンをランダムに1枚、手札に加える。",
 				Rarity:       2,
 			},
 			{
@@ -1264,7 +1264,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/programing-school.avif",
 				Name:         "プログラミングスクール",
-				Text:         "自分の山札からたねラムモンをランダムに1枚、手札に加える。",
+				Text:         "自分の山札からたねポケモンをランダムに1枚、手札に加える。",
 				Rarity:       2,
 			},
 			{
@@ -1272,7 +1272,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/lan.avif",
 				Name:         "LANケーブル",
-				Text:         "自分のベンチラムモン1匹を選び、そのラムモンについているエネルギーを1つバトルラムモンに付け替える。",
+				Text:         "自分のベンチポケモン1匹を選び、そのポケモンについているエネルギーを1つバトルポケモンに付け替える。",
 				Rarity:       2,
 			},
 			{
@@ -1280,7 +1280,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/hhkb.avif",
 				Name:         "HHKB",
-				Text:         "自分の山札から「駆け出しエンジニア」の進化先のラムモンをランダムに1枚、手札に加える。",
+				Text:         "自分の山札から「駆け出しエンジニア」の進化先のポケモンをランダムに1枚、手札に加える。",
 				Rarity:       2,
 			},
 			{
@@ -1288,7 +1288,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/macbook.avif",
 				Name:         "MacBook",
-				Text:         "「駆け出しエンジニア」とその進化先のラムモンが使うワザの、相手のバトルポケモンへのダメージを+20する",
+				Text:         "「駆け出しエンジニア」とその進化先のポケモンが使うワザの、相手のバトルポケモンへのダメージを+20する",
 				Rarity:       2,
 			},
 			{
@@ -1296,7 +1296,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/refactor.avif",
 				Name:         "リファクタリング",
-				Text:         "相手のベンチラムモン1体を選び、バトル場のラムモンと入れ替える。",
+				Text:         "相手のベンチポケモン1体を選び、バトル場のポケモンと入れ替える。",
 				Rarity:       5,
 			},
 			{
@@ -1304,7 +1304,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/ChatGPT.webp",
 				Name:         "ChatGPT",
-				Text:         "この番、自分のバトルラムモンのにげるためのエネルギーを、2個少なくする。",
+				Text:         "この番、自分のバトルポケモンのにげるためのエネルギーを、2個少なくする。",
 				Rarity:       3,
 			},
 			{
@@ -1312,7 +1312,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/spagettexi.avif",
 				Name:         "スパゲッティコード",
-				Text:         "相手のバトルラムモンのランダムなエネルギー1個を、ランダムなエネルギーに変える。",
+				Text:         "相手のバトルポケモンのランダムなエネルギー1個を、ランダムなエネルギーに変える。",
 				Rarity:       4,
 			},
 			{
@@ -1320,7 +1320,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/enjou.avif",
 				Name:         "炎上プロジェクト",
-				Text:         "お互いのバトルラムモンについているエネルギーを1つずつトラッシュする。",
+				Text:         "お互いのバトルポケモンについているエネルギーを1つずつトラッシュする。",
 				Rarity:       3,
 			},
 			{
@@ -1344,7 +1344,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/firewall.avif",
 				Name:         "ファイヤーウォール",
-				Text:         "次の相手の番、自分のラムモン全員が、相手のラムモンから受けるダメージを-20する。",
+				Text:         "次の相手の番、自分のポケモン全員が、相手のポケモンから受けるダメージを-20する。",
 				Rarity:       3,
 			},
 			{
@@ -1352,7 +1352,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/bar.avif",
 				Name:         "バーテンダー",
-				Text:         "自分の[酒]ラムモンを1匹選ぶ。5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから出し、そのラムモンにつける。ウラの数1つにつき、そのラムモンに20ダメージ与える。",
+				Text:         "自分の[酒]ポケモンを1匹選ぶ。5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから出し、そのポケモンにつける。ウラの数1つにつき、そのポケモンに20ダメージ与える。",
 				Rarity:       6,
 			},
 			{
@@ -1360,7 +1360,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/taisyo.avif",
 				Name:         "居酒屋大将",
-				Text:         "自分のラムモンを1匹選ぶ。コイントスを裏が出るまで行い、表の数分自分についていないエネルギーの種類の中からランダムで1種類を選び、そのラムモンにつける。",
+				Text:         "自分のポケモンを1匹選ぶ。コイントスを裏が出るまで行い、表の数分自分についていないエネルギーの種類の中からランダムで1種類を選び、そのポケモンにつける。",
 				Rarity:       6,
 			},
 			{
@@ -1368,7 +1368,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/personal-trainer.avif",
 				Name:         "パーソナルトレーナー",
-				Text:         "自分のバトルラムモンに[筋肉]エネルギーを2つつける。",
+				Text:         "自分のバトルポケモンに[筋肉]エネルギーを2つつける。",
 				Rarity:       6,
 			},
 			{
@@ -1376,7 +1376,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/yamikin.avif",
 				Name:         "ヤミ金業者",
-				Text:         "自分の[金]ラムモンを1匹選ぶ。そのラムモンに[金]エネルギーを10個つける。2ターン後に[金]エネルギーを20個トラッシュ。できない場合はそのラムモンをきぜつさせる。",
+				Text:         "自分の[金]ポケモンを1匹選ぶ。そのポケモンに[金]エネルギーを10個つける。2ターン後に[金]エネルギーを20個トラッシュ。できない場合はそのポケモンをきぜつさせる。",
 				Rarity:       6,
 			},
 			{
@@ -1392,15 +1392,15 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/CICD.webp",
 				Name:         "CI/CDパイプライン",
-				Text:         "自分の手札全てを山札に戻し、同じ枚数のカードを引く。同時に、バトル場にいる自分の[知識]ラムモン1体は、次のターンまで受けるダメージが-20される。",
+				Text:         "自分の手札全てを山札に戻し、同じ枚数のカードを引く。同時に、バトル場にいる自分の[知識]ポケモン1体は、次のターンまで受けるダメージが-20される。",
 				Rarity:       3,
 			},
 			{
 				MasterCardID: model.NewMasterCardID("release-party"),
 				CardType:     model.CardTypeSupporter,
 				Name:         "リリースパーティ",
-				ImageURL:     "https://pokepoke.kurichi.dev/images/riripa.avif",
-				Text:         "自分のバトルラムモン全体のHPを20回復し、次の自分のターンまで相手のワザによるダメージを20減少させる。",
+        ImageURL:     "https://pokepoke.kurichi.dev/images/riripa.avif",
+				Text:         "自分のバトルポケモン全体のHPを20回復し、次の自分のターンまで相手のワザによるダメージを20減少させる。",
 				Rarity:       3,
 			},
 			{

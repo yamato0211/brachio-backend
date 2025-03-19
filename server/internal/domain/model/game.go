@@ -42,6 +42,8 @@ type GameState struct {
 	Phase          GamePhase
 	Turn           int
 	LotteriedCoins []bool
+
+	Damages []int
 }
 
 func (m *GameState) IsMyTurn(userID UserID) bool {
@@ -96,7 +98,7 @@ type Player struct {
 type Effect struct {
 	ID      string
 	Trigger string
-	Fn      func(any) (bool, error)
+	Fn      func(*GameState, any) (bool, error)
 	UserID  UserID
 }
 

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	// "github.com/gorilla/websocket"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
@@ -14,11 +15,13 @@ import (
 	"github.com/yamato0211/brachio-backend/internal/handler/schema/websocket/payload"
 	"github.com/yamato0211/brachio-backend/internal/infra/middleware"
 	"github.com/yamato0211/brachio-backend/internal/usecase"
+	pkgws "github.com/yamato0211/brachio-backend/pkg/websocket"
 	"google.golang.org/protobuf/proto"
 )
 
 type GetWebSocketHandler struct {
 	upgrader websocket.Upgrader
+	pusher   *pkgws.Pusher
 
 	ApplyAbilityInputPort             usecase.ApplyAbilityInputPort
 	SupplyEnergyInputPort             usecase.SupplyEnergyInputPort
@@ -63,7 +66,26 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		return conn.SetWriteDeadline(time.Now().Add(60 * time.Second))
 	})
 
-	userID := middleware.GetUserID(c)
+	rawUserID := middleware.GetUserID(c)
+	userID, err := model.ParseUserID(rawUserID)
+	if err != nil {
+		return nil
+	}
+
+	runner, closer := h.pusher.Register(ctx, userID, conn)
+	defer closer()
+
+	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+				slog.ErrorContext(ctx, "panic", "error", err)
+			}
+		}()
+
+		if err := runner(ctx); err != nil {
+			slog.ErrorContext(ctx, "JoinRoomHandler:runner", "error", err)
+		}
+	}()
 
 	var roomID string
 	for {
@@ -79,19 +101,32 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		switch req := req.GetEvent().(type) {
 		case *wsmsg.EventEnvelope_EnterRoomEventToServer: // ルームに入るイベント
 			input := &usecase.MatchingInput{
-				UserID:   userID,
+				UserID:   rawUserID,
 				Password: req.EnterRoomEventToServer.Payload.Password,
-				// DeckID:   req.EnterRoomEventToServer.Payload.DeckID,
+				DeckID:   req.EnterRoomEventToServer.Payload.DeckId,
 			}
 			_roomID, err := h.MatchingInputPort.Execute(ctx, input)
 			if err != nil {
 				c.Logger().Warnf("failed to apply ability: %v", err)
 			}
 			roomID = _roomID
+
+		case *wsmsg.EventEnvelope_InitialSummonEventToServer: // モンスターを初期配置するイベント
+			input := &usecase.PutInitializeMonsterInput{
+				RoomID:   roomID,
+				UserID:   rawUserID,
+				CardID:   req.InitialSummonEventToServer.Payload.Card.Id,
+				Position: int(req.InitialSummonEventToServer.Payload.Position),
+			}
+
+			if err := h.PutInitializeMonsterInputPort.Execute(ctx, input); err != nil {
+				c.Logger().Warnf("failed to put initialize monster: %v", err)
+			}
+
 		case *wsmsg.EventEnvelope_InitialPlacementCompleteEventToServer: // 初期配置完了イベント
 			input := &usecase.CompleteInitialPlacementInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 			}
 			if err := h.CompleteInitialPlacementInputPort.Execute(ctx, input); err != nil {
 				c.Logger().Warnf("failed to complete initial placement: %v", err)
@@ -100,7 +135,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_AbilityEventToServer: // アビリティを使うイベント
 			input := &usecase.ApplyAbilityInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 			}
 			if err := h.ApplyAbilityInputPort.Execute(ctx, input); err != nil {
 				c.Logger().Warnf("failed to apply ability: %v", err)
@@ -109,7 +144,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_AttackMonsterEventToServer: // モンスターを攻撃するイベント
 			input := &usecase.AttackInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 			}
 			if err := h.AttackInputPort.Execute(ctx, input); err != nil {
 				c.Logger().Warnf("failed to attack: %v", err)
@@ -118,7 +153,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_CoinTossEventToServer: // コイントスをしたよイベント
 			input := &usecase.SupplyEnergyInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 			}
 			if err := h.SupplyEnergyInputPort.Execute(ctx, input); err != nil {
 				c.Logger().Warnf("failed to apply energy: %v", err)
@@ -127,7 +162,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_SummonMonsterEventToServer: // モンスターを召喚するイベント
 			input := &usecase.SummonInput{
 				RoomID:   roomID,
-				UserID:   userID,
+				UserID:   rawUserID,
 				CardID:   req.SummonMonsterEventToServer.Payload.Card.Id,
 				Position: int(req.SummonMonsterEventToServer.Payload.Position),
 			}
@@ -138,7 +173,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_EvolutionMonsterEventToServer: // モンスターを進化させるイベント
 			input := &usecase.EvoluteMonsterInput{
 				RoomID:   roomID,
-				UserID:   userID,
+				UserID:   rawUserID,
 				CardID:   req.EvolutionMonsterEventToServer.Payload.Card.Id,
 				Position: int(req.EvolutionMonsterEventToServer.Payload.Position),
 			}
@@ -149,7 +184,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_RetreatEventToServer: // にげるイベント
 			input := &usecase.RetreatInput{
 				RoomID:    roomID,
-				UserID:    userID,
+				UserID:    rawUserID,
 				RetreatTo: int(req.RetreatEventToServer.Payload.GetPosition()),
 			}
 			if err := h.RetreatInputPort.Execute(ctx, input); err != nil {
@@ -159,7 +194,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_SupplyEnergyEventToServer: // エネルギーをつけるイベント
 			input := &usecase.SupplyEnergyInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 				Positions: lo.Map(req.SupplyEnergyEventToServer.Payload.Supplys, func(s *payload.SupplyEnergys, _ int) []model.MonsterType {
 					return lo.Map(s.Energies, func(e messages.Element, _ int) model.MonsterType {
 						switch e {
@@ -188,7 +223,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_SurrenderEventToServer:
 			input := &usecase.GiveUpInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 			}
 			if err := h.GiveUpInputPort.Execute(ctx, input); err != nil {
 				c.Logger().Warnf("failed to give up: %v", err)
@@ -197,7 +232,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_TakeGoodsEventToServer:
 			input := &usecase.UseGoodsInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 				CardID: req.TakeGoodsEventToServer.Payload.Card.Id,
 				// Targets: req.TakeGoodsEventToServer.Payload.Targets,
 			}
@@ -208,7 +243,7 @@ func (h *GetWebSocketHandler) Ws(c echo.Context) error {
 		case *wsmsg.EventEnvelope_TakeSupportEventToServer:
 			input := &usecase.UseSupporterInput{
 				RoomID: roomID,
-				UserID: userID,
+				UserID: rawUserID,
 				CardID: req.TakeSupportEventToServer.Payload.Card.Id,
 				// Targets:
 			}
