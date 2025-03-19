@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"log"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/yamato0211/brachio-backend/internal/config"
@@ -36,24 +35,35 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
-		presents := []*model.Present{
-			{
-				PresentID:       model.NewPresentID(),
-				Time:            int(time.Now().Unix()),
-				ReceivedUserIDs: []model.UserID{},
-				ItemID:          model.MasterItemID("pack-power"),
-				ItemCount:       100,
-				Message:         "運営からのプレゼントです！",
-			},
-		}
+		// presents := []*model.Present{
+		// 	{
+		// 		PresentID:       model.NewPresentID(),
+		// 		Time:            int(time.Now().Unix()),
+		// 		ReceivedUserIDs: []model.UserID{},
+		// 		ItemID:          model.MasterItemID("pack-power"),
+		// 		ItemCount:       100,
+		// 		Message:         "運営からのプレゼントです！",
+		// 	},
+		// }
 
-		tbl := dc.Table("Presents")
-		for _, p := range presents {
-			if err := tbl.Put(p).Run(cmd.Context()); err != nil {
-				log.Fatal(err)
-			}
+		// tbl := dc.Table("Presents")
+		// for _, p := range presents {
+		// 	if err := tbl.Put(p).Run(cmd.Context()); err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		// }
+		// log.Println("inserted")
+
+		tbl := dc.Table("Users")
+		var user model.User
+		if err := tbl.Get("UserId", "97843a68-e051-7048-3cff-fcd6162d57d4").One(cmd.Context(), &user); err != nil {
+			log.Fatal(err)
 		}
-		log.Println("inserted")
+		user.ItemIDsWithCount["pack-power"] += 10000
+		if err := tbl.Put(&user).Run(cmd.Context()); err != nil {
+			log.Fatal(err)
+		}
+		log.Println("updated")
 	},
 }
 

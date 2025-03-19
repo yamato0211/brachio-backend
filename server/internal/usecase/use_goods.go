@@ -71,7 +71,7 @@ func (i *UseGoodsInteractor) Execute(ctx context.Context, input *UseGoodsInput) 
 		}
 		state.TurnPlayer.Hands = slices.Delete(state.TurnPlayer.Hands, idx, idx+1)
 
-		if err := i.GoodsApplier.ApplyGoods(state, card.MasterCard.MasterCardID, input.Targets); err != nil {
+		if err := i.GoodsApplier.ApplyGoods(ctx, state, card.MasterCard.MasterCardID, input.Targets); err != nil {
 			return err
 		}
 

@@ -73,7 +73,7 @@ func (i *AttackInteractor) Execute(ctx context.Context, input *AttackInput) erro
 			return err
 		}
 
-		if _, err := i.SkillApprier.ApplySkill(state, input.SkillID); err != nil {
+		if _, err := i.SkillApprier.ApplySkill(ctx, state, input.SkillID); err != nil {
 			return err
 		}
 
@@ -87,6 +87,17 @@ func (i *AttackInteractor) Execute(ctx context.Context, input *AttackInput) erro
 		}
 		if err := i.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.NonTurnPlayer.UserID, i.makeEventForOppo(0, state)); err != nil {
 			return err
+		}
+
+		isGameSet, winner := i.GameMaster.CheckWin(state)
+		if isGameSet {
+			winOrLose := &messages.DecideWinOrLoseEffect{UserId: winner.String()}
+			if err := i.GameEventSender.SendDrawEffectEventToActor(ctx, userID, &messages.EffectWithSecret{Effect: &messages.EffectWithSecret_DecideWinOrLose{DecideWinOrLose: winOrLose}}); err != nil {
+				return err
+			}
+			if err := i.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.NonTurnPlayer.UserID, &messages.Effect{Effect: &messages.Effect_DecideWinOrLose{DecideWinOrLose: winOrLose}}); err != nil {
+				return err
+			}
 		}
 
 		// ゲームの状態を保存する
