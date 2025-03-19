@@ -1,42 +1,46 @@
 package service
 
 import (
+	"context"
 	"slices"
 
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
+	"github.com/yamato0211/brachio-backend/internal/handler/schema/messages"
 	"golang.org/x/xerrors"
 )
 
 type GoodsApplier interface {
-	ApplyGoods(state *model.GameState, goodsID model.MasterCardID, targets []int) error
+	ApplyGoods(ctx context.Context, state *model.GameState, goodsID model.MasterCardID, targets []int) error
 }
 
 type GoodsApplierService struct {
-	GameMaster GameMasterService
+	GameMaster      GameMasterService
+	GameEventSender GameEventSender
 }
 
 func NewGoodsApplier(
 	gameMaster GameMasterService,
+
 ) GoodsApplier {
 	return &GoodsApplierService{
 		GameMaster: gameMaster,
 	}
 }
 
-func (s *GoodsApplierService) ApplyGoods(state *model.GameState, goodsID model.MasterCardID, targets []int) error {
+func (s *GoodsApplierService) ApplyGoods(ctx context.Context, state *model.GameState, goodsID model.MasterCardID, targets []int) error {
 	switch goodsID {
 	case model.MasterCardID("oreilly"):
 		return s.applyOreilly(state, targets)
 	case model.MasterCardID("protein"):
-		return s.applyProtein(state, targets)
+		return s.applyProtein(ctx, state, targets)
 	case model.MasterCardID("credit-card"):
 		return s.applyCreditCard(state, targets)
 	case model.MasterCardID("hackz-parker"):
 		return s.applyHackzParker(state, targets)
 	case model.MasterCardID("sake-bottle"):
-		return s.applySakeBottle(state, targets)
+		return s.applySakeBottle(ctx, state, targets)
 	case model.MasterCardID("energy-drink"):
 		return s.applyEnergyDrink(state, targets)
 	case model.MasterCardID("starbucks"):
@@ -48,13 +52,15 @@ func (s *GoodsApplierService) ApplyGoods(state *model.GameState, goodsID model.M
 	case model.MasterCardID("recruitment-agency"):
 		return s.applyRecruitmentAgency(state)
 	case model.MasterCardID("programming-school"):
-		return s.applyProgrammingSchool(state)
+		return s.applyProgrammingSchool(ctx, state)
 	case model.MasterCardID("lan-cable"):
 		return s.applyLanCable(state, targets)
 	case model.MasterCardID("hhkb"):
 		return s.applyHhkb(state)
 	case model.MasterCardID("macbook"):
 		return s.applyMacbook(state)
+	case model.MasterCardID("strict-mode"):
+		return s.applyStrictMode(ctx, state)
 	default:
 		return xerrors.Errorf("unknown goods id: %s", goodsID)
 	}
@@ -84,14 +90,18 @@ func (s *GoodsApplierService) applyOreilly(state *model.GameState, meta any) err
 	return nil
 }
 
-// 自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ラムモン1匹につける
-func (s *GoodsApplierService) applyProtein(state *model.GameState, meta any) error {
+// 自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分のバトルラムモン1匹につける
+func (s *GoodsApplierService) applyProtein(ctx context.Context, state *model.GameState, meta any) error {
 	target := state.TurnPlayer.BattleMonster
-	if !target.IsTypeEqual(model.MonsterTypeMuscle) {
-		return xerrors.Errorf("target monster is not muscle type: %s", target.BaseCard.MasterCard.Type)
-	}
-
 	target.Energies = append(target.Energies, model.MonsterTypeMuscle, model.MonsterTypeMuscle)
+
+	ene := &messages.AttachEnergyEffect{
+		Position: 0,
+		Energies: []messages.Element{messages.Element_MUSCLE},
+	}
+	s.GameEventSender.SendDrawEffectEventToActor(ctx, state.TurnPlayer.UserID, &messages.EffectWithSecret{Effect: &messages.EffectWithSecret_AttachEnergy{AttachEnergy: ene}})
+	s.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.NonTurnPlayer.UserID, &messages.Effect{Effect: &messages.Effect_AttachEnergy{AttachEnergy: ene}})
+
 	return nil
 }
 
@@ -128,18 +138,17 @@ func (s *GoodsApplierService) applyHackzParker(state *model.GameState, meta any)
 	return nil
 }
 
-// 自分の[酒]ラムモンを1匹選ぶ。ウラが出るまでコインを投げ、オモテの数ぶんの[酒]エネルギーを自分のエネルギーゾーンから出し、そのラムモンにつける。
-func (s *GoodsApplierService) applySakeBottle(state *model.GameState, meta any) error {
+// 自分の[酒]ラムモンを1匹選ぶ。表ならサケエネ1つける。
+func (s *GoodsApplierService) applySakeBottle(ctx context.Context, state *model.GameState, meta any) error {
 	target := state.TurnPlayer.BattleMonster
-	if !target.IsTypeEqual(model.MonsterTypeAlchohol) {
-		return xerrors.Errorf("target monster is not alchohol type: %s", target.BaseCard.MasterCard.Type)
-	}
+	target.Energies = append(target.Energies, model.MonsterTypeAlchohol)
 
-	var energies []model.MonsterType
-	for s.GameMaster.FlipCoin() {
-		energies = append(energies, model.MonsterTypeAlchohol)
+	ene := &messages.AttachEnergyEffect{
+		Position: 0,
+		Energies: []messages.Element{messages.Element_ALCHOHOL},
 	}
-	target.Energies = append(target.Energies, energies...)
+	s.GameEventSender.SendDrawEffectEventToActor(ctx, state.TurnPlayer.UserID, &messages.EffectWithSecret{Effect: &messages.EffectWithSecret_AttachEnergy{AttachEnergy: ene}})
+	s.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.NonTurnPlayer.UserID, &messages.Effect{Effect: &messages.Effect_AttachEnergy{AttachEnergy: ene}})
 
 	return nil
 }
@@ -246,7 +255,7 @@ func (s *GoodsApplierService) applyRecruitmentAgency(state *model.GameState) err
 }
 
 // 自分の山札からたねラムモンをランダムに1枚、手札に加える。
-func (s *GoodsApplierService) applyProgrammingSchool(state *model.GameState) error {
+func (s *GoodsApplierService) applyProgrammingSchool(ctx context.Context, state *model.GameState) error {
 	for idx, card := range state.TurnPlayer.Deck {
 		if card.MasterCard.CardType != model.CardTypeMonster || card.MasterCard.SubType != model.MonsterSubTypeBasic {
 			continue
@@ -254,6 +263,9 @@ func (s *GoodsApplierService) applyProgrammingSchool(state *model.GameState) err
 
 		state.TurnPlayer.Hands = append(state.TurnPlayer.Hands, card)
 		state.TurnPlayer.Deck = append(state.TurnPlayer.Deck[:idx], state.TurnPlayer.Deck[idx+1:]...)
+
+		s.GameEventSender.SendDrawCardsEventToActor(ctx, state.TurnPlayer.UserID, len(state.TurnPlayer.Deck), card)
+		s.GameEventSender.SendDrawCardsEventToRecipient(ctx, state.NonTurnPlayer.UserID, len(state.TurnPlayer.Deck), card)
 		break
 	}
 
@@ -311,6 +323,18 @@ func (s *GoodsApplierService) applyMacbook(state *model.GameState) error {
 			return true, nil
 		},
 	})
+
+	return nil
+}
+
+// ２枚ドロー
+func (s *GoodsApplierService) applyStrictMode(ctx context.Context, state *model.GameState) error {
+	cards := s.GameMaster.DrawCards(state.TurnPlayer, 2)
+
+	state.TurnPlayer.Hands = append(state.TurnPlayer.Hands, cards...)
+
+	s.GameEventSender.SendDrawCardsEventToActor(ctx, state.TurnPlayer.UserID, len(state.TurnPlayer.Deck), cards...)
+	s.GameEventSender.SendDrawCardsEventToRecipient(ctx, state.NonTurnPlayer.UserID, len(state.TurnPlayer.Deck), cards...)
 
 	return nil
 }

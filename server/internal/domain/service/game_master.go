@@ -27,6 +27,7 @@ type GameMasterService interface {
 	Matched(ctx context.Context, roomID model.RoomID) error
 	ReadyForStart(ctx context.Context, roomID model.RoomID, userID model.UserID) error
 	ChangeTurn(ctx context.Context, roomID model.RoomID) error
+	CheckWin(state *model.GameState) (bool, model.UserID)
 }
 
 type gameMasterService struct {
@@ -388,4 +389,25 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 	}
 
 	return nil
+}
+
+func (s *gameMasterService) CheckWin(state *model.GameState) (bool, model.UserID) {
+	if state.TurnPlayer.Point >= WinPoint {
+		return true, state.TurnPlayer.UserID
+	}
+	if state.NonTurnPlayer.Point >= WinPoint {
+		return true, state.NonTurnPlayer.UserID
+	}
+
+	if (state.NonTurnPlayer.BattleMonster == nil || state.NonTurnPlayer.BattleMonster.Knocked) &&
+		lo.CountBy(state.NonTurnPlayer.BenchMonsters, func(monster *model.Monster) bool { return monster == nil || monster.Knocked }) == 3 {
+		return true, state.TurnPlayer.UserID
+	}
+
+	if (state.TurnPlayer.BattleMonster == nil || state.TurnPlayer.BattleMonster.Knocked) &&
+		lo.CountBy(state.TurnPlayer.BenchMonsters, func(monster *model.Monster) bool { return monster == nil || monster.Knocked }) == 3 {
+		return true, state.NonTurnPlayer.UserID
+	}
+
+	return false, ""
 }
