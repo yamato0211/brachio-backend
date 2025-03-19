@@ -66,7 +66,7 @@ func (s *GoodsApplierService) applyOreilly(state *model.GameState, meta any) err
 
 	me.Effect = append(me.Effect, &model.Effect{
 		Trigger: "before-attack",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			if me.BattleMonster.BaseCard.MasterCard.Type == model.MonsterTypeKnowledge {
 				me.BattleMonster.SkillDamageAddition = 40
 			}
@@ -76,7 +76,7 @@ func (s *GoodsApplierService) applyOreilly(state *model.GameState, meta any) err
 
 	me.Effect = append(me.Effect, &model.Effect{
 		Trigger: "end-turn",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			me.BattleMonster.SkillDamageAddition = 0
 			return true, nil
 		},
@@ -120,7 +120,7 @@ func (s *GoodsApplierService) applyHackzParker(state *model.GameState, meta any)
 	state.TurnPlayer.Effect = append(state.TurnPlayer.Effect, &model.Effect{
 		ID:      effectID,
 		Trigger: "take-effect",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			return true, nil
 		},
 	})
@@ -157,7 +157,7 @@ func (s *GoodsApplierService) applyEnergyDrink(state *model.GameState, meta any)
 
 	state.TurnPlayer.Effect = append(state.TurnPlayer.Effect, &model.Effect{
 		Trigger: "end-turn",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			target.SkillDamageAddition = 0
 			return true, nil
 		},
@@ -166,7 +166,7 @@ func (s *GoodsApplierService) applyEnergyDrink(state *model.GameState, meta any)
 	// 次の自分の番の開始時、そのラムモンのHPは0になる
 	state.TurnPlayer.Effect = append(state.TurnPlayer.Effect, &model.Effect{
 		Trigger: "start-my-turn",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			if me.BattleMonster.ID == target.ID {
 				target.HP = 0
 				target.Knocked = true
@@ -205,7 +205,7 @@ func (s *GoodsApplierService) applyGopherDoll(state *model.GameState) error {
 
 	state.TurnPlayer.Effect = append(state.TurnPlayer.Effect, &model.Effect{
 		Trigger: "end-turn",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			me.BattleMonster.RetreatCostAddition = 0
 			return true, nil
 		},
@@ -294,7 +294,7 @@ func (s *GoodsApplierService) applyMacbook(state *model.GameState) error {
 
 	me.Effect = append(me.Effect, &model.Effect{
 		Trigger: "before-attack",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			if me.BattleMonster.BaseCard.MasterCard.MasterCardID == model.MasterCardID("beginner-engineer") ||
 				slices.Contains(me.BattleMonster.BaseCard.MasterCard.EvolvesFrom, model.MasterCardID("beginner-engineer")) {
 				me.BattleMonster.SkillDamageAddition = 20
@@ -306,7 +306,7 @@ func (s *GoodsApplierService) applyMacbook(state *model.GameState) error {
 
 	me.Effect = append(me.Effect, &model.Effect{
 		Trigger: "end-turn",
-		Fn: func(any) (bool, error) {
+		Fn: func(*model.GameState, any) (bool, error) {
 			me.BattleMonster.SkillDamageAddition = 0
 			return true, nil
 		},

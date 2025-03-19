@@ -10,6 +10,7 @@ import (
 	"github.com/samber/lo/mutable"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/domain/repository"
+	"github.com/yamato0211/brachio-backend/internal/handler/schema/messages"
 	"golang.org/x/xerrors"
 )
 
@@ -22,7 +23,7 @@ type GameMasterService interface {
 	FlipCoin() bool
 	ShuffleDeck(deck []*model.Card) []*model.Card
 	DrawCards(player *model.Player, count int) []*model.Card
-	RunEffect(effects []*model.Effect, trigger string, args any) ([]*model.Effect, error)
+	RunEffect(state *model.GameState, effects []*model.Effect, trigger string, args any) ([]*model.Effect, error)
 	Matched(ctx context.Context, roomID model.RoomID) error
 	ReadyForStart(ctx context.Context, roomID model.RoomID, userID model.UserID) error
 	ChangeTurn(ctx context.Context, roomID model.RoomID) error
@@ -171,10 +172,10 @@ func (s *gameMasterService) DrawCards(player *model.Player, count int) []*model.
 	return cards
 }
 
-func (s *gameMasterService) RunEffect(effects []*model.Effect, trigger string, args any) ([]*model.Effect, error) {
+func (s *gameMasterService) RunEffect(state *model.GameState, effects []*model.Effect, trigger string, args any) ([]*model.Effect, error) {
 	for _, effect := range effects {
 		if effect.Trigger == trigger {
-			isDelete, err := effect.Fn(args)
+			isDelete, err := effect.Fn(state, args)
 			if err != nil {
 				return nil, err
 			}
@@ -217,6 +218,60 @@ func (s *gameMasterService) ReadyForStart(ctx context.Context, roomID model.Room
 
 		if !enemy.IsReady {
 			return nil
+		}
+
+		var events []*messages.Effect
+		events = append(events, &messages.Effect{
+			Effect: &messages.Effect_Summon{
+				Summon: &messages.SummonEffect{
+					Card:     messages.NewCard(state.TurnPlayer.BattleMonster.BaseCard),
+					Position: int32(0),
+				},
+			},
+		})
+		for i, monster := range state.TurnPlayer.BenchMonsters {
+			if monster == nil {
+				continue
+			}
+			events = append(events, &messages.Effect{
+				Effect: &messages.Effect_Summon{
+					Summon: &messages.SummonEffect{
+						Card:     messages.NewCard(monster.BaseCard),
+						Position: int32(i + 1),
+					},
+				},
+			})
+		}
+
+		if err := s.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.NonTurnPlayer.UserID, events...); err != nil {
+			return err
+		}
+
+		events = nil
+		events = append(events, &messages.Effect{
+			Effect: &messages.Effect_Summon{
+				Summon: &messages.SummonEffect{
+					Card:     messages.NewCard(state.NonTurnPlayer.BattleMonster.BaseCard),
+					Position: int32(0),
+				},
+			},
+		})
+		for i, monster := range state.NonTurnPlayer.BenchMonsters {
+			if monster == nil {
+				continue
+			}
+			events = append(events, &messages.Effect{
+				Effect: &messages.Effect_Summon{
+					Summon: &messages.SummonEffect{
+						Card:     messages.NewCard(monster.BaseCard),
+						Position: int32(i + 1),
+					},
+				},
+			})
+		}
+
+		if err := s.GameEventSender.SendDrawEffectEventToRecipient(ctx, state.TurnPlayer.UserID, events...); err != nil {
+			return err
 		}
 
 		if err := s.GameEventSender.SendTurnStartEvent(ctx, state.TurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
@@ -271,6 +326,21 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 
 		// プレイヤーの初期化
 		if err := s.InitializeGame(state); err != nil {
+			return err
+		}
+
+		// カード配布
+		if err := s.GameEventSender.SendDrawCardsEventToActor(ctx, state.TurnPlayer.UserID, len(state.TurnPlayer.Deck), state.TurnPlayer.Hands...); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendDrawCardsEventToRecipient(ctx, state.NonTurnPlayer.UserID, len(state.TurnPlayer.Deck), state.TurnPlayer.Hands...); err != nil {
+			return err
+		}
+
+		if err := s.GameEventSender.SendDrawCardsEventToActor(ctx, state.NonTurnPlayer.UserID, len(state.NonTurnPlayer.Deck), state.NonTurnPlayer.Hands...); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendDrawCardsEventToRecipient(ctx, state.TurnPlayer.UserID, len(state.NonTurnPlayer.Deck), state.NonTurnPlayer.Hands...); err != nil {
 			return err
 		}
 
