@@ -156,6 +156,8 @@ func New() *Handler {
 			SupplyEnergyInputPort:             supplyEnergyUsecase,
 			UseGoodsInputPort:                 useGoodsUsecase,
 			UseSupporterInputPort:             useSupporterUsecase,
+
+			pusher: pusher,
 			upgrader: gorillawebsocket.Upgrader{
 				CheckOrigin: func(r *http.Request) bool {
 					return true
