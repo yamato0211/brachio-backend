@@ -83,10 +83,29 @@ func (s *gameMasterService) initializePlayer(player *model.Player) error {
 	}
 	player.Deck = cards
 
+	// デッキをシャッフルする
 	s.ShuffleDeck(player.Deck)
 
+	var hand []*model.Card
+	// 初手札に SubType が model.SubTypeBasic のカードが含まれていない場合、再抽選する
+	for {
+		if len(player.Deck) < 5 {
+			return fmt.Errorf("デッキ内のカード数が足りません")
+		}
+		hand = player.Deck[:5]
+		// 手札の中に SubType が model.SubTypeBasic のカードがあるかチェック
+		hasBasic := lo.SomeBy(hand, func(card *model.Card) bool {
+			return card.MasterCard.SubType == model.MonsterSubTypeBasic
+		})
+		if hasBasic {
+			break
+		}
+		// 含まれていなければ、デッキ全体を再シャッフルして再抽選
+		s.ShuffleDeck(player.Deck)
+	}
+
 	// デッキから手札にカードを 5 枚引く
-	player.Hands, player.Deck = player.Deck[:5], player.Deck[5:]
+	player.Hands, player.Deck = hand, player.Deck[5:]
 
 	// 初ターンのエネルギーを抽選する
 	s.lotteryNextEnergy(player)

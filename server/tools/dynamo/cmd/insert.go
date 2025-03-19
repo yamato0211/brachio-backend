@@ -63,8 +63,9 @@ var insertCmd = &cobra.Command{
 						DamageOption: "x",
 					},
 				},
-				IsEx:    true,
-				SubType: model.MonsterSubTypeBasic,
+				IsEx:     true,
+				SubType:  model.MonsterSubTypeBasic,
+				ImageURL: "https://pokepoke.kurichi.dev/images/kizuku-piece.avif",
 			},
 			{
 				MasterCardID: model.NewMasterCardID("kurichi"),
@@ -1185,7 +1186,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/protain.avif",
 				Name:         "プロテイン",
-				Text:         "自分のエネルギーゾーンから[筋肉]エネルギーを2つ出し、自分の[筋肉]ポケモン1匹につける",
+				Text:         "自分のエネルギーゾーンからバトル場のポケモンに[筋肉]エネルギーを2つける",
 				Rarity:       6,
 			},
 			{
@@ -1209,7 +1210,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeGoods,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/issyoubin.avif",
 				Name:         "一升瓶",
-				Text:         "自分の[酒]ポケモンを1匹選び、コイントスをする。表が出た場合そのポケモンに好きなエネルギーを1つつける。裏が出た場合そのポケモンのランダムなエネルギーを1つトラッシュする。",
+				Text:         "自分の[酒]ポケモンを1匹選び、1回コイントスをする。表が出た場合そのポケモンに[酒]エネルギーを1つつける。",
 				Rarity:       6,
 			},
 			{
@@ -1345,7 +1346,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/bar.avif",
 				Name:         "バーテンダー",
-				Text:         "自分の[酒]ポケモンを1匹選ぶ。5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから出し、そのポケモンにつける。ウラの数1つにつき、そのポケモンに20ダメージ与える。",
+				Text:         "自分の[酒]ポケモンを1匹選ぶ。5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから出し、そのポケモンにつける。ウラの数1つにつき、そのポケモンに20ダメージ与える。きぜつする場合はHPを10にする。",
 				Rarity:       6,
 			},
 			{
@@ -1369,7 +1370,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/yamikin.avif",
 				Name:         "ヤミ金業者",
-				Text:         "自分の[金]ポケモンを1匹選ぶ。そのポケモンに[金]エネルギーを10個つける。2ターン後に[金]エネルギーを20個トラッシュ。できない場合はそのポケモンをきぜつさせる。",
+				Text:         "自分の[金]ポケモンを1匹選ぶ。そのポケモンに[金]エネルギーを10個つけ、HPを10にする。",
 				Rarity:       6,
 			},
 			{
