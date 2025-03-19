@@ -59,6 +59,10 @@ func NewSkill(m *model.Skill) *Skill {
 }
 
 func NewAbility(m *model.Ability) *Ability {
+	if m == nil {
+		return nil
+	}
+
 	return &Ability{
 		Name: m.Name,
 		Text: m.Text,

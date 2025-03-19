@@ -34,8 +34,8 @@ func (s *MatcherService) Apply(ctx context.Context, password string, callback Ma
 
 		roomID := model.NewRoomID()
 
-		go f(roomID)
-		go callback(roomID)
+		f(roomID)
+		callback(roomID)
 
 		return nil
 	}

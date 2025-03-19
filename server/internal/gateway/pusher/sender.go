@@ -199,3 +199,20 @@ func (g *gameEventSender) SendDecideOrderEvent(ctx context.Context, userID, firs
 
 	return g.pusher.Send(ctx, userID, b)
 }
+
+func (g *gameEventSender) SendGameStartEvent(ctx context.Context, userID model.UserID) error {
+	event := wsmsg.EventEnvelope{
+		Event: &wsmsg.EventEnvelope_StartGameEventToClients{
+			StartGameEventToClients: &event.StartGameEventToClients{
+				Payload: &payload.StartGamePayload{},
+			},
+		},
+	}
+
+	b, err := proto.Marshal(&event)
+	if err != nil {
+		return err
+	}
+
+	return g.pusher.Send(ctx, userID, b)
+}

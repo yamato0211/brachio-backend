@@ -9,6 +9,7 @@ import (
 
 type GameEventSender interface {
 	SendMatchingComplete(ctx context.Context, userID, oppoUserID model.UserID, roomID model.RoomID) error
+	SendGameStartEvent(ctx context.Context, userID model.UserID) error
 	SendTurnStartEvent(ctx context.Context, userID, turnUserID model.UserID) error
 	SendDrawCardsEventToActor(ctx context.Context, actorID model.UserID, deckCount int, cards ...*model.Card) error
 	SendDrawCardsEventToRecipient(ctx context.Context, opponentID model.UserID, deckCount int, cards ...*model.Card) error

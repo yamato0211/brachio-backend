@@ -75,3 +75,25 @@ func (i *ApplyAbilityInteractor) Execute(ctx context.Context, input *ApplyAbilit
 
 	return err
 }
+
+// func (i *ApplyAbilityInteractor) makeEventForMe(position int, state *model.GameState) *messages.EffectWithSecret {
+// 	return &messages.EffectWithSecret{
+// 		Effect: &messages.EffectWithSecret_Damage{
+// 			Damage: &messages.DamageEffect{
+// 				Position: int32(position),
+// 				Amount:   lo.Map(state.Damages, func(d int, _ int) int32 { return int32(d) }),
+// 			},
+// 		},
+// 	}
+// }
+
+// func (i *ApplyAbilityInteractor) makeEventForOppo(position int, state *model.GameState) *messages.Effect {
+// 	return &messages.Effect{
+// 		Effect: &messages.Effect_Damage{
+// 			Damage: &messages.DamageEffect{
+// 				Position: int32(position),
+// 				Amount:   lo.Map(state.Damages, func(d int, _ int) int32 { return int32(d) }),
+// 			},
+// 		},
+// 	}
+// }
