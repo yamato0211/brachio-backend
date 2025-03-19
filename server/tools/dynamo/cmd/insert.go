@@ -64,9 +64,8 @@ var insertCmd = &cobra.Command{
 						DamageOption: "x",
 					},
 				},
-				IsEx:     true,
-				SubType:  model.MonsterSubTypeBasic,
-				ImageURL: "https://pokepoke.kurichi.dev/images/kizuku-piece.avif",
+				IsEx:    true,
+				SubType: model.MonsterSubTypeBasic,
 			},
 			{
 				MasterCardID: model.NewMasterCardID("kurichi"),
@@ -1353,7 +1352,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/bar.avif",
 				Name:         "バーテンダー",
-				Text:         "自分の[酒]ポケモンを1匹選ぶ。5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから出し、そのポケモンにつける。ウラの数1つにつき、そのポケモンに20ダメージ与える。きぜつする場合はHPを10にする。",
+				Text:         "5回コインを投げ、オモテの数ぶんの好きなエネルギーを自分のエネルギーゾーンから[酒]エネルギーを出し、バトル場のポケモンにつける。ウラの数1つにつき、そのポケモンに20ダメージ与える。きぜつする場合はHPを10にする。",
 				Rarity:       6,
 			},
 			{
@@ -1361,7 +1360,7 @@ var insertCmd = &cobra.Command{
 				CardType:     model.CardTypeSupporter,
 				ImageURL:     "https://pokepoke.kurichi.dev/images/taisyo.avif",
 				Name:         "居酒屋大将",
-				Text:         "自分のポケモンを1匹選ぶ。コイントスを裏が出るまで行い、表の数分自分についていないエネルギーの種類の中からランダムで1種類を選び、そのポケモンにつける。",
+				Text:         "コイントスを裏が出るまで行い、表の数分自分についていないエネルギーの種類の中からランダムで1種類を選び、バトル場のポケモンにつける。",
 				Rarity:       6,
 			},
 			{
