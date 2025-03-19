@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/samber/lo"
 	"github.com/yamato0211/brachio-backend/internal/domain/model"
 	"github.com/yamato0211/brachio-backend/internal/handler/schema"
 	"github.com/yamato0211/brachio-backend/internal/infra/middleware"
@@ -34,5 +35,22 @@ func (h *PostGachaDrawHandler) DrawGacha(c echo.Context, gachaId string) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusOK, cards)
+	mcs := make([]schema.MasterCard, 0, len(cards))
+	for _, card := range cards {
+		mc, err := schema.MasterCardWithFromEntity(card)
+		if err != nil {
+			log.Println(err)
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+		mcs = append(mcs, *mc)
+	}
+
+	resp := make([]*schema.Pack, 0, 10)
+	for _, pack := range lo.Chunk(mcs, 5) {
+		resp = append(resp, &schema.Pack{
+			Cards: lo.ToPtr(pack),
+		})
+	}
+
+	return c.JSON(http.StatusOK, resp)
 }
