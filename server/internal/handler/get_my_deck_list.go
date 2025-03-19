@@ -30,17 +30,20 @@ func (h *GetDeckListHandler) GetDeckList(c echo.Context) error {
 	}
 	resp := make([]*schema.DeckBaseWithId, 0, len(decks))
 	for _, deck := range decks {
-		tc, err := schema.FactoryCard(*deck.ThumbnailCard)
+		tc, err := schema.FactoryCard(deck.ThumbnailCard)
 		if err != nil {
 			log.Println(err)
 			return c.JSON(http.StatusInternalServerError, err)
 		}
-		resp = append(resp, &schema.DeckBaseWithId{
-			Id:            lo.ToPtr(deck.DeckID.String()),
-			Name:          deck.Name,
-			Color:         schema.Element(deck.Color),
-			ThumbnailCard: *tc,
-		})
+		temp := &schema.DeckBaseWithId{
+			Id:    lo.ToPtr(deck.DeckID.String()),
+			Name:  deck.Name,
+			Color: schema.Element(deck.Color),
+		}
+		if tc != nil {
+			temp.ThumbnailCard = *tc
+		}
+		resp = append(resp, temp)
 	}
 	return c.JSON(http.StatusOK, resp)
 }

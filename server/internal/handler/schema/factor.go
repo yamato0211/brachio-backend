@@ -84,11 +84,11 @@ func MasterSupportCardFromEntity(e *model.MasterCard) (*MasterSupporterCard, err
 	}, nil
 }
 
-func FactoryCard(masterCard model.MasterCard) (*Card, error) {
+func FactoryCard(masterCard *model.MasterCard) (*Card, error) {
 	var card = &Card{}
 	switch masterCard.CardType {
 	case model.CardTypeMonster:
-		sc, err := MasterMonsterCardFromEntity(&masterCard)
+		sc, err := MasterMonsterCardFromEntity(masterCard)
 		if err != nil {
 			return nil, err
 		}
@@ -97,7 +97,7 @@ func FactoryCard(masterCard model.MasterCard) (*Card, error) {
 		}
 		return card, nil
 	case model.CardTypeGoods:
-		sc, err := MasterGoodsCardFromEntity(&masterCard)
+		sc, err := MasterGoodsCardFromEntity(masterCard)
 		if err != nil {
 			return nil, err
 		}
@@ -106,7 +106,7 @@ func FactoryCard(masterCard model.MasterCard) (*Card, error) {
 		}
 		return card, nil
 	case model.CardTypeSupporter:
-		sc, err := MasterSupportCardFromEntity(&masterCard)
+		sc, err := MasterSupportCardFromEntity(masterCard)
 		if err != nil {
 			return nil, err
 		}
@@ -128,7 +128,7 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 
 	if e.ThumbnailCard != nil {
 		var err error
-		thumbnailCard, err = FactoryCard(*e.ThumbnailCard)
+		thumbnailCard, err = FactoryCard(e.ThumbnailCard)
 		if err != nil {
 			log.Println("failed factory card in deck with id from entity")
 			return nil, err
@@ -139,7 +139,7 @@ func DeckWithIdFromEntity(e *model.Deck) (*DeckWithId, error) {
 
 	myCards := make([]Card, 0, len(e.MasterCards))
 	for _, mc := range e.MasterCards {
-		fc, err := FactoryCard(*mc)
+		fc, err := FactoryCard(mc)
 		if err != nil {
 			log.Println("failed factory card in deck with id from entity")
 			return nil, err
