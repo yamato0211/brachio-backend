@@ -21,7 +21,7 @@ import (
 
 type GetWebSocketHandler struct {
 	upgrader websocket.Upgrader
-	pusher   pkgws.Pusher
+	pusher   *pkgws.Pusher
 
 	ApplyAbilityInputPort             usecase.ApplyAbilityInputPort
 	SupplyEnergyInputPort             usecase.SupplyEnergyInputPort
