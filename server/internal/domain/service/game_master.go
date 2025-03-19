@@ -274,6 +274,10 @@ func (s *gameMasterService) ReadyForStart(ctx context.Context, roomID model.Room
 			return err
 		}
 
+		if err := s.GameEventSender.SendGameStartEvent(ctx, state.TurnPlayer.UserID); err != nil {
+			return err
+		}
+
 		if err := s.GameEventSender.SendTurnStartEvent(ctx, state.TurnPlayer.UserID, state.TurnPlayer.UserID); err != nil {
 			return err
 		}
@@ -329,6 +333,20 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 			return err
 		}
 
+		if err := s.GameEventSender.SendMatchingComplete(ctx, users[0].ID, users[1].ID, roomID); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendMatchingComplete(ctx, users[1].ID, users[0].ID, roomID); err != nil {
+			return err
+		}
+
+		if err := s.GameEventSender.SendDecideOrderEvent(ctx, users[0].ID, users[0].ID, users[1].ID); err != nil {
+			return err
+		}
+		if err := s.GameEventSender.SendDecideOrderEvent(ctx, users[1].ID, users[0].ID, users[1].ID); err != nil {
+			return err
+		}
+
 		// カード配布
 		if err := s.GameEventSender.SendDrawCardsEventToActor(ctx, state.TurnPlayer.UserID, len(state.TurnPlayer.Deck), state.TurnPlayer.Hands...); err != nil {
 			return err
@@ -347,20 +365,6 @@ func (s *gameMasterService) Matched(ctx context.Context, roomID model.RoomID) er
 		return s.GameStateRepository.Store(ctx, state)
 	})
 	if err != nil {
-		return err
-	}
-
-	if err := s.GameEventSender.SendMatchingComplete(ctx, users[0].ID, users[1].ID, roomID); err != nil {
-		return err
-	}
-	if err := s.GameEventSender.SendMatchingComplete(ctx, users[1].ID, users[0].ID, roomID); err != nil {
-		return err
-	}
-
-	if err := s.GameEventSender.SendDecideOrderEvent(ctx, users[0].ID, users[0].ID, users[1].ID); err != nil {
-		return err
-	}
-	if err := s.GameEventSender.SendDecideOrderEvent(ctx, users[1].ID, users[0].ID, users[1].ID); err != nil {
 		return err
 	}
 
